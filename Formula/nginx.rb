@@ -1,4 +1,4 @@
-class Nginx < Formula
+class VshNginx < Formula
   desc "HTTP(S) server and reverse proxy, and IMAP/POP3 proxy server"
   homepage "https://nginx.org/"
   # Use "mainline" releases only (odd minor version number), not "stable"
