@@ -1,0 +1,16 @@
+os: osx
+osx_image:
+  - xcode10
+  - xcode9.2
+  - xcode10.2
+addons:
+  homebrew:
+    update: true
+jobs:
+  include:
+    - stage: nginx
+      osx_image: xcode10.2
+      env:
+        - OS=mojave
+      script:
+        - bash scripts/travisbuild
