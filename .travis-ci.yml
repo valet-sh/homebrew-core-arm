@@ -1,7 +1,5 @@
 os: osx
 osx_image:
-  - xcode10
-  - xcode9.2
   - xcode10.2
 addons:
   homebrew:
