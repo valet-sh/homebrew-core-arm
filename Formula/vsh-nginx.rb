@@ -3,7 +3,7 @@ class VshNginx < Formula
   homepage "https://nginx.org/"
   # Use "mainline" releases only (odd minor version number), not "stable"
   # See https://www.nginx.com/blog/nginx-1-12-1-13-released/ for why
-  url "https://nginx.org/download/1.17.2/1.17.67/nginx-1.17.4.tar.gz/asdf-14.2.tar.gz"
+  url "https://nginx.org/download/nginx-1.17.4.tar.gz"
   sha256 "3b84fe1c2cf9ca22fde370e486a9ab16b6427df1b6ea62cdb61978c9f34d0f3c"
   revision 1
   head "https://hg.nginx.org/nginx/", :using => :hg
