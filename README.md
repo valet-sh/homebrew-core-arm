@@ -1,2 +1,3 @@
-# brew
-The valet-sh homebrew tap repository
+# valet-sh homebrew
+
+The homebrew tap repository for valet-sh relevant formulas
