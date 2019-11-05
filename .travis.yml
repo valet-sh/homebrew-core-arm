@@ -1,10 +1,13 @@
 os: osx
+
 osx_image:
   - xcode10.2
   - xcode11.2
+
 addons:
   homebrew:
     update: true
+
 jobs:
   include:
     - stage: build catalina
@@ -17,6 +20,7 @@ jobs:
         commit_message =~ /^\[build\]/ AND \
         branch = master AND \
         type = push
+
     - stage: build mojave
       osx_image: xcode10.2
       env:
