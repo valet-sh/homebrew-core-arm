@@ -13,7 +13,7 @@ jobs:
       script:
         - bash scripts/travisbuild nginx
       if: |
-        commit_message ~ /(^\[build\])/ AND \
-        commit_message ~ /(nginx)/ AND \
+        commit_message =~ /(^\[build\])/ AND \
+        commit_message =~ /(nginx)/ AND \
         branch = master AND \
         type = push
