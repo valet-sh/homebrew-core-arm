@@ -1,3 +1,15 @@
 #!/bin/bash
 
-echo "building bottle $1"
+function build_bottle {
+    # ToDo: implement bottle building here :)
+    echo "Building bottle -> $1"
+}
+
+function upload_bottle {
+    # ToDo: implement bottle uploading here :)
+    echo "Uploading bottle -> $1"
+}
+
+echo ${TRAVIS_COMMIT_MESSAGE/"[build]"/} | sed -n 1'p' | tr ', ' '\n' | while read FORMULA; do
+    [[ ! -z "$FORMULA" ]] && build_bottle $FORMULA && upload_bottle $FORMULA
+done

@@ -1,18 +1,33 @@
 os: osx
+
 osx_image:
   - xcode10.2
+  - xcode11.2
+
 addons:
   homebrew:
     update: true
+
 jobs:
   include:
-    - stage: build nginx
+    - stage: build catalina
+      osx_image: xcode11.2
+      env:
+        - OS=mojave
+      script:
+        - bash scripts/travisbuild
+      if: |
+        commit_message =~ /(^\[build\]/ AND \
+        branch = master AND \
+        type = push
+
+    - stage: build mojave
       osx_image: xcode10.2
       env:
         - OS=mojave
       script:
-        - bash scripts/travisbuild nginx
+        - bash scripts/travisbuild
       if: |
-        commit_message =~ /(^\[build\]|nginx/ AND \
+        commit_message =~ /(^\[build\]/ AND \
         branch = master AND \
         type = push
