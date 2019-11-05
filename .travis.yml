@@ -10,22 +10,24 @@ addons:
 
 jobs:
   include:
-    - osx_image: xcode11.2
+    - stage: build catalina
+      osx_image: xcode11.2
       env:
         - OS=catalina
       script:
         - bash scripts/travisbuild
       if: |
-        commit_message =~ /(^\[build\].*/ AND \
+        commit_message =~ /(^\[build\])/ AND \
         branch = master AND \
         type = push
 
-    - osx_image: xcode10.2
+    - stage: build mojave
+      osx_image: xcode10.2
       env:
         - OS=mojave
       script:
         - bash scripts/travisbuild
       if: |
-        commit_message =~ /(^\[build\].*/ AND \
+        commit_message =~ /(^\[build\])/ AND \
         branch = master AND \
         type = push
