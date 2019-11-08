@@ -2,6 +2,7 @@
 
 function build_bottle {
     FORMULA=$1
+    export HOMEBREW_NO_UPDATE_CLEANUP=1
     brew install --build-bottle Formula/"$FORMULA".rb
     brew bottle Formula/"$FORMULA".rb --json --force-core-tap
 }
