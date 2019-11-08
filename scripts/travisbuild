@@ -18,6 +18,12 @@ function upload_bottle {
     curl -T $FORMULA*.json -u$BINTRAY_USER:$BINTRAY_KEY https://api.bintray.com/content/valet-sh/homebrew-core/core/core/${FILENAME%.tar.gz}.json
 }
 
+if [ "$OS" == "catalina" ]; then
+    sudo rm -rf /usr/bin/sw_vers
+    sudo echo "echo '10.15.1'" > /usr/bin/sw_vers
+    sudo chmod a+x /usr/bin/sw_vers
+fi
+
 echo ${TRAVIS_COMMIT_MESSAGE/"[build]"/} | sed -n 1'p' | tr ', ' '\n' | while read FORMULA; do
     [[ ! -z "$FORMULA" ]] && build_bottle $FORMULA && upload_bottle $FORMULA
 done
