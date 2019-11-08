@@ -1,22 +1,22 @@
 #!/bin/bash
 
 function build_bottle {
-    brew install --build-bottle Formula/"$1".rb
-    brew bottle Formula/"$1".rb --json --force-core-tap
+    FORMULA=$1
+    brew install --build-bottle Formula/"$FORMULA".rb
+    brew bottle Formula/"$FORMULA".rb --json --force-core-tap
 }
 
 function upload_bottle {
-    cat $1*.json
-    FILENAME=$(cat $1*.json | jq --raw-output '."'"$1"'"."bottle"."tags"."'"$OS"'"."filename"')
+    FORMULA=$1
+    cat $FORMULA*.json
+    FILENAME=$(cat $FORMULA*.json | jq --raw-output '."'$FORMULA'".bottle.tags."'$OS'".filename')
     echo $FILENAME;
-    LOCALFILE=$(cat $1*.json | jq --raw-output '."'"$1"'"."bottle"."tags"."'"$OS"'"."local_filename"')
+    LOCALFILE=$(cat $FORMULA*.json | jq --raw-output '."'$FORMULA'".bottle.tags."'$OS'".local_filename')
     echo $LOCALFILE;
 
     curl -T $LOCALFILE -uvalet-sh:$BINTRAY_KEY https://api.bintray.com/content/valet-sh/homebrew-core/core/core/$FILENAME
-    curl -T $1*.json   -uvalet-sh:$BINTRAY_KEY https://api.bintray.com/content/valet-sh/homebrew-core/core/core/${FILENAME%.tar.gz}.json
+    curl -T $FORMULA*.json -uvalet-sh:$BINTRAY_KEY https://api.bintray.com/content/valet-sh/homebrew-core/core/core/${FILENAME%.tar.gz}.json
 }
-
-brew install jq
 
 echo ${TRAVIS_COMMIT_MESSAGE/"[build]"/} | sed -n 1'p' | tr ', ' '\n' | while read FORMULA; do
     [[ ! -z "$FORMULA" ]] && build_bottle $FORMULA && upload_bottle $FORMULA

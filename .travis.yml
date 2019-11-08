@@ -8,28 +8,26 @@ osx_image:
 
 addons:
   homebrew:
+    packages:
+      - jq
     update: true
 
 jobs:
   include:
-    - stage: build catalina
+    - name: build catalina
       osx_image: xcode11.2
       env:
         - OS=catalina
       script:
         - bash scripts/travisbuild
-      if: |
-        commit_message =~ /^\[build\]/ AND \
-        branch = master AND \
-        type = push
-
-    - stage: build mojave
+    - name: build mojave
       osx_image: xcode10.2
       env:
         - OS=mojave
       script:
         - bash scripts/travisbuild
-      if: |
-        commit_message =~ /^\[build\]/ AND \
-        branch = master AND \
-        type = push
+
+if: |
+  commit_message =~ /^\[build\]/ AND \
+  branch = master AND \
+  type = push
