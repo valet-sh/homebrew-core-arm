@@ -9,9 +9,9 @@ function build_bottle {
 function upload_bottle {
     FORMULA=$1
     cat $FORMULA*.json
-    FILENAME=$(cat $FORMULA*.json | jq --raw-output '."'$FORMULA'".bottle.tags."'$OS'".filename')
+    FILENAME=$(cat $FORMULA*.json | jq --raw-output '.'"$FORMULA"'."bottle".tags.'"$OS"'.filename')
     echo $FILENAME;
-    LOCALFILE=$(cat $FORMULA*.json | jq --raw-output '."'$FORMULA'".bottle.tags."'$OS'".local_filename')
+    LOCALFILE=$(cat $FORMULA*.json | jq --raw-output '.'"$FORMULA"'."bottle".tags.'"$OS"'.local_filename')
     echo $LOCALFILE;
 
     curl -T $LOCALFILE -uvalet-sh:$BINTRAY_KEY https://api.bintray.com/content/valet-sh/homebrew-core/core/core/$FILENAME
