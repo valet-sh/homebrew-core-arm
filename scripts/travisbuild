@@ -20,6 +20,7 @@ function upload_bottle {
 
 if [ "$OS" == "catalina" ]; then
     sed -i.bu 's/mojave/catalina/' /usr/local/Homebrew/Library/Homebrew/os/mac/version.rb
+    cat /usr/local/Homebrew/Library/Homebrew/os/mac/version.rb
 fi
 
 echo ${TRAVIS_COMMIT_MESSAGE/"[build]"/} | sed -n 1'p' | tr ', ' '\n' | while read FORMULA; do
