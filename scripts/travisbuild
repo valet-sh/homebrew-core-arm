@@ -3,12 +3,12 @@
 function build_bottle {
     brew install --build-bottle Formula/"$1".rb
     brew bottle Formula/"$1".rb --json --force-core-tap
-    bottleJson=$( cat $1*.json )
-    FILENAME=$(echo $bottleJson | jq --raw-output '."'"$1"'"."bottle"."tags"."'"$OS"'"."filename"')
-    LOCALFILE=$(echo $bottleJson | jq --raw-output '."'"$1"'"."bottle"."tags"."'"$OS"'"."local_filename"')
 }
 
 function upload_bottle {
+    bottleJson=$( cat $1*.json )
+    FILENAME=$(echo $bottleJson | jq --raw-output '."'"$1"'"."bottle"."tags"."'"$OS"'"."filename"')
+    LOCALFILE=$(echo $bottleJson | jq --raw-output '."'"$1"'"."bottle"."tags"."'"$OS"'"."local_filename"')
     curl -T $LOCALFILE -uvalet-sh:$BINTRAY_KEY https://api.bintray.com/content/valet-sh/homebrew-core/core/core/$FILENAME
     curl -T $1*.json   -uvalet-sh:$BINTRAY_KEY https://api.bintray.com/content/valet-sh/homebrew-core/core/core/${FILENAME%.tar.gz}.json
 }
