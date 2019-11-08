@@ -20,6 +20,7 @@ function upload_bottle {
 
 if [ "$OS" == "catalina" ]; then
     sed -i.bu 's/\/usr\/bin\/sw_vers -productVersion/echo 10.15.1/' /usr/local/Homebrew/Library/Homebrew/brew.sh
+    cat /usr/local/Homebrew/Library/Homebrew/brew.sh
 fi
 
 echo ${TRAVIS_COMMIT_MESSAGE/"[build]"/} | sed -n 1'p' | tr ', ' '\n' | while read FORMULA; do
