@@ -1,5 +1,9 @@
 language: generic
 
+stages:
+  - build-catalina
+  - build-mojave
+
 os: osx
 
 osx_image:
@@ -14,13 +18,13 @@ addons:
 
 jobs:
   include:
-    - stage: build bottles => :catalina
+    - stage: build-catalina
       osx_image: xcode11.2
       env:
         - OS=catalina
       script:
         - bash scripts/travisbuild
-    - stage: build bottles => :mojave
+    - stage: build-mojave
       osx_image: xcode10.2
       env:
         - OS=mojave
