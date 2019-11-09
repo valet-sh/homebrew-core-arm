@@ -1,8 +1,14 @@
 #!/bin/bash
 
+setup_git() {
+  git config --global user.email "travis@travis-ci.org"
+  git config --global user.name "Travis CI"
+  git remote set-url origin https://${GITHUB_TOKEN}@github.com/valet-sh/homebrew-core.git
+  git pull
+}
+
 function build_bottle {
     FORMULA=$1
-    export HOMEBREW_NO_UPDATE_CLEANUP=1
     brew install --build-bottle Formula/"$FORMULA".rb
     brew bottle Formula/"$FORMULA".rb --json --force-core-tap
 }
@@ -14,18 +20,28 @@ function upload_bottle {
     echo $FILENAME;
     LOCALFILE=$(cat $FORMULA*.json | jq --raw-output '."'$FORMULA'".bottle.tags."'$OS'".local_filename')
     echo $LOCALFILE;
-
+    # upload
     curl -T $LOCALFILE -u$BINTRAY_USER:$BINTRAY_KEY https://api.bintray.com/content/valet-sh/homebrew-core/core/core/$FILENAME
     curl -T $FORMULA*.json -u$BINTRAY_USER:$BINTRAY_KEY https://api.bintray.com/content/valet-sh/homebrew-core/core/core/${FILENAME%.tar.gz}.json
+    # publish
+    curl -X POST -u$BINTRAY_USER:$BINTRAY_KEY https://api.bintray.com/content/valet-sh/homebrew-core/core/core/publish -d "{ \"discard\": \"false\" }"
+}
+
+function update_sha {
+    FORMULA=$1
+    SHA256=$(cat $FORMULA*.json | jq --raw-output '."'$FORMULA'".bottle.tags."'$OS'".sha256')
+    sed -i.bu "s/sha256.*:$OS/sha256 \"$SHA256\" => :$OS/" Formula/"$FORMULA".rb 
+    setup_git
+    git add Formula/"$FORMULA".rb
+    git commit --message "Travis build: $TRAVIS_BUILD_NUMBER | Update SHA256 for formula $FORMULA and OS $OS"
+    git push
 }
 
 if [ "$OS" == "catalina" ]; then
+    export HOMEBREW_NO_UPDATE_CLEANUP=1
     sed -i.bu 's/mojave/catalina/' /usr/local/Homebrew/Library/Homebrew/os/mac/version.rb
-    cat /usr/local/Homebrew/Library/Homebrew/os/mac/version.rb
 fi
 
 echo ${TRAVIS_COMMIT_MESSAGE/"[build]"/} | sed -n 1'p' | tr ', ' '\n' | while read FORMULA; do
-    [[ ! -z "$FORMULA" ]] && build_bottle $FORMULA && upload_bottle $FORMULA
+    [[ ! -z "$FORMULA" ]] && build_bottle $FORMULA && upload_bottle $FORMULA && update_sha $FORMULA
 done
-
-cat /usr/local/Homebrew/Library/Homebrew/os/mac/version.rb
