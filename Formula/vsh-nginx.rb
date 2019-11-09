@@ -10,7 +10,7 @@ class VshNginx < Formula
 
   bottle do
     root_url "https://dl.bintray.com/valet-sh/homebrew-core"
-    sha256 "484511b8e595f7dba53248439c320208fc4b885ba0baf78e05cbb7f89e80b755" => :catalina
+    sha256 "adfguah7983u4in39784hn3948utn" => :catalina
     sha256 "3fc73addb2bf657c0a715de00a0845eb3678eb792b3f74b1754c51dd3e7af31c" => :mojave
   end
 
