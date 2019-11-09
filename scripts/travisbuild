@@ -30,9 +30,9 @@ function upload_bottle {
 
 function update_sha {
     FORMULA=$1
+    setup_git
     SHA256=$(cat $FORMULA*.json | jq --raw-output '."'$FORMULA'".bottle.tags."'$OS'".sha256')
     sed -i.bu "s/sha256.*:$OS/sha256 \"$SHA256\" => :$OS/" Formula/"$FORMULA".rb 
-    setup_git
     git add Formula/"$FORMULA".rb
     git commit --message "Travis build: $TRAVIS_BUILD_NUMBER | Update SHA256 for formula $FORMULA and OS $OS"
     git push
