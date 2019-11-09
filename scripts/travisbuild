@@ -60,9 +60,10 @@ fi
 
 # iterate all given formulas to be built
 echo "${TRAVIS_COMMIT_MESSAGE/"[build]"/}" | sed -n 1'p' | tr ', ' '\n' | while read -r FORMULA; do
-    [[ ! -z "$FORMULA" ]] && \
-    [[ -f "Formula/$FORMULA.rb" ]] && \
-    build_bottle "$FORMULA" && \
-    upload_bottle "$FORMULA" && \
-    update_sha "$FORMULA"
+    if [[ ! -z "$FORMULA" ]]; then
+        [[ -f "Formula/$FORMULA.rb" ]] && \
+        build_bottle "$FORMULA" && \
+        upload_bottle "$FORMULA" && \
+        update_sha "$FORMULA" || echo "Formula/$FORMULA.rb not found. Ignoring build"
+    fi
 done
