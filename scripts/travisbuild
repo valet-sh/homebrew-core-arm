@@ -1,19 +1,20 @@
 #!/bin/bash
 
-setup_git() {
-  git config --global user.email "travis@travis-ci.org"
-  git config --global user.name "Travis CI"
-  git remote set-url origin https://${GITHUB_TOKEN}@github.com/valet-sh/homebrew-core.git
-  git checkout master
-  git pull
-}
+################################################################################
+# travisbuild
+#
+# Copyright: (C) 2019 TechDivision GmbH - All Rights Reserved
+# Author: Johann Zelger <j.zelger@techdivision.com>
+################################################################################
 
+# build bottle via brew
 function build_bottle {
     FORMULA=$1
     brew install --build-bottle Formula/"$FORMULA".rb
     brew bottle Formula/"$FORMULA".rb --json --force-core-tap
 }
 
+# uploads the bottle to bintray
 function upload_bottle {
     FORMULA=$1
     cat $FORMULA*.json
@@ -31,6 +32,16 @@ function upload_bottle {
     curl -X POST -u$BINTRAY_USER:$BINTRAY_KEY https://api.bintray.com/content/valet-sh/homebrew-core/core/core/publish -d "{ \"discard\": \"false\" }"
 }
 
+# setup git config and remote
+function setup_git() {
+  git config --global user.email "travis@travis-ci.org"
+  git config --global user.name "Travis CI"
+  git remote set-url origin https://${GITHUB_TOKEN}@github.com/valet-sh/homebrew-core.git
+  git checkout master
+  git pull
+}
+
+# updated sha based on brew bottle build json info
 function update_sha {
     FORMULA=$1
     setup_git
@@ -41,11 +52,13 @@ function update_sha {
     git push
 }
 
+# hack for brew being able to create a bottle with catalina as os
 if [ "$OS" == "catalina" ]; then
     export HOMEBREW_NO_UPDATE_CLEANUP=1
     sed -i.bu 's/mojave/catalina/' /usr/local/Homebrew/Library/Homebrew/os/mac/version.rb
 fi
 
+# iterate all given formulas to be built
 echo ${TRAVIS_COMMIT_MESSAGE/"[build]"/} | sed -n 1'p' | tr ', ' '\n' | while read FORMULA; do
     [[ ! -z "$FORMULA" ]] && build_bottle $FORMULA && upload_bottle $FORMULA && update_sha $FORMULA
 done
