@@ -14,13 +14,13 @@ addons:
 
 jobs:
   include:
-    - name: build catalina
+    - stage: build bottles => :catalina
       osx_image: xcode11.2
       env:
         - OS=catalina
       script:
         - bash scripts/travisbuild
-    - name: build mojave
+    - stage: build bottles => :mojave
       osx_image: xcode10.2
       env:
         - OS=mojave
