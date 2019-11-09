@@ -22,8 +22,8 @@ function upload_bottle {
     LOCALFILE=$(cat $FORMULA*.json | jq --raw-output '."'$FORMULA'".bottle.tags."'$OS'".local_filename')
     echo $LOCALFILE;
     # delete existing file due to sha256 changes
-    curl -X DELETE -u$BINTRAY_USER:$BINTRAY_KEY https://api.bintray.com/content/valet-sh/homebrew-core/core/core/$FILENAME
-    curl -X DELETE -u$BINTRAY_USER:$BINTRAY_KEY https://api.bintray.com/content/valet-sh/homebrew-core/core/core/${FILENAME%.tar.gz}.json
+    curl -X DELETE -u$BINTRAY_USER:$BINTRAY_KEY https://api.bintray.com/content/valet-sh/homebrew-core/$FILENAME
+    curl -X DELETE -u$BINTRAY_USER:$BINTRAY_KEY https://api.bintray.com/content/valet-sh/homebrew-core/${FILENAME%.tar.gz}.json
     # upload
     curl -T $LOCALFILE -u$BINTRAY_USER:$BINTRAY_KEY https://api.bintray.com/content/valet-sh/homebrew-core/core/core/$FILENAME
     curl -T $FORMULA*.json -u$BINTRAY_USER:$BINTRAY_KEY https://api.bintray.com/content/valet-sh/homebrew-core/core/core/${FILENAME%.tar.gz}.json
