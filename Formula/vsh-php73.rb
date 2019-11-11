@@ -199,7 +199,7 @@ class VshPhp73 < Formula
 
     mv "#{bin}/phar.phar", "#{bin}/phar#{bin_suffix}.phar"
     rm_f "#{bin}/phar"
-    ln_s "#{bin}/phar#{bin_suffix}", "#{bin}/phar#{bin_suffix}.phar"
+    ln_s "#{bin}/phar#{bin_suffix}.phar", "#{bin}/phar#{bin_suffix}"
 
   end
 
