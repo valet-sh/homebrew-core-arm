@@ -23,17 +23,13 @@ jobs:
       env:
         - OS=catalina
       script:
-        - while sleep 5m; do echo "=====[ $SECONDS seconds, buildroot still building... ]====="; done &
         - scripts/travisbuild
-        - kill %1
     - stage: build-mojave
       osx_image: xcode10.2
       env:
         - OS=mojave
       script:
-        - while sleep 5m; do echo "=====[ $SECONDS seconds, buildroot still building... ]====="; done &
         - scripts/travisbuild
-        - kill %1
 
 if: |
   commit_message =~ /^\[build\]/ AND \
