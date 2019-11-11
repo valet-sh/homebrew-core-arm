@@ -10,7 +10,7 @@
 # build bottle via brew
 function build_bottle {
     FORMULA=$1
-    travis_wait 60 brew install --build-bottle Formula/"$FORMULA".rb
+    brew install --build-bottle Formula/"$FORMULA".rb
     brew bottle Formula/"$FORMULA".rb --json --force-core-tap
 }
 
