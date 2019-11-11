@@ -3,12 +3,12 @@ class VshPhp71 < Formula
   homepage "https://www.php.net/"
   url "https://www.php.net/distributions/php-7.1.33.tar.xz"
   sha256 "bd7c0a9bd5433289ee01fd440af3715309faf583f75832b64fe169c100d52968"
-
+  revision 1
+  
   bottle do
     root_url "https://dl.bintray.com/valet-sh/homebrew-core"
     sha256 "5fe912b53913d497db9214ad9028efbdffd0ef126f61587948d3f36223873b15" => :catalina
     sha256 "1278858c1b7ea78072aa855d2a2de19d6185d000b583787632fb364a4c37157a" => :mojave
-    rebuild 1
   end
 
   depends_on "pkg-config" => :build
