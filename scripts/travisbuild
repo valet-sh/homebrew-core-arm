@@ -44,7 +44,7 @@ function setup_git() {
 # update revision by increase current revision
 function update_rebuild {
     FORMULA=$1
-    sed -i.bu "s/rebuild\s[0-9]\+/rebuild $TRAVIS_BUILD_NUMBER/" Formula/"$FORMULA".rb
+    sed -i.bu "s/rebuild [0-9][0-9]*/rebuild $TRAVIS_BUILD_NUMBER/" Formula/"$FORMULA".rb
 }
 
 # updated sha based on brew bottle build json info
