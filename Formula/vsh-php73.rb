@@ -196,7 +196,10 @@ class VshPhp73 < Formula
     mv "#{bin}/pecl", "#{bin}/pecl#{bin_suffix}"
     mv "#{bin}/pear", "#{bin}/pear#{bin_suffix}"
     mv "#{bin}/peardev", "#{bin}/peardev#{bin_suffix}"
-    mv "#{bin}/phar", "#{bin}/phar#{bin_suffix}"
+
+    mv "#{bin}/phar.phar", "#{bin}/phar#{bin_suffix}.phar"
+    rm_f "#{bin}/phar"
+    ln_s "#{bin}/phar#{bin_suffix}", "#{bin}/phar#{bin_suffix}.phar"
 
   end
 
