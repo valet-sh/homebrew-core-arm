@@ -23,13 +23,13 @@ jobs:
       env:
         - OS=catalina
       script:
-        - bash scripts/travisbuild
+        - travis_wait 60 scripts/travisbuild
     - stage: build-mojave
       osx_image: xcode10.2
       env:
         - OS=mojave
       script:
-        - bash scripts/travisbuild
+        - travis_wait 60 scripts/travisbuild
 
 if: |
   commit_message =~ /^\[build\]/ AND \
