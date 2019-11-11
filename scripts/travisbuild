@@ -1,15 +1,69 @@
 #!/bin/bash
 
+################################################################################
+# travisbuild
+#
+# Copyright: (C) 2019 TechDivision GmbH - All Rights Reserved
+# Author: Johann Zelger <j.zelger@techdivision.com>
+################################################################################
+
+# build bottle via brew
 function build_bottle {
-    # ToDo: implement bottle building here :)
-    echo "Building bottle -> $1"
+    FORMULA=$1
+    brew install --build-bottle Formula/"$FORMULA".rb
+    brew bottle Formula/"$FORMULA".rb --json --force-core-tap
 }
 
+# uploads the bottle to bintray
 function upload_bottle {
-    # ToDo: implement bottle uploading here :)
-    echo "Uploading bottle -> $1"
+    FORMULA=$1
+    cat "$FORMULA"*.json
+    FILENAME=$(cat "$FORMULA"*.json | jq --raw-output '."'"$FORMULA"'".bottle.tags."'"$OS"'".filename')
+    echo "$FILENAME";
+    LOCALFILE=$(cat "$FORMULA"*.json | jq --raw-output '."'"$FORMULA"'".bottle.tags."'"$OS"'".local_filename')
+    echo "$LOCALFILE";
+    # delete existing file due to sha256 changes
+    curl -X DELETE -u"$BINTRAY_USER":"$BINTRAY_KEY" https://api.bintray.com/content/valet-sh/homebrew-core/"$FILENAME"
+    curl -X DELETE -u"$BINTRAY_USER":"$BINTRAY_KEY" https://api.bintray.com/content/valet-sh/homebrew-core/"${FILENAME%.tar.gz}".json
+    # upload
+    curl -T "$LOCALFILE" -u"$BINTRAY_USER":"$BINTRAY_KEY" https://api.bintray.com/content/valet-sh/homebrew-core/core/core/"$FILENAME"
+    curl -T "$FORMULA"*.json -u"$BINTRAY_USER":"$BINTRAY_KEY" https://api.bintray.com/content/valet-sh/homebrew-core/core/core/"${FILENAME%.tar.gz}".json
+    # publish
+    curl -X POST -u"$BINTRAY_USER":"$BINTRAY_KEY" https://api.bintray.com/content/valet-sh/homebrew-core/core/core/publish -d "{ \"discard\": \"false\" }"
 }
 
-echo ${TRAVIS_COMMIT_MESSAGE/"[build]"/} | sed -n 1'p' | tr ', ' '\n' | while read FORMULA; do
-    [[ ! -z "$FORMULA" ]] && build_bottle $FORMULA && upload_bottle $FORMULA
+# setup git config and remote
+function setup_git() {
+    git config --global user.email "travis@travis-ci.org"
+    git config --global user.name "Travis CI"
+    git remote set-url origin https://"${GITHUB_TOKEN}"@github.com/valet-sh/homebrew-core.git
+    git checkout master
+    git pull
+}
+
+# updated sha based on brew bottle build json info
+function update_sha {
+    FORMULA=$1
+    setup_git
+    SHA256=$(cat "$FORMULA"*.json | jq --raw-output '."'"$FORMULA"'".bottle.tags."'"$OS"'".sha256')
+    sed -i.bu "s/sha256.*:$OS/sha256 \"$SHA256\" => :$OS/" Formula/"$FORMULA".rb 
+    git add Formula/"$FORMULA".rb
+    git commit --message "Travis build: $TRAVIS_BUILD_NUMBER | Update SHA256 for formula $FORMULA and OS $OS"
+    git push
+}
+
+# hack for brew being able to create a bottle with catalina as os
+if [ "$OS" == "catalina" ]; then
+    export HOMEBREW_NO_UPDATE_CLEANUP=1
+    sed -i.bu 's/mojave/catalina/' /usr/local/Homebrew/Library/Homebrew/os/mac/version.rb
+fi
+
+# iterate all given formulas to be built
+echo "${TRAVIS_COMMIT_MESSAGE/"[build]"/}" | sed -n 1'p' | tr ', ' '\n' | while read -r FORMULA; do
+    if [[ ! -z "$FORMULA" ]]; then
+        [[ -f "Formula/$FORMULA.rb" ]] && \
+        build_bottle "$FORMULA" && \
+        upload_bottle "$FORMULA" && \
+        update_sha "$FORMULA" || echo "Formula/$FORMULA.rb not found. Ignoring build"
+    fi
 done
