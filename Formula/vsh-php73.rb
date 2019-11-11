@@ -3,7 +3,7 @@ class VshPhp73 < Formula
   homepage "https://www.php.net/"
   url "https://www.php.net/distributions/php-7.3.11.tar.xz"
   sha256 "657cf6464bac28e9490c59c07a2cf7bb76c200f09cfadf6e44ea64e95fa01021"
-  revision 1
+  revision 0
 
   bottle do
     root_url "https://dl.bintray.com/valet-sh/homebrew-core"

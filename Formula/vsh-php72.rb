@@ -3,7 +3,7 @@ class VshPhp72 < Formula
   homepage "https://www.php.net/"
   url "https://www.php.net/distributions/php-7.2.24.tar.xz"
   sha256 "a6a6cc03388060aa5f8f9e45799b72bce1c7ed7b9d7b3f1187787202aad91d25"
-  revision 1
+  revision 0
 
   bottle do
     root_url "https://dl.bintray.com/valet-sh/homebrew-core"
