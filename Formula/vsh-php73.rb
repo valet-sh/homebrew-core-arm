@@ -5,9 +5,9 @@ class VshPhp73 < Formula
   sha256 "657cf6464bac28e9490c59c07a2cf7bb76c200f09cfadf6e44ea64e95fa01021"
 
   bottle do
+    root_url "https://dl.bintray.com/valet-sh/homebrew-core"
     sha256 "c09396d2fc055d74f0f915c475ded38e8f7afac70ca5cc05546629e42fc654f1" => :catalina
     sha256 "1278858c1b7ea78072aa855d2a2de19d6185d000b583787632fb364a4c37157a" => :mojave
-    sha256 "98e546809812298562e7059cb2eb6b169672451f809fee53b4cd9cc53b3127ec" => :high_sierra
   end
 
   depends_on "pkg-config" => :build
@@ -26,6 +26,8 @@ class VshPhp73 < Formula
   depends_on "jpeg"
   depends_on "libpng"
   depends_on "libpq"
+  depends_on "libyaml"
+  depends_on "pcre2"
   depends_on "libsodium"
   depends_on "libzip"
   depends_on "openldap"
@@ -155,14 +157,14 @@ class VshPhp73 < Formula
     system "make"
     system "make", "install"
 
-    unless (var/"#{name}/#{php_ext_dir}").exist?
-      (var/"#{name}/#{php_ext_dir}").mkpath
-    end
+    #unless (var/"#{name}/#{php_ext_dir}").exist?
+    #  (var/"#{name}/#{php_ext_dir}").mkpath
+    #end
 
-    inreplace bin/"php-config#{bin_suffix}", lib/"php/#{php_ext_dir}", var/"#{name}/#{php_ext_dir}"
+    #inreplace bin/"php-config#{bin_suffix}", lib/"php/#{php_ext_dir}", var/"#{name}/#{php_ext_dir}"
 
-    inreplace "php.ini-development", %r{; ?extension_dir = "\./"},
-        "extension_dir = \"#{var}/#{name}/#{php_ext_dir}\""
+    #inreplace "php.ini-development", %r{; ?extension_dir = "\./"},
+        #"extension_dir = \"#{var}/#{name}/#{php_ext_dir}\""
 
     # Use OpenSSL cert bundle
     inreplace "php.ini-development", /; ?openssl\.cafile=/,
@@ -193,25 +195,32 @@ class VshPhp73 < Formula
 
     mv "#{bin}/pecl", "#{bin}/pecl#{bin_suffix}"
     mv "#{bin}/pear", "#{bin}/pear#{bin_suffix}"
-
-    #{bin}/pecl#{bin_suffix} install xdebug imagick
+    mv "#{bin}/peardev", "#{bin}/peardev#{bin_suffix}"
 
   end
 
   def post_install
-    Dir.glob(lib/"php/#{php_ext_dir}/*.so") do |php_module|
-        php_module_name = File.basename(php_module)
-        rm var/"#{name}/#{php_ext_dir}/#{php_module_name}" if (var/"#{name}/#{php_ext_dir}/#{php_module_name}").exist?
-        ln_s "#{php_module}", var/"#{name}/#{php_ext_dir}/#{php_module_name}"
-    end
 
-    Dir.glob(lib/"php/#{php_ext_dir}/*.a") do |php_module|
-        php_module_name = File.basename(php_module)
-        rm var/"#{name}/#{php_ext_dir}/#{php_module_name}" if (var/"#{name}/#{php_ext_dir}/#{php_module_name}").exist?
-        ln_s "#{php_module}", var/"#{name}/#{php_ext_dir}/#{php_module_name}"
+    # check if php extension dir (e.g. 20180731) exists and is not a symlink
+    # only relevant when running "brew postinstall" manually
+    if (lib/"php/#{php_ext_dir}").exist? && !(lib/"php/#{php_ext_dir}").symlink?
+        unless (var/"#{name}/#{php_ext_dir}").exist?
+            (var/"#{name}/#{php_ext_dir}").mkpath
+        end
+
+        Dir.glob(lib/"php/#{php_ext_dir}/*") do |php_module|
+            php_module_name = File.basename(php_module)
+            mv "#{php_module}", var/"#{name}/#{php_ext_dir}/#{php_module_name}"
+        end
+
+        rm_r lib/"php/#{php_ext_dir}"
+        ln_s var/"#{name}/#{php_ext_dir}", lib/"php/#{php_ext_dir}"
     end
 
     pear_prefix = pkgshare/"pear"
+
+    puts "#{pear_prefix}"
+
     pear_files = %W[
       #{pear_prefix}/.depdblock
       #{pear_prefix}/.filemap
@@ -229,35 +238,14 @@ class VshPhp73 < Formula
 
     chmod 0644, pear_files
 
-#    # Custom location for extensions installed via pecl
-#    pecl_path = HOMEBREW_PREFIX/"lib/#{name}/pecl#{bin_suffix}"
-#    ln_s pecl_path, prefix/"pecl" unless (prefix/"pecl").exist?
-#    extension_dir = Utils.popen_read("#{bin}/php-config#{bin_suffix} --extension-dir").chomp
-#    php_basename = File.basename(extension_dir)
-#    php_ext_dir = opt_prefix/"lib/php"/php_basename
+    {
+      "php_ini"  => etc/"vsh-php/#{php_version}/php.ini"
+    }.each do |key, value|
+      value.mkpath if /(?<!bin|man)_dir$/.match?(key)
+      system bin/"pear#{bin_suffix}", "config-set", key, value, "system"
+    end
 
-#    # fix pear config to install outside cellar
-#    pear_path = HOMEBREW_PREFIX/"lib/#{name}/pear"
-#    cp_r pkgshare/"pear/.", pear_path
-
-#    {
-#      "php_ini"  => etc/"vsh-php/#{php_version}/php.ini",
-#      "php_dir"  => pear_path,
-#      "doc_dir"  => pear_path/"doc",
-#      "ext_dir"  => pecl_path/php_basename,
-#      "bin_dir"  => opt_bin,
-#      "data_dir" => pear_path/"data",
-#      "cfg_dir"  => pear_path/"cfg",
-#      "www_dir"  => pear_path/"htdocs",
-#      "man_dir"  => HOMEBREW_PREFIX/"share/man",
-#      "test_dir" => pear_path/"test",
-#      "php_bin"  => opt_bin/"php#{bin_suffix}",
-#    }.each do |key, value|
-#      value.mkpath if /(?<!bin|man)_dir$/.match?(key)
-#      system bin/"pear#{bin_suffix}", "config-set", key, value, "system"
-#    end
-
-#    system bin/"pear#{bin_suffix}", "update-channels"
+    system bin/"pear#{bin_suffix}", "update-channels"
 
     %w[
       opcache
@@ -289,7 +277,7 @@ class VshPhp73 < Formula
     File.basename(extension_dir)
   end
 
-  plist_options :manual => "php-fpm"
+  plist_options :manual => "php-fpm7.3"
 
   def plist; <<~EOS
     <?xml version="1.0" encoding="UTF-8"?>
@@ -323,9 +311,9 @@ class VshPhp73 < Formula
     # https://github.com/Homebrew/homebrew-core/issues/28398
     assert_includes MachO::Tools.dylibs("#{bin}/php"),
       "#{Formula["libpq"].opt_lib}/libpq.5.dylib"
-    system "#{sbin}/php-fpm", "-t"
-    system "#{bin}/phpdbg", "-V"
-    system "#{bin}/php-cgi", "-m"
+    system "#{sbin}/php-fpm#{bin_suffix}", "-t"
+    system "#{bin}/phpdbg#{bin_suffix}", "-V"
+    system "#{bin}/php-cgi#{bin_suffix}", "-m"
     # Prevent SNMP extension to be added
     assert_no_match /^snmp$/, shell_output("#{bin}/php -m"),
       "SNMP extension doesn't work reliably with Homebrew on High Sierra"
@@ -400,7 +388,7 @@ class VshPhp73 < Formula
       Process.wait(pid)
 
       fpm_pid = fork do
-        exec sbin/"php-fpm", "-y", "fpm.conf"
+        exec sbin/"php-fpm#{bin_suffix}", "-y", "fpm.conf"
       end
       pid = fork do
         exec Formula["httpd"].opt_bin/"httpd", "-X", "-f", "#{testpath}/httpd-fpm.conf"
