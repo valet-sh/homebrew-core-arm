@@ -41,14 +41,23 @@ function setup_git() {
     git pull
 }
 
+# update revision by increase current revision
+function update_rebuild {
+    FORMULA=$1
+    sed -i.bu "s/rebuild\s[0-9]\+/rebuild $TRAVIS_BUILD_NUMBER/" Formula/"$FORMULA".rb
+}
+
 # updated sha based on brew bottle build json info
-function update_sha {
+function update_formula {
     FORMULA=$1
     setup_git
     SHA256=$(cat "$FORMULA"*.json | jq --raw-output '."'"$FORMULA"'".bottle.tags."'"$OS"'".sha256')
+    # update sha hash
     sed -i.bu "s/sha256.*:$OS/sha256 \"$SHA256\" => :$OS/" Formula/"$FORMULA".rb 
+    # update rebuild definition
+    update_rebuild "$FORMULA"
     git add Formula/"$FORMULA".rb
-    git commit --message "Travis build: $TRAVIS_BUILD_NUMBER | Update SHA256 for formula $FORMULA and OS $OS"
+    git commit --message "Travis build: $TRAVIS_BUILD_NUMBER | Update formula $FORMULA for OS $OS"
     git push
 }
 
@@ -62,8 +71,10 @@ fi
 echo "${TRAVIS_COMMIT_MESSAGE/"[build]"/}" | sed -n 1'p' | tr ', ' '\n' | while read -r FORMULA; do
     if [[ ! -z "$FORMULA" ]]; then
         [[ -f "Formula/$FORMULA.rb" ]] && \
+        update_rebuild "$FORMULA" && \
         build_bottle "$FORMULA" && \
         upload_bottle "$FORMULA" && \
-        update_sha "$FORMULA" || echo "Formula/$FORMULA.rb not found. Ignoring build"
+        update_sha "$FORMULA" || \
+        echo "Formula/$FORMULA.rb not found. Ignoring build"
     fi
 done
