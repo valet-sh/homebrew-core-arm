@@ -43,9 +43,9 @@ function setup_git() {
 }
 
 # update revision by increase current revision
-function update_rebuild {
+function update_revision {
     FORMULA=$1
-    sed -i.bu "s/rebuild [0-9][0-9]*/rebuild $TRAVIS_BUILD_NUMBER/" Formula/"$FORMULA".rb
+    sed -i.bu "s/revision [0-9][0-9]*/revision $TRAVIS_BUILD_NUMBER/" Formula/"$FORMULA".rb
 }
 
 # updated sha based on brew bottle build json info
@@ -56,7 +56,7 @@ function update_formula {
     # update sha hash
     sed -i.bu "s/sha256.*:$OS/sha256 \"$SHA256\" => :$OS/" Formula/"$FORMULA".rb 
     # update rebuild definition
-    update_rebuild "$FORMULA"
+    update_revision "$FORMULA"
     git add Formula/"$FORMULA".rb
     git commit --message "Travis build: $TRAVIS_BUILD_NUMBER | Update formula $FORMULA for OS $OS"
     git push
@@ -72,7 +72,7 @@ fi
 echo "${TRAVIS_COMMIT_MESSAGE/"[build]"/}" | sed -n 1'p' | tr ', ' '\n' | while read -r FORMULA; do
     if [[ ! -z "$FORMULA" ]]; then
         [[ -f "Formula/$FORMULA.rb" ]] && \
-        update_rebuild "$FORMULA" && \
+        update_revision "$FORMULA" && \
         build_bottle "$FORMULA" && \
         upload_bottle "$FORMULA" && \
         update_formula "$FORMULA" || \
