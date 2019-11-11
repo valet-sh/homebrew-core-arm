@@ -74,7 +74,7 @@ echo "${TRAVIS_COMMIT_MESSAGE/"[build]"/}" | sed -n 1'p' | tr ', ' '\n' | while 
         update_rebuild "$FORMULA" && \
         build_bottle "$FORMULA" && \
         upload_bottle "$FORMULA" && \
-        update_sha "$FORMULA" || \
+        update_formula "$FORMULA" || \
         echo "Formula/$FORMULA.rb not found. Ignoring build"
     fi
 done
