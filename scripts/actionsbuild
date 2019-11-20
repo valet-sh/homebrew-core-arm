@@ -75,10 +75,10 @@ echo "${LATEST_COMMIT_MESSAGE/"[build-actions]"/}" | sed -n 1'p' | tr ', ' '\n' 
     if [[ ! -z "$FORMULA" ]]; then
         [[ -f "Formula/$FORMULA.rb" ]] && \
         #update_revision "$FORMULA" && \
-        build_bottle "$FORMULA" && \
+        build_bottle "$FORMULA" || echo "Formula/$FORMULA.rb not found. Ignoring build"
         #upload_bottle "$FORMULA" && \
-        #update_formula "$FORMULA" || \
-        echo "Formula/$FORMULA.rb not found. Ignoring build"
+        #update_formula "$FORMULA" \ 
+        
     fi
 done
 
