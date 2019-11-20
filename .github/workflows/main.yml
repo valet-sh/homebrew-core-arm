@@ -6,13 +6,12 @@ jobs:
   prepare:
     runs-on: [ubuntu-latest]
     steps:
-    - run: echo ::set-env name=GITHUB_SHA_SHORT::$(echo $GITHUB_SHA | cut -c 1-6)
+    - run: echo "revision 54" > /github/test.txt
 
   test:
     runs-on: [ubuntu-latest]
     steps:
-    - run: echo $GITHUB_SHA_SHORT
-    - run: echo $GITHUB_ACTION
+    - run: cat /github/test.txt
   
   build-catalina:
     runs-on: macOS-latest
