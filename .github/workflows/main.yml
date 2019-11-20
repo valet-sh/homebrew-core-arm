@@ -1,0 +1,22 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build-catalina:
+    runs-on: macOS-latest
+    env:
+      OS: catalina
+    steps:
+    - uses: actions/checkout@master
+    - name: Run build script
+      run: scripts/actionsbuild
+
+  build-mojave:
+    runs-on: macOS-10.14
+    env:
+      OS: mojave
+    steps:
+    - uses: actions/checkout@master
+    - name: Run build script
+      run: scripts/actionsbuild
