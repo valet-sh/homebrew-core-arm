@@ -81,3 +81,4 @@ echo "${LATEST_COMMIT_MESSAGE/"[build]"/}" | sed -n 1'p' | tr ', ' '\n' | while 
         echo "Formula/$FORMULA.rb not found. Ignoring build"
     fi
 done
+
