@@ -13,6 +13,7 @@ jobs:
         path: revision.txt
 
   test:
+    needs: prepare
     runs-on: [ubuntu-latest]
     steps:
     - uses: actions/download-artifact@v1
