@@ -6,19 +6,26 @@ jobs:
   prepare:
     runs-on: [ubuntu-latest]
     steps:
-    - run: echo "revision 54" > /github/test.txt
+    - run: echo "revision 54" > revision.txt
+    - uses: actions/upload-artifact@v1
+      with:
+        name: revision
+        path: revision.txt
 
   test:
     runs-on: [ubuntu-latest]
     steps:
-    - run: cat /github/test.txt
+    - uses: actions/download-artifact@v1
+      with:
+        name: revision
+    - run: cat revision/revision.txt
   
   build-catalina:
     runs-on: macOS-latest
     env:
       OS: catalina
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v1
     - name: Run build script
       working-directory: ${{ github.workspace }}
       run: scripts/actionsbuild
@@ -28,7 +35,7 @@ jobs:
     env:
       OS: mojave
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v1
     - name: Run build script
       working-directory: ${{ github.workspace }}
       run: scripts/actionsbuild
