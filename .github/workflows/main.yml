@@ -9,6 +9,7 @@ jobs:
   prepare:
     runs-on: [ubuntu-latest]
     steps:
+    - uses: actions/checkout@v1
     - run: echo $(git diff --name-only HEAD~1) > revision.txt
     - uses: actions/upload-artifact@v1
       with:
