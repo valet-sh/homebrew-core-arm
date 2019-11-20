@@ -11,9 +11,7 @@ jobs:
     - uses: actions/checkout@master
     - name: Run build script
       working-directory: ${{ github.workspace }}
-      run: |
-          ls -la
-          scripts/actionsbuild
+      run: scripts/actionsbuild
 
   build-mojave:
     runs-on: macOS-10.14
@@ -23,6 +21,4 @@ jobs:
     - uses: actions/checkout@master
     - name: Run build script
       working-directory: ${{ github.workspace }}
-      run: |
-          ls -la
-          scripts/actionsbuild
+      run: scripts/actionsbuild
