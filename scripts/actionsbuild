@@ -71,13 +71,13 @@ fi
 LATEST_COMMIT_MESSAGE=$(git log -1 --pretty='%s')
 
 # iterate all given formulas to be built
-echo "${LATEST_COMMIT_MESSAGE/"[build]"/}" | sed -n 1'p' | tr ', ' '\n' | while read -r FORMULA; do
+echo "${LATEST_COMMIT_MESSAGE/"[build-actions]"/}" | sed -n 1'p' | tr ', ' '\n' | while read -r FORMULA; do
     if [[ ! -z "$FORMULA" ]]; then
         [[ -f "Formula/$FORMULA.rb" ]] && \
-        update_revision "$FORMULA" && \
+        #update_revision "$FORMULA" && \
         build_bottle "$FORMULA" && \
-        upload_bottle "$FORMULA" && \
-        update_formula "$FORMULA" || \
+        #upload_bottle "$FORMULA" && \
+        #update_formula "$FORMULA" || \
         echo "Formula/$FORMULA.rb not found. Ignoring build"
     fi
 done
