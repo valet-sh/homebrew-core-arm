@@ -81,4 +81,3 @@ echo "${LATEST_COMMIT_MESSAGE/"[build-actions]"/}" | sed -n 1'p' | tr ', ' '\n' 
         
     fi
 done
-
