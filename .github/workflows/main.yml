@@ -3,6 +3,16 @@ name: CI
 on: [push]
 
 jobs:
+  prepare:
+    runs-on: [ubuntu-latest]
+    steps:
+    - run: echo "::set-env name=CURRENT_REVISION::42"
+  
+  test:
+    runs-on: [ubuntu-latest]
+    steps:
+    - run: echo $CURRENT_REVISION
+  
   build-catalina:
     runs-on: macOS-latest
     env:
