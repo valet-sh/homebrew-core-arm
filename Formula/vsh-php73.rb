@@ -477,5 +477,3 @@ index 168c465f8d..6c087d152f 100644
      then
        PHP_CHECK_LIBRARY($iconv_lib_name, libiconv, [
          found_iconv=yes
-
-         
