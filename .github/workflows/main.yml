@@ -1,16 +1,19 @@
 name: CI
 
-on: [push]
+on:
+  push:
+    paths:
+    - 'Formula/**.rb'
 
 jobs:
   prepare:
     runs-on: [ubuntu-latest]
     steps:
-    - run: echo "revision 54" > revision.txt
+    - run: echo $(git diff --name-only HEAD~1) > revision.txt
     - uses: actions/upload-artifact@v1
       with:
         name: revision
-        path: revision.txt
+        path:  .txt
 
   test:
     needs: prepare
