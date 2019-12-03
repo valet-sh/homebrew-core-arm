@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    paths:
+    - 'Formula/**.rb'
+
+jobs:
+  prepare:
+    runs-on: [ubuntu-latest]
+    steps:
+    - uses: actions/checkout@v1
+    - run: echo $(git diff --name-only HEAD~1) > revision.txt
+    - uses: actions/upload-artifact@v1
+      with:
+        name: revision
+        path: revision.txt
+
+  test:
+    needs: prepare
+    runs-on: [ubuntu-latest]
+    steps:
+    - uses: actions/download-artifact@v1
+      with:
+        name: revision
+    - run: cat revision/revision.txt
+  
+  build-catalina:
+    runs-on: macOS-latest
+    env:
+      OS: catalina
+    steps:
+    - uses: actions/checkout@v1
+    - name: Run build script
+      working-directory: ${{ github.workspace }}
+      run: scripts/actionsbuild
+
+  build-mojave:
+    runs-on: macOS-10.14
+    env:
+      OS: mojave
+    steps:
+    - uses: actions/checkout@v1
+    - name: Run build script
+      working-directory: ${{ github.workspace }}
+      run: scripts/actionsbuild
