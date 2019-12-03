@@ -3,12 +3,12 @@ class VshPhp73 < Formula
   homepage "https://www.php.net/"
   url "https://www.php.net/distributions/php-7.3.11.tar.xz"
   sha256 "657cf6464bac28e9490c59c07a2cf7bb76c200f09cfadf6e44ea64e95fa01021"
-  revision 62
+  revision 57
 
   bottle do
     root_url "https://dl.bintray.com/valet-sh/homebrew-core"
-    sha256 "c5d60c84861da15b17172d532e59e9e4d95b43a950a54a8d8f02b523526e8abc" => :catalina
-    sha256 "12bec8d176fb8583968c138404191a2dda0adab1b5d318994c96e88e4e374170" => :mojave
+    sha256 "3c9087629cdaf9c99ce103cbd078250489b1678c814357425cc4011edaac1464" => :catalina
+    sha256 "a463f33fb67326798ff383fc3fa9bffe26ed99c287f36b676b87bcd72f251c0d" => :mojave
   end
 
   depends_on "pkg-config" => :build
@@ -37,6 +37,7 @@ class VshPhp73 < Formula
   depends_on "tidy-html5"
   depends_on "unixodbc"
   depends_on "webp"
+  depends_on "imagemagick"
 
   # PHP build system incorrectly links system libraries
   # see https://github.com/php/php-src/pull/3472
@@ -47,6 +48,10 @@ class VshPhp73 < Formula
     sha256 "18b5ad4d8fb19233aef5057b4695927647e2da5a3c2812c9663863d00a5a654c"
   end
 
+  resource "imagick_module" do
+    url "https://github.com/Imagick/imagick/archive/3.4.4.tar.gz"
+    sha256 "8204d228ecbe5f744d625c90364808616127471581227415bca18857af981369"
+  end
 
   def install
     # Ensure that libxml2 will be detected correctly in older MacOS
@@ -177,6 +182,12 @@ class VshPhp73 < Formula
       system "make", "install"
     }
 
+    resource("imagick_module").stage {
+      system "#{bin}/phpize#{bin_suffix}"
+      system "./configure", "--with-php-config=#{bin}/php-config#{bin_suffix}", "--with-imagick"
+      system "make"
+      system "make", "install"
+    }
     #unless (var/"#{name}/#{php_ext_dir}").exist?
     #  (var/"#{name}/#{php_ext_dir}").mkpath
     #end
