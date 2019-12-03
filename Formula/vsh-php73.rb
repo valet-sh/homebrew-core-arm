@@ -42,6 +42,12 @@ class VshPhp73 < Formula
   # see https://github.com/php/php-src/pull/3472
   patch :DATA
 
+  resource "xdebug_module" do
+    url "https://github.com/xdebug/xdebug/archive/2.8.1.tar.gz"
+    sha256 "18b5ad4d8fb19233aef5057b4695927647e2da5a3c2812c9663863d00a5a654c"
+  end
+
+
   def install
     # Ensure that libxml2 will be detected correctly in older MacOS
     if MacOS.version == :el_capitan || MacOS.version == :sierra
@@ -154,6 +160,7 @@ class VshPhp73 < Formula
       --with-unixODBC=#{Formula["unixodbc"].opt_prefix}
       --with-webp-dir=#{Formula["webp"].opt_prefix}
       --with-xmlrpc
+      --with-xdebug
       --with-xsl#{headers_path}
       --with-zlib#{headers_path}
     ]
@@ -161,6 +168,14 @@ class VshPhp73 < Formula
     system "./configure", *args
     system "make"
     system "make", "install"
+
+    resource("xdebug_module").stage {
+      system "#{bin}/phpize#{bin_suffix}"
+      system "./configure", "--with-php-config=#{bin}/php-config#{bin_suffix}"
+      system "make", "clean"
+      system "make", "all"
+      system "make", "install"
+    }
 
     #unless (var/"#{name}/#{php_ext_dir}").exist?
     #  (var/"#{name}/#{php_ext_dir}").mkpath
