@@ -4,7 +4,7 @@ class VshPhp73 < Formula
   url "https://www.php.net/distributions/php-7.3.11.tar.xz"
   sha256 "657cf6464bac28e9490c59c07a2cf7bb76c200f09cfadf6e44ea64e95fa01021"
   revision 57
-  
+
   bottle do
     root_url "https://dl.bintray.com/valet-sh/homebrew-core"
     sha256 "3c9087629cdaf9c99ce103cbd078250489b1678c814357425cc4011edaac1464" => :catalina
@@ -78,12 +78,16 @@ class VshPhp73 < Formula
     # sdk path or it won't find the headers
     headers_path = "=#{MacOS.sdk_path_if_needed}/usr"
 
+    ENV["EXTENSION_DIR"] = "#{prefix}/lib/#{name}/20180731"
     ENV["PHP_PEAR_PHP_BIN"] = "#{bin}/php#{bin_suffix}"
 
     args = %W[
       --prefix=#{prefix}
       --localstatedir=#{var}
       --sysconfdir=#{config_path}
+      --libdir=#{prefix}/lib/#{name}
+      --includedir=#{prefix}/include/#{name}
+      --datadir=#{prefix}/share/#{name}
       --with-config-file-path=#{config_path}
       --with-config-file-scan-dir=#{config_path}/conf.d
       --program-suffix=#{bin_suffix}
@@ -202,24 +206,30 @@ class VshPhp73 < Formula
     rm_f "#{bin}/phar"
     ln_s "#{bin}/phar#{bin_suffix}.phar", "#{bin}/phar#{bin_suffix}"
 
+    mv "#{man1}/phar.1", "#{man1}/phar#{bin_suffix}.1"
+    mv "#{man1}/phar.phar.1", "#{man1}/phar#{bin_suffix}.phar.1"
+
+    #mv "#{lib}/php", "#{lib}/#{name}"
+    #mv "#{include}/php", "#{include}/#{name}"
+
   end
 
   def post_install
 
     # check if php extension dir (e.g. 20180731) exists and is not a symlink
     # only relevant when running "brew postinstall" manually
-    if (lib/"php/#{php_ext_dir}").exist? && !(lib/"php/#{php_ext_dir}").symlink?
+    if (lib/"#{name}/#{php_ext_dir}").exist? && !(lib/"#{name}/#{php_ext_dir}").symlink?
         unless (var/"#{name}/#{php_ext_dir}").exist?
             (var/"#{name}/#{php_ext_dir}").mkpath
         end
 
-        Dir.glob(lib/"php/#{php_ext_dir}/*") do |php_module|
+        Dir.glob(lib/"#{name}/#{php_ext_dir}/*") do |php_module|
             php_module_name = File.basename(php_module)
             mv "#{php_module}", var/"#{name}/#{php_ext_dir}/#{php_module_name}"
         end
 
-        rm_r lib/"php/#{php_ext_dir}"
-        ln_s var/"#{name}/#{php_ext_dir}", lib/"php/#{php_ext_dir}"
+        rm_r lib/"#{name}/#{php_ext_dir}"
+        ln_s var/"#{name}/#{php_ext_dir}", lib/"#{name}/#{php_ext_dir}"
     end
 
     pear_prefix = pkgshare/"pear"
