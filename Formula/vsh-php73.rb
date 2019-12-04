@@ -59,6 +59,11 @@ class VshPhp73 < Formula
       ENV["SDKROOT"] = MacOS.sdk_path
     end
 
+    current_working_dir = Dir.pwd
+    resource("imagick_module").stage {
+      mv Dir.pwd, "#{current_working_dir}/ext/imagick"
+    }
+
     # buildconf required due to system library linking bug patch
     system "./buildconf", "--force"
 
@@ -103,6 +108,7 @@ class VshPhp73 < Formula
       --with-config-file-scan-dir=#{config_path}/conf.d
       --program-suffix=#{bin_suffix}
       --with-pear=#{pkgshare}/pear
+      --with-imagick=shared
       --enable-bcmath
       --enable-calendar
       --enable-dba
@@ -165,7 +171,6 @@ class VshPhp73 < Formula
       --with-unixODBC=#{Formula["unixodbc"].opt_prefix}
       --with-webp-dir=#{Formula["webp"].opt_prefix}
       --with-xmlrpc
-      --with-xdebug
       --with-xsl#{headers_path}
       --with-zlib#{headers_path}
     ]
@@ -181,21 +186,6 @@ class VshPhp73 < Formula
       system "make", "all"
       system "make", "install"
     }
-
-    resource("imagick_module").stage {
-      system "#{bin}/phpize#{bin_suffix}"
-      system "./configure", "--with-php-config=#{bin}/php-config#{bin_suffix}", "--with-imagick"
-      system "make"
-      system "make", "install"
-    }
-    #unless (var/"#{name}/#{php_ext_dir}").exist?
-    #  (var/"#{name}/#{php_ext_dir}").mkpath
-    #end
-
-    #inreplace bin/"php-config#{bin_suffix}", lib/"php/#{php_ext_dir}", var/"#{name}/#{php_ext_dir}"
-
-    #inreplace "php.ini-development", %r{; ?extension_dir = "\./"},
-        #"extension_dir = \"#{var}/#{name}/#{php_ext_dir}\""
 
     # Use OpenSSL cert bundle
     inreplace "php.ini-development", /; ?openssl\.cafile=/,
@@ -234,9 +224,6 @@ class VshPhp73 < Formula
 
     mv "#{man1}/phar.1", "#{man1}/phar#{bin_suffix}.1"
     mv "#{man1}/phar.phar.1", "#{man1}/phar#{bin_suffix}.phar.1"
-
-    #mv "#{lib}/php", "#{lib}/#{name}"
-    #mv "#{include}/php", "#{include}/#{name}"
 
   end
 

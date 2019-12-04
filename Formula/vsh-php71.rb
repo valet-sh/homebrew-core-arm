@@ -37,16 +37,32 @@ class VshPhp71 < Formula
   depends_on "tidy-html5"
   depends_on "unixodbc"
   depends_on "webp"
+  depends_on "imagemagick"
 
   # PHP build system incorrectly links system libraries
   # see https://github.com/php/php-src/pull/3472
   patch :DATA
+
+  resource "xdebug_module" do
+    url "https://github.com/xdebug/xdebug/archive/2.8.1.tar.gz"
+    sha256 "18b5ad4d8fb19233aef5057b4695927647e2da5a3c2812c9663863d00a5a654c"
+  end
+
+  resource "imagick_module" do
+    url "https://github.com/Imagick/imagick/archive/3.4.4.tar.gz"
+    sha256 "8204d228ecbe5f744d625c90364808616127471581227415bca18857af981369"
+  end
 
   def install
     # Ensure that libxml2 will be detected correctly in older MacOS
     if MacOS.version == :el_capitan || MacOS.version == :sierra
       ENV["SDKROOT"] = MacOS.sdk_path
     end
+
+    current_working_dir = Dir.pwd
+    resource("imagick_module").stage {
+      mv Dir.pwd, "#{current_working_dir}/ext/imagick"
+    }
 
     # buildconf required due to system library linking bug patch
     system "./buildconf", "--force"
@@ -92,6 +108,7 @@ class VshPhp71 < Formula
       --with-config-file-scan-dir=#{config_path}/conf.d
       --program-suffix=#{bin_suffix}
       --with-pear=#{pkgshare}/pear
+      --with-imagick=shared
       --enable-bcmath
       --enable-calendar
       --enable-dba
@@ -161,14 +178,13 @@ class VshPhp71 < Formula
     system "make"
     system "make", "install"
 
-    #unless (var/"#{name}/#{php_ext_dir}").exist?
-    #  (var/"#{name}/#{php_ext_dir}").mkpath
-    #end
-
-    #inreplace bin/"php-config#{bin_suffix}", lib/"php/#{php_ext_dir}", var/"#{name}/#{php_ext_dir}"
-
-    #inreplace "php.ini-development", %r{; ?extension_dir = "\./"},
-        #"extension_dir = \"#{var}/#{name}/#{php_ext_dir}\""
+    resource("xdebug_module").stage {
+      system "#{bin}/phpize#{bin_suffix}"
+      system "./configure", "--with-php-config=#{bin}/php-config#{bin_suffix}"
+      system "make", "clean"
+      system "make", "all"
+      system "make", "install"
+    }
 
     # Use OpenSSL cert bundle
     inreplace "php.ini-development", /; ?openssl\.cafile=/,
@@ -478,5 +494,3 @@ index 168c465f8d..6c087d152f 100644
      then
        PHP_CHECK_LIBRARY($iconv_lib_name, libiconv, [
          found_iconv=yes
-
-         
