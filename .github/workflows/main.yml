@@ -36,7 +36,7 @@ jobs:
       run: |
         FORMULAS=$(git show --pretty="" --name-only HEAD | grep "Formula/" | cut -d / -f 2)
         echo $FORMULAS | while read -r FORMULA; do
-            brew install -v --build-bottle Formula/"$FORMULA".rb
-            brew bottle Formula/"$FORMULA".rb --json --force-core-tap
+            brew install -v --build-bottle Formula/"$FORMULA"
+            brew bottle Formula/"$FORMULA" --json --force-core-tap
         done
         ls -lsa
