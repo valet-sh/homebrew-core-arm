@@ -6,25 +6,30 @@ on:
     - 'Formula/**.rb'
 
 jobs:
-  prepare:
-    runs-on: [ubuntu-latest]
+
+  build-mojave:
+    runs-on: macOS-10.14
+    env:
+      OS: mojave
     steps:
     - uses: actions/checkout@v1
-    - run: echo $(git diff --name-only HEAD~1) > revision.txt
+
+    - name: build bottles
+      run: |
+        mkdir build
+        cd build
+        FORMULAS=$(git show --pretty="" --name-only HEAD | grep "Formula/" | cut -d / -f 2)
+        echo $FORMULAS | while read -r FORMULA; do
+            brew install -v --build-bottle ../Formula/"$FORMULA"
+            brew bottle ../Formula/"$FORMULA" --json --force-core-tap
+        done
+        cd ..
+        
     - uses: actions/upload-artifact@v1
       with:
-        name: revision
-        path: revision.txt
+        name: build-mojave
+        path: build
 
-  test:
-    needs: prepare
-    runs-on: [ubuntu-latest]
-    steps:
-    - uses: actions/download-artifact@v1
-      with:
-        name: revision
-    - run: cat revision/revision.txt
-  
   build-catalina:
     runs-on: macOS-latest
     env:
@@ -32,11 +37,35 @@ jobs:
     steps:
     - uses: actions/checkout@v1
 
-    - name: Run build script
+    - name: build bottles
       run: |
+        mkdir build
+        cd build
         FORMULAS=$(git show --pretty="" --name-only HEAD | grep "Formula/" | cut -d / -f 2)
         echo $FORMULAS | while read -r FORMULA; do
-            brew install -v --build-bottle Formula/"$FORMULA"
-            brew bottle Formula/"$FORMULA" --json --force-core-tap
+            brew install -v --build-bottle ../Formula/"$FORMULA"
+            brew bottle ../Formula/"$FORMULA" --json --force-core-tap
         done
-        ls -lsa
+        cd ..
+
+    - uses: actions/upload-artifact@v1
+      with:
+        name: build-catalina
+        path: build
+        
+  publish-bottles:
+    needs: [build-mojave, build-catalina]
+    runs-on: [ubuntu-latest]
+    steps:
+
+    - uses: actions/download-artifact@v1
+      with:
+        name: build-mojave
+
+    - uses: actions/download-artifact@v1
+      with:
+        name: build-catalina
+
+    - run: |
+        ls -ls build-mojave
+        ls -ls build-catalina
