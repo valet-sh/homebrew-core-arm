@@ -26,21 +26,17 @@ jobs:
     - run: cat revision/revision.txt
   
   build-catalina:
-    runs-on: macOS-latest
+    runs-on: macOS-10.15
     env:
       OS: catalina
     steps:
     - uses: actions/checkout@v1
-    - name: Run build script
-      working-directory: ${{ github.workspace }}
-      run: scripts/actionsbuild
 
-  build-mojave:
-    runs-on: macOS-10.14
-    env:
-      OS: mojave
-    steps:
-    - uses: actions/checkout@v1
     - name: Run build script
-      working-directory: ${{ github.workspace }}
-      run: scripts/actionsbuild
+      run: |
+        FORMULAS=$(git show --pretty="" --name-only HEAD | grep "Formula/" | cut -d / -f 2)
+        echo $FORMULAS | while read -r FORMULA; do
+            brew install -v --build-bottle Formula/"$FORMULA".rb
+            brew bottle Formula/"$FORMULA".rb --json --force-core-tap
+        done
+        ls -lsa
