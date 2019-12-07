@@ -26,7 +26,7 @@ jobs:
     - run: cat revision/revision.txt
   
   build-catalina:
-    runs-on: macOS-10.15
+    runs-on: macOS-latest
     env:
       OS: catalina
     steps:
