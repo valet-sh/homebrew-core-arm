@@ -1,0 +1,41 @@
+---
+
+- name: "build-bottles"
+  hosts: local
+  gather_facts: True
+
+  tasks:
+
+    - name: "get last commit author"
+      shell: git log -1 --pretty=format:'%an'
+      register: git_log_result
+
+    - set_fact:
+        git_commit_author: "{{ git_log_result.stdout }}"
+
+    - name: "stop if github actions was last commit author"
+      meta: end_play
+      when: git_commit_author == "GitHub Actions"
+
+    - name: "get list of modified formulas since last commit"
+      shell: git show --pretty="" --name-only HEAD | grep "Formula/" | cut -d / -f 2
+      register: git_show_result
+
+    - set_fact:
+        git_modified_formulas: "{{ git_show_result.stdout_lines }}"
+
+    - name: build bottles for modified formulas
+      shell: |
+        brew install -v --build-bottle ../../../Formula/{{ item }}
+        brew bottle ../../../Formula/{{ item }} --json --force-core-tap
+      loop: "{{ git_modified_formulas }}"
+
+    - name: creates build folder
+      file:
+        path: ../../../build
+        state: directory
+
+    - name: move bottles to build folder
+      shell: |
+        mv *.tar.gz ../../../build/
+        mv *.json ../../../build/
