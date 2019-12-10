@@ -1,0 +1,16 @@
+---
+
+- name: Include build information file
+  include_vars:
+    file: "{{ build_info_file }}"
+    name: "buildinfo"
+
+- name: Extract build information to vars
+  include_tasks: tasks/extract-buildinfo.yml
+
+- name: Replace botte information in formula file
+  lineinfile:
+    path: "{{ formula_path }}"
+    state: present
+    regexp: "sha256.* \\\"[^\\\"]*\\\" => :{{ bottle_os }}"
+    line: "    sha256 \"{{ bottle_sha256 }}\" => :{{ bottle_os }}"

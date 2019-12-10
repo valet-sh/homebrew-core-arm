@@ -1,0 +1,39 @@
+---
+
+- hosts: local
+  gather_facts: True
+
+  tasks:
+
+    - name: Find bottle build info files
+      find:
+        paths: "{{ build_path }}"
+        file_type: file
+        patterns: "*.json"
+      register: find_result
+
+    - name: Configure git
+      shell: |
+        git config --global user.name "{{ git_author_name }}"
+        git config --global user.email "{{ git_author_email }}"
+        git checkout master
+      args:
+        chdir: "{{ base_path }}"
+
+    - name: Update formula files
+      include_tasks: tasks/update-formula.yml
+      vars:
+        build_info_file: "{{ item.path }}"
+      loop: "{{ find_result.files }}"
+
+    - name: Commit and push changes
+      shell: |
+        git pull
+        git commit -a -m "Update bottle information in formulas" 
+        git push origin master
+      args:
+        chdir: "{{ base_path }}"
+   
+
+
+        
