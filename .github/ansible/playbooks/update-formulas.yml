@@ -16,6 +16,7 @@
       shell: |
         git config --global user.name "{{ git_author_name }}"
         git config --global user.email "{{ git_author_email }}"
+        git remote set-url origin {{ github_repository_url }}
         git checkout master
       args:
         chdir: "{{ base_path }}"
