@@ -10,7 +10,7 @@
 
 - name: Replace botte information in formula file
   lineinfile:
-    path: "{{ formula_path }}"
+    path: "{{ formula_path }}/{{ formula_name }}.rb"
     state: present
     regexp: "sha256.* \\\"[^\\\"]*\\\" => :{{ bottle_os }}"
     line: "    sha256 \"{{ bottle_sha256 }}\" => :{{ bottle_os }}"
