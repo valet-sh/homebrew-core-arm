@@ -16,8 +16,6 @@
       shell: |
         git config --global user.name "{{ git_author_name }}"
         git config --global user.email "{{ git_author_email }}"
-        git remote set-url origin {{ github_repository_url }}
-        git checkout master
       args:
         chdir: "{{ base_path }}"
 
@@ -29,9 +27,8 @@
 
     - name: Commit and push changes
       shell: |
-        git pull
         git commit -a -m "Update bottle information in formulas" 
-        git push origin master
+        git push {{ github_repository_url }} HEAD:master --follow-tags;
       args:
         chdir: "{{ base_path }}"
    
