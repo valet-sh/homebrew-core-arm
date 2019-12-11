@@ -3,7 +3,6 @@ class VshPhp73 < Formula
   homepage "https://www.php.net/"
   url "https://www.php.net/distributions/php-7.3.11.tar.xz"
   sha256 "657cf6464bac28e9490c59c07a2cf7bb76c200f09cfadf6e44ea64e95fa01021"
-  revision 57
 
   bottle do
     root_url "https://dl.bintray.com/valet-sh/homebrew-core"
@@ -500,4 +499,3 @@ index 168c465f8d..6c087d152f 100644
      then
        PHP_CHECK_LIBRARY($iconv_lib_name, libiconv, [
          found_iconv=yes
-
