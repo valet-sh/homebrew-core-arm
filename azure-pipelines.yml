@@ -14,6 +14,10 @@ pool:
 steps:
 
 - script: |
+    git show --pretty="" --name-only HEAD
+  displayName: "Test git"
+
+- script: |
     pip install --upgrade pip
     pip install -Iq -r requirements.txt
   workingDirectory: .github/ansible
