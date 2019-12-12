@@ -27,7 +27,7 @@ jobs:
 - job: upload_bottles
   dependsOn: build_bottles
   pool:
-    vmImage: $(imageName)
+    vmImage: 'macOS-10.14'
   steps:
   - download: ./
     artifact: build
