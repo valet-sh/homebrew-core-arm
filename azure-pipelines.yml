@@ -16,9 +16,15 @@ steps:
 - script: |
     pip install --upgrade pip
     pip install -Iq -r requirements.txt
+  workingDirectory: .github/ansible
   displayName: 'Install dependencies'
 
 - script: |
     ansible-playbook playbooks/build-bottles.yml
   workingDirectory: .github/ansible
   displayName: 'Build bottles'
+
+- script: |
+    ls -lsa
+    ls -lsa build
+  displayName: 'Test'
