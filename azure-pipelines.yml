@@ -14,7 +14,7 @@ pool:
 steps:
 
 - script: |
-    python -m pip install --upgrade pip
+    pip install --upgrade pip
     pip install -Iq -r requirements.txt
   displayName: 'Install dependencies'
 
