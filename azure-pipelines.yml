@@ -1,34 +1,38 @@
 trigger:
 - master
 
-strategy:
-  matrix:
-    mojave:
-      imageName: 'macOS-10.14'
-    highsierra:
-      imageName: 'macOS-10.13'
+jobs:
+- job: build_bottles
+  pool:
+    vmImage: 'macOS-10.14'
+  steps:
+  - script: |
+      git show --pretty="" --name-only HEAD
+    displayName: "Test git"
 
-pool:
-  vmImage: $(imageName)
+  - script: |
+      pip install --upgrade pip
+      pip install -Iq -r requirements.txt
+    workingDirectory: .github/ansible
+    displayName: 'Install dependencies'
 
-steps:
+  - script: |
+      ansible-playbook playbooks/build-bottles.yml
+    workingDirectory: .github/ansible
+    displayName: 'Build bottles'
 
-- script: |
-    git show --pretty="" --name-only HEAD
-  displayName: "Test git"
+  - publish: build
+    artifact: build
 
-- script: |
-    pip install --upgrade pip
-    pip install -Iq -r requirements.txt
-  workingDirectory: .github/ansible
-  displayName: 'Install dependencies'
+- job: upload_bottles
+  dependsOn: build_bottles
+  pool:
+    vmImage: $(imageName)
+  steps:
+  - download: ./
+    artifact: build
 
-- script: |
-    ansible-playbook playbooks/build-bottles.yml
-  workingDirectory: .github/ansible
-  displayName: 'Build bottles'
-
-- script: |
-    ls -lsa
-    ls -lsa build
-  displayName: 'Test'
+  - script: |
+      ls -lsa
+      ls -lsa build
+ 
