@@ -12,6 +12,10 @@
         patterns: "*.json"
       register: find_result
 
+    - name: "Stop if there are no build info files"
+      meta: end_play
+      when: find_result.files|length == 0
+
     - name: Configure git
       shell: |
         git config --global user.name "{{ git_author_name }}"

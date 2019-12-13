@@ -4,8 +4,8 @@ base_path: "../../.."
 build_path: "{{ base_path }}/build"
 formula_path: "{{ base_path }}/Formula"
 
-git_author_name: "GitHub Actions"
-git_author_email: "actions@github.com"
+git_author_name: "CI"
+git_author_email: "ci@valet.sh"
 
 github_actor: "{{ lookup('env','GITHUB_ACTOR') }}"
 github_token: "{{ lookup('env','GITHUB_TOKEN') }}"

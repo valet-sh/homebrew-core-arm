@@ -12,7 +12,7 @@
     - set_fact:
         git_last_commit_author: "{{ git_log_result.stdout }}"
 
-    - name: "Stop if '{{ git_author_name }}' was last commit author"
+    - name: "Stop if CI was last commit author"
       meta: end_play
       when: git_last_commit_author == git_author_name
 
