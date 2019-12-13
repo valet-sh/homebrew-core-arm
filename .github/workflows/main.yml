@@ -8,6 +8,7 @@ on:
 jobs:
 
   build-bottles:
+    if: "!contains(github.event.commits[0].message, '[skip ci]')"
     runs-on: macOS-latest
     steps:
       - uses: actions/setup-python@v1
@@ -36,6 +37,7 @@ jobs:
 
 
   upload-bottles:
+    if: "!contains(github.event.commits[0].message, '[skip ci]')"
     needs: [build-bottles]
     runs-on: ubuntu-latest
     steps:
@@ -64,6 +66,7 @@ jobs:
 
 
   update-formulas:
+    if: "!contains(github.event.commits[0].message, '[skip ci]')"
     needs: [upload-bottles]
     runs-on: ubuntu-latest
     steps:
