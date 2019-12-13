@@ -37,7 +37,7 @@ jobs:
     inputs:
       buildType: 'current'
       artifactName: 'build'
-      targetPath: 'build'
+      targetPath: '$(System.DefaultWorkingDirectory)/build'
 
   - script: |
       ls -lsa
