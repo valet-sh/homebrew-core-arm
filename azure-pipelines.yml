@@ -69,8 +69,10 @@ jobs:
       targetPath: '$(System.DefaultWorkingDirectory)/build'
 
   - script: |
-      ansible-playbook playbooks/update-formulas.yml
+      ansible-playbook -vvv playbooks/update-formulas.yml
     env:
+      GITHUB_ACTOR: "ci"
       GITHUB_TOKEN: $(GITHUB_TOKEN)
+      GITHUB_REPOSITORY: "valet-sh/homebrew-core"
     workingDirectory: .github/ansible
     displayName: 'Update Formulae'
