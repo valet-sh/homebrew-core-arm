@@ -33,6 +33,7 @@ jobs:
   - script: |
       pip install --upgrade pip
       pip install -Iq -r requirements.txt
+    workingDirectory: .github/ansible
     displayName: 'Install dependencies'
 
   - task: DownloadPipelineArtifact@1
@@ -58,6 +59,7 @@ jobs:
   - script: |
       pip install --upgrade pip
       pip install -Iq -r requirements.txt
+    workingDirectory: .github/ansible
     displayName: 'Install dependencies'
 
   - task: DownloadPipelineArtifact@1
