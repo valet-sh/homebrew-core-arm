@@ -71,6 +71,6 @@ jobs:
   - script: |
       ansible-playbook playbooks/update-formulas.yml
     env:
-      GITHUB_TOKEN: $(github_token)
+      GITHUB_TOKEN: $(GITHUB_TOKEN)
     workingDirectory: .github/ansible
     displayName: 'Update Formulae'
