@@ -6,6 +6,7 @@ formula_path: "{{ base_path }}/Formula"
 
 git_author_name: "CI"
 git_author_email: "ci@valet.sh"
+git_commit_message: "[skip ci] Update bottle information in formulae ***NO_CI***"
 
 github_actor: "{{ lookup('env','GITHUB_ACTOR') }}"
 github_token: "{{ lookup('env','GITHUB_TOKEN') }}"

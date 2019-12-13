@@ -33,7 +33,7 @@
 
     - name: Commit and push changes
       shell: |
-        git commit -a -m "Update bottle information in formulas" 
+        git commit -a -m "{{ git_commit_message }}"
         git push {{ github_repository_url }} HEAD:master --follow-tags
       args:
         chdir: "{{ base_path }}"
