@@ -21,16 +21,23 @@ jobs:
     workingDirectory: .github/ansible
     displayName: 'Build bottles'
 
-  - publish: build
-    artifact: build
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: 'build'
+      artifact: 'build'
+      publishLocation: 'pipeline'
 
 - job: upload_bottles
   dependsOn: build_bottles
   pool:
     vmImage: 'macOS-10.14'
   steps:
-  - download: ./
-    artifact: build
+
+  - task: DownloadPipelineArtifact@1
+    inputs:
+      buildType: 'current'
+      artifactName: 'build'
+      targetPath: 'build'
 
   - script: |
       ls -lsa
