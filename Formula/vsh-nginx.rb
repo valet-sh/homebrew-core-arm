@@ -187,3 +187,6 @@ class VshNginx < Formula
     system bin/"nginx", "-t", "-c", testpath/"nginx.conf"
   end
 end
+
+
+
