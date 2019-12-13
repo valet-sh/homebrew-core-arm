@@ -7,7 +7,7 @@ class VshPhp72 < Formula
   bottle do
     root_url "https://dl.bintray.com/valet-sh/homebrew-core"
     sha256 "c65a07d32a39c45468373cd54d213c9fb6e9d4a8f7d2a0e70988b1c5a003c1be" => :catalina
-    sha256 "008687d7d07afde843e5da816d2669bae7359bcaa2acab4bacaefeb6a49bd523" => :mojave
+    sha256 "aa8cbeda178b79e94c4608605e611e449f8ce8219617a5360b55f26b533ccaed" => :mojave
   end
 
   depends_on "pkg-config" => :build
