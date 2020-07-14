@@ -1,8 +1,9 @@
 class VshPhp73 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://www.php.net/distributions/php-7.3.11.tar.xz"
-  sha256 "657cf6464bac28e9490c59c07a2cf7bb76c200f09cfadf6e44ea64e95fa01021"
+  url "https://www.php.net/distributions/php-7.3.20.tar.xz"
+  mirror "https://fossies.org/linux/www/php-7.3.20.tar.xz"
+  sha256 "43292046f6684eb13acb637276d4aa1dd9f66b0b7045e6f1493bc90db389b888"
   revision 57
 
   bottle do

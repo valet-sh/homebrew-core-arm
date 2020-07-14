@@ -1,8 +1,9 @@
 class VshPhp72 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://www.php.net/distributions/php-7.2.24.tar.xz"
-  sha256 "a6a6cc03388060aa5f8f9e45799b72bce1c7ed7b9d7b3f1187787202aad91d25"
+  url "https://www.php.net/distributions/php-7.2.32.tar.xz"
+  mirror "https://fossies.org/linux/www/php-7.2.32.tar.xz"
+  sha256 "050fc16ca56d8d2365d980998220a4eb06439da71dfd38de49b42fea72310ef1"
   revision 63
 
   bottle do
