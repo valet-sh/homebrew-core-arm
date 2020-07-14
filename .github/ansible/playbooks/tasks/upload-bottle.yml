@@ -1,0 +1,18 @@
+---
+
+- name: Include build information file
+  include_vars:
+    file: "{{ build_info_file }}"
+    name: "buildinfo"
+
+- name: Extract build information to vars
+  include_tasks: tasks/extract-buildinfo.yml
+
+- name: Delete existing bottle on bintray
+  shell: curl -X DELETE -u{{ bintray_user }}:{{ bintray_key }} {{ bintray_base_url }}/{{ bottle_filename }}
+  
+- name: Upload bottle to bintray
+  shell: curl -T {{ build_path }}/{{ bottle_local_filename }} -u{{ bintray_user }}:{{ bintray_key }} {{ bintray_package_url }}/{{ bottle_filename }}
+
+- name: Publish bottle on bintray
+  shell: "curl -X POST -u{{ bintray_user }}:{{ bintray_key }} {{ bintray_package_publish_url }} -d '{ \"discard\": \"false\" }'"

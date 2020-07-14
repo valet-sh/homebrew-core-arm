@@ -1,0 +1,24 @@
+---
+
+- hosts: local
+  gather_facts: True
+
+  tasks:
+
+    - name: Find bottle build info files
+      find:
+        paths: "{{ build_path }}"
+        file_type: file
+        patterns: "*.json"
+      register: find_result
+
+    - name: "Stop if there are no build info files"
+      meta: end_play
+      when: find_result.files|length == 0
+
+    - name: Upload bottle files
+      include_tasks: tasks/upload-bottle.yml
+      vars:
+        build_info_file: "{{ item.path }}"
+      loop: "{{ find_result.files }}"
+        

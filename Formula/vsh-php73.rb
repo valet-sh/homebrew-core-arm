@@ -4,7 +4,6 @@ class VshPhp73 < Formula
   url "https://www.php.net/distributions/php-7.3.20.tar.xz"
   mirror "https://fossies.org/linux/www/php-7.3.20.tar.xz"
   sha256 "43292046f6684eb13acb637276d4aa1dd9f66b0b7045e6f1493bc90db389b888"
-  revision 57
 
   bottle do
     root_url "https://dl.bintray.com/valet-sh/homebrew-core"

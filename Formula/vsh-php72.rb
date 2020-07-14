@@ -4,7 +4,6 @@ class VshPhp72 < Formula
   url "https://www.php.net/distributions/php-7.2.32.tar.xz"
   mirror "https://fossies.org/linux/www/php-7.2.32.tar.xz"
   sha256 "050fc16ca56d8d2365d980998220a4eb06439da71dfd38de49b42fea72310ef1"
-  revision 63
 
   bottle do
     root_url "https://dl.bintray.com/valet-sh/homebrew-core"

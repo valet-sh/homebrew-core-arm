@@ -1,0 +1,20 @@
+---
+
+base_path: "../../.."
+build_path: "{{ base_path }}/build"
+formula_path: "{{ base_path }}/Formula"
+
+git_author_name: "CI"
+git_author_email: "ci@valet.sh"
+git_commit_message: "[skip ci] Update bottle information in formulae ***NO_CI***"
+
+github_actor: "{{ lookup('env','GITHUB_ACTOR') }}"
+github_token: "{{ lookup('env','GITHUB_TOKEN') }}"
+github_repository_path: "{{ lookup('env','GITHUB_REPOSITORY') }}"
+github_repository_url: "https://{{ github_actor }}:{{ github_token }}@github.com/{{ github_repository_path }}.git"
+
+bintray_base_url: "https://api.bintray.com/content/valet-sh/homebrew-core"
+bintray_package_url: "{{ bintray_base_url }}/core/core"
+bintray_package_publish_url: "{{ bintray_package_url }}/publish"
+bintray_key: "{{ lookup('env','BINTRAY_KEY') }}"
+bintray_user: "{{ lookup('env','BINTRAY_USER') }}"

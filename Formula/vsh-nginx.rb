@@ -5,13 +5,12 @@ class VshNginx < Formula
   # See https://www.nginx.com/blog/nginx-1-12-1-13-released/ for why
   url "https://nginx.org/download/nginx-1.17.3.tar.gz"
   sha256 "3b84fe1c2cf9ca22fde370e486a9ab16b6427df1b6ea62cdb61978c9f34d0f3c"
-  revision 1
   head "https://hg.nginx.org/nginx/", :using => :hg
 
   bottle do
     root_url "https://dl.bintray.com/valet-sh/homebrew-core"
-    sha256 "5cfd529cf2c1522c5631159b02bede02e7f1429ca120895733825987ef4740a5" => :catalina
-    sha256 "6b6cf829e3e9c6c48153786268e5571ac71689e44f88aa02a12d94c76d02afe4" => :mojave
+    sha256 "5bd539a7bd40e73666b77e6f20011db85aa6d8b7ecb2dd7bc36a95880b772a41" => :catalina
+    sha256 "92c375d1f3c490364edd541a1791317c03d306b8774f26450b256e796ceb96f1" => :mojave
   end
 
   depends_on "openssl@1.1"

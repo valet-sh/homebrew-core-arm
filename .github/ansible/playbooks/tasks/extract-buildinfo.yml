@@ -1,0 +1,9 @@
+---
+
+- set_fact:
+    formula_name: "{{ buildinfo | json_query('keys(@)') | min }}"
+    formula_pkg_version: "{{ buildinfo | json_query('*.formula.pkg_version') | min }}"
+    bottle_filename: "{{ buildinfo | json_query('*.bottle.tags.*.filename.min(@)') | min }}"
+    bottle_local_filename: "{{ buildinfo | json_query('*.bottle.tags.*.local_filename.min(@)') | min }}"
+    bottle_sha256: "{{ buildinfo | json_query('*.bottle.tags.*.sha256.min(@)') | min }}"
+    bottle_os: "{{ buildinfo | json_query('*.bottle.tags.keys(@).min(@)') | min | string }}"
