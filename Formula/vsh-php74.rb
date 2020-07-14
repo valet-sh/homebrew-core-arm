@@ -8,7 +8,7 @@ class VshPhp74 < Formula
 
   bottle do
     sha256 "da81ec7dbe2ab2d9cbfcb5fcfa5f8e4fa0258f1947c52a13967c52dc6bab7f8f" => :catalina
-    sha256 "c5dab2822c4d18b48379a1351854020dc81a52c94e400a7129f68220daa59fca" => :mojave
+    sha256 "4973e9230c6cecd11a104ff830bc1f54b063bf89fa7ef6f52d81c1cc6d96091e" => :mojave
     sha256 "d6525030277bf523c2e80a8ae5d8a5b3f0ce84a7679ec79c1fb89f4109c0f2f7" => :high_sierra
   end
 
