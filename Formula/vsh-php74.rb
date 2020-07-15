@@ -1,7 +1,6 @@
 class VshPhp74 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  # Should only be updated if the new version is announced on the homepage, https://www.php.net/
   url "https://www.php.net/distributions/php-7.4.8.tar.xz"
   mirror "https://fossies.org/linux/www/php-7.4.8.tar.xz"
   sha256 "642843890b732e8af01cb661e823ae01472af1402f211c83009c9b3abd073245"
