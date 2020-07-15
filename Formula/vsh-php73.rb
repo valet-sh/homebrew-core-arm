@@ -67,6 +67,7 @@ class VshPhp73 < Formula
     # buildconf required due to system library linking bug patch
     system "./buildconf", "--force"
 
+
     # Update error message in apache sapi to better explain the requirements
     # of using Apache http in combination with php if the non-compatible MPM
     # has been selected. Homebrew has chosen not to support being able to
