@@ -71,11 +71,10 @@ class VshPhp74 < Formula
     # buildconf required due to system library linking bug patch
     system "./buildconf", "--force"
 
-    config_path = etc/"vsh-php/#{php_version}"
+    config_path = etc/"#{name}"
     # Prevent system pear config from inhibiting pear install
     (config_path/"pear.conf").delete if (config_path/"pear.conf").exist?
 
-    # Prevent homebrew from harcoding path to sed shim in phpize script
     ENV["lt_cv_path_SED"] = "sed"
 
     # system pkg-config missing
@@ -91,7 +90,7 @@ class VshPhp74 < Formula
     headers_path = "=#{MacOS.sdk_path_if_needed}/usr"
 
     ENV["EXTENSION_DIR"] = "#{prefix}/lib/#{name}/20180731"
-    ENV["PHP_PEAR_PHP_BIN"] = "#{bin}/php#{php_version}"
+    ENV["PHP_PEAR_PHP_BIN"] = "#{bin}/php#{bin_suffix}"
 
     args = %W[
       --prefix=#{prefix}
@@ -195,6 +194,10 @@ class VshPhp74 < Formula
     inreplace "php.ini-development", /; ?openssl\.capath=/,
       "openssl.capath = \"#{openssl.pkgetc}/certs\""
 
+    inreplace "sapi/fpm/www.conf" do |s|
+      s.gsub!(/listen =.*/, "listen = /tmp/#{name}.sock")
+    end
+
     config_files = {
       "php.ini-development"   => "php.ini",
       "sapi/fpm/php-fpm.conf" => "php-fpm.conf",
@@ -257,7 +260,7 @@ class VshPhp74 < Formula
     chmod 0644, pear_files
 
     {
-      "php_ini"  => etc/"vsh-php/#{php_version}/php.ini"
+      "php_ini"  => etc/"#{name}/php.ini"
     }.each do |key, value|
       value.mkpath if /(?<!bin|man)_dir$/.match?(key)
       system bin/"pear#{bin_suffix}", "config-set", key, value, "system"
@@ -268,7 +271,7 @@ class VshPhp74 < Formula
     %w[
       opcache
     ].each do |e|
-      ext_config_path = etc/"vsh-php/#{php_version}/conf.d/ext-#{e}.ini"
+      ext_config_path = etc/"#{name}/conf.d/ext-#{e}.ini"
       extension_type = (e == "opcache") ? "zend_extension" : "extension"
       if ext_config_path.exist?
         inreplace ext_config_path,
@@ -316,7 +319,7 @@ class VshPhp74 < Formula
         <key>WorkingDirectory</key>
         <string>#{var}</string>
         <key>StandardErrorPath</key>
-        <string>#{var}/log/php-fpm#{bin_suffix}.log</string>
+        <string>#{var}/log/#{name}.log</string>
       </dict>
     </plist>
   EOS

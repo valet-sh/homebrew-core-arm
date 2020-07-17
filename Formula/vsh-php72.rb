@@ -44,8 +44,8 @@ class VshPhp72 < Formula
   patch :DATA
 
   resource "xdebug_module" do
-    url "https://github.com/xdebug/xdebug/archive/2.8.1.tar.gz"
-    sha256 "18b5ad4d8fb19233aef5057b4695927647e2da5a3c2812c9663863d00a5a654c"
+    url "https://github.com/xdebug/xdebug/archive/2.9.6.tar.gz"
+    sha256 "e330c5ccb77890b06dd7bf093567051450b2438b79fed8e7e6c4834278d46092"
   end
 
   resource "imagick_module" do
@@ -55,35 +55,17 @@ class VshPhp72 < Formula
 
   def install
     # Ensure that libxml2 will be detected correctly in older MacOS
-    if MacOS.version == :el_capitan || MacOS.version == :sierra
-      ENV["SDKROOT"] = MacOS.sdk_path
-    end
-
-    current_working_dir = Dir.pwd
-    resource("imagick_module").stage {
-      mv Dir.pwd, "#{current_working_dir}/ext/imagick"
-    }
+    ENV["SDKROOT"] = MacOS.sdk_path if MacOS.version == :el_capitan || MacOS.version == :sierra
 
     # buildconf required due to system library linking bug patch
     system "./buildconf", "--force"
-
-    # Update error message in apache sapi to better explain the requirements
-    # of using Apache http in combination with php if the non-compatible MPM
-    # has been selected. Homebrew has chosen not to support being able to
-    # compile a thread safe version of PHP and therefore it is not
-    # possible to recompile as suggested in the original message
-    inreplace "sapi/apache2handler/sapi_apache2.c",
-              "You need to recompile PHP.",
-              "Homebrew PHP does not support a thread-safe php binary. "\
-              "To use the PHP apache sapi please change "\
-              "your httpd config to use the prefork MPM"
 
     inreplace "sapi/fpm/php-fpm.conf.in", ";daemonize = yes", "daemonize = no"
 
     # Required due to icu4c dependency
     ENV.cxx11
 
-    config_path = etc/"vsh-php/#{php_version}"
+    config_path = etc/"#{name}"
     # Prevent system pear config from inhibiting pear install
     (config_path/"pear.conf").delete if (config_path/"pear.conf").exist?
 
@@ -108,7 +90,6 @@ class VshPhp72 < Formula
       --with-config-file-scan-dir=#{config_path}/conf.d
       --program-suffix=#{bin_suffix}
       --with-pear=#{pkgshare}/pear
-      --with-imagick=shared
       --enable-bcmath
       --enable-calendar
       --enable-dba
@@ -187,11 +168,24 @@ class VshPhp72 < Formula
       system "make", "install"
     }
 
+    resource("imagick_module").stage {
+      system "#{bin}/phpize#{bin_suffix}"
+      system "./configure", "--with-php-config=#{bin}/php-config#{bin_suffix}"
+      system "make", "clean"
+      system "make", "all"
+      system "make", "install"
+    }
+
     # Use OpenSSL cert bundle
+    openssl = Formula["openssl@1.1"]
     inreplace "php.ini-development", /; ?openssl\.cafile=/,
-      "openssl.cafile = \"#{etc}/openssl@1.1/cert.pem\""
+      "openssl.cafile = \"#{openssl.pkgetc}/cert.pem\""
     inreplace "php.ini-development", /; ?openssl\.capath=/,
-      "openssl.capath = \"#{etc}/openssl@1.1/certs\""
+      "openssl.capath = \"#{openssl.pkgetc}/certs\""
+
+    inreplace "sapi/fpm/www.conf" do |s|
+      s.gsub!(/listen =.*/, "listen = /tmp/#{name}.sock")
+    end
 
     config_files = {
       "php.ini-development"   => "php.ini",
@@ -262,7 +256,7 @@ class VshPhp72 < Formula
     chmod 0644, pear_files
 
     {
-      "php_ini"  => etc/"vsh-php/#{php_version}/php.ini"
+      "php_ini"  => etc/"#{name}/php.ini"
     }.each do |key, value|
       value.mkpath if /(?<!bin|man)_dir$/.match?(key)
       system bin/"pear#{bin_suffix}", "config-set", key, value, "system"
@@ -273,7 +267,7 @@ class VshPhp72 < Formula
     %w[
       opcache
     ].each do |e|
-      ext_config_path = etc/"vsh-php/#{php_version}/conf.d/ext-#{e}.ini"
+      ext_config_path = etc/"#{name}/conf.d/ext-#{e}.ini"
       extension_type = (e == "opcache") ? "zend_extension" : "extension"
       if ext_config_path.exist?
         inreplace ext_config_path,
@@ -321,7 +315,7 @@ class VshPhp72 < Formula
         <key>WorkingDirectory</key>
         <string>#{var}</string>
         <key>StandardErrorPath</key>
-        <string>#{var}/log/php-fpm#{bin_suffix}.log</string>
+        <string>#{var}/log/#{name}.log</string>
       </dict>
     </plist>
   EOS
