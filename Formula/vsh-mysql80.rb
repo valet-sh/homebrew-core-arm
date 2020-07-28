@@ -42,7 +42,7 @@ class VshMysql80 < Formula
     args = %W[
       -DCMAKE_INSTALL_PREFIX=#{libexec}
       -DFORCE_INSOURCE_BUILD=1
-      -DCOMPILATION_COMMENT=Homebrew valet.sh
+      -DCOMPILATION_COMMENT=valet-sh
       -DINSTALL_DOCDIR=share/doc/#{name}
       -DINSTALL_INCLUDEDIR=include/mysql
       -DINSTALL_INFODIR=share/info
