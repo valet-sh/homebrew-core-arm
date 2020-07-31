@@ -18,6 +18,7 @@ class VshElasticsearch2 < Formula
     "elasticsearch_#{ENV["USER"]}"
   end
 
+
   def install
 
     # Remove Windows files
