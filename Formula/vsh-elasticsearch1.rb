@@ -18,6 +18,7 @@ class VshElasticsearch1 < Formula
     "elasticsearch_#{ENV["USER"]}"
   end
 
+
   def install
     # Remove Windows files
     rm_f Dir["bin/*.bat"]
