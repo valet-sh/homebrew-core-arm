@@ -8,7 +8,7 @@ class VshElasticsearch1 < Formula
   bottle do
     root_url "https://dl.bintray.com/valet-sh/homebrew-core"
     sha256 "25733c70ddd23bf3ec7ff9512cb7c59140f2c404185ec22bde06cc57ba259d92" => :catalina
-    sha256 "5c0ede4d4fe23d8d370bc86623637eae600081ebeeb3c25a8582d8dfc976ef96" => :mojave
+    sha256 "985ac051694a9f921a9a5f6e59a563aba8d6a622ab19a848bce32b7d53707e74" => :mojave
 
   end
 
