@@ -16,6 +16,7 @@
     method: DELETE
     force_basic_auth: yes
     status_code: 200
+  ignore_errors: yes 
 
 - name: Upload bottle to bintray
   uri:
