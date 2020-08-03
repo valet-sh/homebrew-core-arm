@@ -211,3 +211,4 @@ class VshMysql80 < Formula
     Process.wait(pid)
   end
 end
+
