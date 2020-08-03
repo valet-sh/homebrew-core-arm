@@ -9,10 +9,32 @@
   include_tasks: tasks/extract-buildinfo.yml
 
 - name: Delete existing bottle on bintray
-  shell: curl -X DELETE -u{{ bintray_user }}:{{ bintray_key }} {{ bintray_base_url }}/{{ bottle_filename }}
-  
+  uri:
+    url: "{{ bintray_base_url }}/{{ bottle_filename }}"
+    user: "{{ bintray_user }}"
+    password: "{{ bintray_key }}"
+    method: DELETE
+    force_basic_auth: yes
+    status_code: 200
+
 - name: Upload bottle to bintray
-  shell: curl -T {{ build_path }}/{{ bottle_local_filename }} -u{{ bintray_user }}:{{ bintray_key }} {{ bintray_package_url }}/{{ bottle_filename }}
+  uri:
+    url: "{{ bintray_package_url }}/{{ bottle_filename }}"
+    user: "{{ bintray_user }}"
+    password: "{{ bintray_key }}"
+    method: PUT
+    src: "{{ build_path }}/{{ bottle_local_filename }}"
+    force_basic_auth: yes
+    status_code: 201
 
 - name: Publish bottle on bintray
-  shell: "curl -X POST -u{{ bintray_user }}:{{ bintray_key }} {{ bintray_package_publish_url }} -d '{ \"discard\": \"false\" }'"
+  uri:
+    url: "{{ bintray_package_publish_url }}"
+    user: "{{ bintray_user }}"
+    password: "{{ bintray_key }}"
+    method: POST
+    body_format: json
+    body: 
+      discard: "false"
+    force_basic_auth: yes
+    status_code: 200
