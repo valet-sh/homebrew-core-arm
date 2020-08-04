@@ -8,7 +8,7 @@ class VshNginx < Formula
   head "https://hg.nginx.org/nginx/", :using => :hg
 
   bottle do
-    root_url "https://dl.bintray.com/valet-sh/homebrew-core"
+    root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
     sha256 "5bd539a7bd40e73666b77e6f20011db85aa6d8b7ecb2dd7bc36a95880b772a41" => :catalina
     sha256 "92c375d1f3c490364edd541a1791317c03d306b8774f26450b256e796ceb96f1" => :mojave
   end
