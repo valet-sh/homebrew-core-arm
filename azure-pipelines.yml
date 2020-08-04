@@ -47,6 +47,7 @@ jobs:
     env:
       BINTRAY_USER: $(BINTRAY_USER)
       BINTRAY_KEY: $(BINTRAY_KEY)
+      GITHUB_TOKEN: $(GITHUB_TOKEN)
     workingDirectory: .github/ansible
     displayName: 'Upload bottles'
  
