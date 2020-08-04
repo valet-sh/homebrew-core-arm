@@ -1,0 +1,39 @@
+---
+
+- name: Include build information file
+  include_vars:
+    file: "{{ build_info_file }}"
+    name: "buildinfo"
+
+- name: Extract build information to vars
+  include_tasks: tasks/extract-buildinfo.yml
+
+- name: "get list of all github release assets"
+  uri:
+    url: "https://api.github.com/repos/valet-sh/homebrew-core/releases/{{ github_release_id }}/assets"
+    headers:
+      Authorization: "token {{ github_token }}"
+  register: github_release_assets
+
+- name: "check if bottle exists in github release assets"
+  set_fact:
+    github_release_asset_id: "{{ github_release_assets | json_query(github_json_filter) }}"
+
+- name: "delete existing bottle release asset"
+  uri:
+    url: "https://api.github.com/repos/valet-sh/homebrew-core/releases/assets/{{ github_release_asset_id }}"
+    method: DELETE
+    headers:
+      Authorization: "token {{ github_token }}"
+    status_code: 204
+  when: github_release_asset_id != ""
+
+- name: "upload bottle asset on github release"
+  uri:
+    url: "https://uploads.github.com/repos/valet-sh/homebrew-core/releases/{{ github_release_id }}/assets?name={{ bottle_filename }}"
+    method: POST
+    headers:
+      Content-Type: "application/octet-stream"
+      Authorization: "token {{ github_token }}"
+    src: "{{ build_path }}/{{ bottle_local_filename }}"
+    status_code: 201

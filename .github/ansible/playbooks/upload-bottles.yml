@@ -17,7 +17,7 @@
       when: find_result.files|length == 0
 
     - name: Upload bottle files
-      include_tasks: tasks/upload-bottle.yml
+      include_tasks: tasks/upload-bottle-github-release.yml
       vars:
         build_info_file: "{{ item.path }}"
       loop: "{{ find_result.files }}"
