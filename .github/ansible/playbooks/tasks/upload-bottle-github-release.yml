@@ -8,6 +8,10 @@
 - name: Extract build information to vars
   include_tasks: tasks/extract-buildinfo.yml
 
+- name: Define json filter for github release assets
+  set_fact:
+    github_json_filter: "json[?name=='{{ bottle_filename }}'].id | [0]"
+    
 - name: "get list of all github release assets"
   uri:
     url: "https://api.github.com/repos/valet-sh/homebrew-core/releases/{{ github_release_id }}/assets"
