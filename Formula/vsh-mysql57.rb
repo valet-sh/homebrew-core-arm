@@ -83,7 +83,7 @@ class VshMysql57 < Formula
         default-character-set = utf8mb4
     EOS
 
-    # Move config files into etc
+    # move config files into etc
     (etc/"#{name}").install tmpconfdir/"my.cnf"
     (etc/"#{name}/conf.d").install tmpconfdir/"mysqld.cnf"
     (etc/"#{name}/conf.d").install tmpconfdir/"mysqldump.cnf"
@@ -92,7 +92,7 @@ class VshMysql57 < Formula
 
   def post_install
     (var/"log/#{name}").mkpath
-    # Make sure the datadir exists
+    # make sure the datadir exists
     datadir.mkpath
     unless (datadir/"mysql/general_log.CSM").exist?
       ENV["TMPDIR"] = nil
@@ -139,7 +139,7 @@ class VshMysql57 < Formula
   end
 
   test do
-    # Expects datadir to be a completely clean dir, which testpath isn't.
+    # expects datadir to be a completely clean dir, which testpath isn't.
     dir = Dir.mktmpdir
     system libexec/"bin/mysqld", "--initialize-insecure", "--user=#{ENV["USER"]}",
     "--basedir=#{prefix}", "--datadir=#{dir}", "--tmpdir=#{dir}"
