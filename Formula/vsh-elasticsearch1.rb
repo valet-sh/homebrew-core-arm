@@ -6,7 +6,7 @@ class VshElasticsearch1 < Formula
   license "Apache-2.0"
 
   bottle do
-    root_url "https://dl.bintray.com/valet-sh/homebrew-core"
+    root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
     sha256 "25733c70ddd23bf3ec7ff9512cb7c59140f2c404185ec22bde06cc57ba259d92" => :catalina
     sha256 "985ac051694a9f921a9a5f6e59a563aba8d6a622ab19a848bce32b7d53707e74" => :mojave
 
