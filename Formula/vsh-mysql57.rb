@@ -6,7 +6,7 @@ class VshMysql57 < Formula
   sha256 "0d949c4dda2d9bd3e2fd5d5068c14cda48c995bbe0c3da2f5334ff449126f6be"
 
   bottle do
-    root_url "https://dl.bintray.com/valet-sh/homebrew-core"
+    root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
     sha256 "bf0cdc294df996455c8abad3e03b6691f2145a4036085ad2570ec6c993e6b9c0" => :catalina
     sha256 "88cf1f9f07a84694654f790507da937909eee1b16a0e47d473b2fc45e19c9ec1" => :mojave
   end
