@@ -111,7 +111,7 @@ class VshMysql80 < Formula
         basedir		= #{libexec}
         datadir		= #{datadir}
         tmpdir		= /tmp
-        lc-messages-dir	= #{libexec}/share
+        lc-messages-dir	= #{libexec}/share/mysql
         skip-external-locking
 
         key_buffer_size		= 16M
@@ -145,6 +145,9 @@ class VshMysql80 < Formula
   end
 
   def post_install
+    # Make sure log directory exists
+    (var/"log/#{name}").mkpath
+
     # Make sure the datadir exists
     datadir.mkpath
     unless (datadir/"mysql/general_log.CSM").exist?
