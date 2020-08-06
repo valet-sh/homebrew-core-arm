@@ -137,11 +137,20 @@ class VshMysql80 < Formula
         max_allowed_packet	= 16M
         default-character-set = utf8mb4
     EOS
+    (buildpath/"mysql.cnf").write <<~EOS
+        [mysql]
+        user = root
+        protocol=tcp
+        port=3308
+        host=127.0.0.1
+        default-character-set = utf8mb4
+    EOS
 
     # Move config files into etc
     (etc/"#{name}").install "my.cnf"
     (etc/"#{name}/conf.d").install "mysqld.cnf"
     (etc/"#{name}/conf.d").install "mysqldump.cnf"
+    (etc/"#{name}/conf.d").install "mysql.cnf"
   end
 
   def post_install
