@@ -31,6 +31,8 @@ jobs:
   steps:
 
   - script: |
+      brew update
+      brew upgrade
       pip install --upgrade pip
       pip install -Iq -r requirements.txt
     workingDirectory: .github/ansible
