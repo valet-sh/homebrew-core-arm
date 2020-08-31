@@ -1,4 +1,5 @@
 class VshMysql57 < Formula
+  # .
   desc "Open source relational database management system"
   homepage "https://dev.mysql.com/doc/refman/5.7/en/"
   url "https://cdn.mysql.com/Downloads/MySQL-5.7/mysql-5.7.31-macos10.14-x86_64.tar.gz"
