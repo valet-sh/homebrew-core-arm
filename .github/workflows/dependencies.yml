@@ -1,0 +1,28 @@
+name: dependencies
+
+on:
+  schedule:
+    - cron: "0 * * * *"
+
+jobs:
+
+  check-dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-python@v1
+        with:
+          python-version: 3.6
+
+      - uses: actions/checkout@v1
+
+      - name: Install dependencies
+        working-directory: .github/ansible
+        run: |
+          python -m pip install --upgrade pip
+          pip install -Iq -r requirements.txt
+
+      - name: Check dependencies
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        working-directory: .github/ansible
+        run: ansible-playbook playbooks/check-dependencies.yml

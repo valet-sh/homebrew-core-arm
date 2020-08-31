@@ -1,0 +1,10 @@
+---
+
+- hosts: local
+  gather_facts: True
+
+  tasks:
+
+    - name: "Check dependencies"
+      debug:
+        msg: "todo: implement homebrew-core dependencies checker"
