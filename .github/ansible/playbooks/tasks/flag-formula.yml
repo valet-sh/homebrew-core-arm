@@ -1,0 +1,35 @@
+---
+
+- name: "check if commit message contains a Formula bottle update"
+  set_fact:
+    commit_regex_obj: "{{ github_commit_filter_item.commit.message | regex_findall('(.+):(.*)bottle.') }}"
+
+- block:
+    - name: set current package name
+      set_fact:
+        package_name: "{{ commit_regex_obj[0][0] }}"
+
+    - name: search for depdendent formulas
+      shell: "grep -rl 'depends_on \"{{ package_name }}'"
+      args:
+        chdir: "{{ formula_path }}"
+      failed_when: false
+      register: related_formulas
+
+    - name: "Formulas with dependency to '{{ package_name }}'"
+      debug:
+        msg: "{{ related_formulas.stdout_lines }}"
+      when: related_formulas.stdout_lines | length > 0
+
+    - name: "add marker to formula"
+      blockinfile:
+        path: "{{ formula_path }}/{{ current_dependent_formula }}"
+        marker: "# {mark} github action rebuild trigger"
+        insertbefore: "  bottle do"
+        block: |
+          # timestamp: {{ ansible_date_time.epoch }}
+      with_items: "{{ related_formulas.stdout_lines }}"
+      loop_control:
+        loop_var: current_dependent_formula
+
+  when: commit_regex_obj | length > 0
