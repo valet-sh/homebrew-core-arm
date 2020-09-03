@@ -111,10 +111,10 @@ class VshMysql80 < Formula
 
         bind-address		= 127.0.0.1
         port		= 3308
-        basedir		= #{libexec}
+        basedir		= #{opt_libexec}
         datadir		= #{datadir}
         tmpdir		= /tmp
-        lc-messages-dir	= #{libexec}/share/mysql
+        lc-messages-dir	= #{opt_libexec}/share/mysql
         skip-external-locking
 
         key_buffer_size		= 16M
