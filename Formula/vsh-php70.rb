@@ -5,7 +5,7 @@ class VshPhp70 < Formula
   sha256 "ab8c5be6e32b1f8d032909dedaaaa4bbb1a209e519abb01a52ce3914f9a13d96"
   
 # BEGIN github action rebuild trigger
-# timestamp: 1599250783
+# timestamp: 1599252586
 # END github action rebuild trigger
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
