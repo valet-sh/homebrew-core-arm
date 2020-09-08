@@ -30,6 +30,6 @@
     - name: Commit and push changes
       shell: |
         git commit -a -m "{{ git_dependency_update_commit_message }}"
-        git push {{ github_repository_url }} HEAD:master --follow-tags
+        git push {{ github_repository_deploy_url }} HEAD:master --follow-tags
       args:
         chdir: "{{ base_path }}"
