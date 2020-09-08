@@ -5,7 +5,7 @@ class VshElasticsearch2 < Formula
   sha256 "5f7e4bb792917bb7ffc2a5f612dfec87416d54563f795d6a70637befef4cfc6f"
   license "Apache-2.0"
   
-  # 1
+  # 2
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
     sha256 "ed47e00276e33766c6c40a60cfffdd7b51f624f6493d21ea920d47fe80773c95" => :catalina
