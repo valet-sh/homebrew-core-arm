@@ -23,6 +23,6 @@ jobs:
 
       - name: Check dependencies
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
         working-directory: .github/ansible
         run: ansible-playbook playbooks/check-dependencies.yml

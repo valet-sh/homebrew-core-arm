@@ -10,10 +10,8 @@ git_commit_message: "[skip ci] Update bottle information in formulae ***NO_CI***
 
 github_actor: "{{ lookup('env','GITHUB_ACTOR') }}"
 github_token: "{{ lookup('env','GITHUB_TOKEN') }}"
-github_deploy_token: "{{ lookup('env','DEPLOY_TOKEN') }}"
 github_repository_path: "{{ lookup('env','GITHUB_REPOSITORY') }}"
 github_repository_url: "https://{{ github_actor }}:{{ github_token }}@github.com/{{ github_repository_path }}.git"
-github_repository_deploy_url: "https://{{ github_actor }}:{{ github_deploy_token }}@github.com/{{ github_repository_path }}.git"
 github_release_id: 29266342
 
 bintray_base_url: "https://api.bintray.com/content/valet-sh/homebrew-core"
