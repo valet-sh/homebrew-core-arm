@@ -46,6 +46,22 @@ class VshElasticsearch6 < Formula
     (etc/"#{name}").install Dir[libexec/"config/*"]
     (libexec/"config").rmtree
 
+    (libexec/"bin/elasticsearch-plugin-update").write <<~EOS
+        #!/bin/bash
+
+        export JAVA_HOME="$(/usr/libexec/java_home -v 1.8)"
+
+        base_dir=$(dirname $0)
+        PLUGIN_BIN=${base_dir}/elasticsearch-plugin
+
+        for plugin in $(${PLUGIN_BIN} list); do
+            "${PLUGIN_BIN}" remove "${plugin}"
+            "${PLUGIN_BIN}" install "${plugin}"
+        done
+    EOS
+
+    chmod 0755, libexec/"bin/elasticsearch-plugin-update"
+
     bin.env_script_all_files(libexec/"bin", Language::Java.java_home_env("1.8"))
   end
 
@@ -56,6 +72,8 @@ class VshElasticsearch6 < Formula
     ln_s etc/"#{name}", libexec/"config" unless (libexec/"config").exist?
     (var/"#{name}/plugins").mkpath
     ln_s var/"#{name}/plugins", libexec/"plugins" unless (libexec/"plugins").exist?
+
+    system libexec/"bin/elasticsearch-plugin-update"
   end
 
   def caveats
