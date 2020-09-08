@@ -4,9 +4,6 @@ class VshPhp71 < Formula
   url "https://www.php.net/distributions/php-7.1.33.tar.xz"
   sha256 "bd7c0a9bd5433289ee01fd440af3715309faf583f75832b64fe169c100d52968"
 
-# BEGIN github action rebuild trigger
-# timestamp: 1599425392
-# END github action rebuild trigger
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
     sha256 "441b59a60ab510aa0a48f91e360f5a49c11fb63248154e7762c2bdb9ad93f0a5" => :catalina

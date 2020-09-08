@@ -5,9 +5,6 @@ class VshPhp74 < Formula
   mirror "https://fossies.org/linux/www/php-7.4.8.tar.xz"
   sha256 "642843890b732e8af01cb661e823ae01472af1402f211c83009c9b3abd073245"
 
-# BEGIN github action rebuild trigger
-# timestamp: 1599425392
-# END github action rebuild trigger
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
     sha256 "200553e0042caf78fe4ac919a4ae3a9ffdad45cb235e150e71cfbb3e35dfd5cd" => :catalina
