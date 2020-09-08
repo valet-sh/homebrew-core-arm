@@ -1,0 +1,26 @@
+---
+
+- name: read Formula file
+  slurp:
+    src: "{{ formula_path }}/{{ current_dependent_formula }}"
+  register: current_formula_file
+
+- name: "reset current formula revision"
+  set_fact:
+    current_formula_revision: 0
+
+- name: "read current formula revision from file"
+  set_fact:
+    current_formula_revision: "{{ current_formula_file['content'] | b64decode | regex_findall('revision (.+)') | first }}"
+
+- name: increase formula revision
+  set_fact:
+    increased_formula_revision: "{{current_formula_revision|int + 1 }}"
+
+- name: "update or add revision to formula"
+  lineinfile:
+    path: "{{ formula_path }}/{{ current_dependent_formula }}"
+    firstmatch: yes
+    insertafter: "  url "
+    regexp: '^(.*)revision(.*)$'
+    line: '  revision {{ increased_formula_revision }}'
