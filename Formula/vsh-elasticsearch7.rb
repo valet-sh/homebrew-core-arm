@@ -40,7 +40,7 @@ class VshElasticsearch7 < Formula
       s.sub!(%r{#\s*path\.data: /path/to.+$}, "path.data: #{var}/lib/#{name}/")
       s.sub!(%r{#\s*path\.logs: /path/to.+$}, "path.logs: #{var}/log/#{name}/")
 
-      inreplace "config/jvm.options", %r{logs/gc.log}, "#{var}/log/#{name}/gc.log"
+      inreplace "#{libexec}/config/jvm.options", %r{logs/gc.log}, "#{var}/log/#{name}/gc.log"
     end
 
     config_file = "#{libexec}/config/elasticsearch.yml"
