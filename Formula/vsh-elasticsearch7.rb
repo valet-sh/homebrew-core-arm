@@ -5,7 +5,7 @@ class VshElasticsearch7 < Formula
   version "7.9.1"
   sha256 "1ac9fad6f5b94bd5d46116814b74352a352cedc1a91d77cc961d13ce8083afac"
   license "Apache-2.0"
-  revision 1
+  revision 2
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
@@ -39,6 +39,8 @@ class VshElasticsearch7 < Formula
 
       s.sub!(%r{#\s*path\.data: /path/to.+$}, "path.data: #{var}/lib/#{name}/")
       s.sub!(%r{#\s*path\.logs: /path/to.+$}, "path.logs: #{var}/log/#{name}/")
+
+      inreplace "config/jvm.options", %r{logs/gc.log}, "#{var}/log/#{name}/gc.log"
     end
 
     config_file = "#{libexec}/config/elasticsearch.yml"
