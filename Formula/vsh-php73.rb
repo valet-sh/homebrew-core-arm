@@ -1,9 +1,9 @@
 class VshPhp73 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://www.php.net/distributions/php-7.3.20.tar.xz"
-  mirror "https://fossies.org/linux/www/php-7.3.20.tar.xz"
-  sha256 "43292046f6684eb13acb637276d4aa1dd9f66b0b7045e6f1493bc90db389b888"
+  url "https://www.php.net/distributions/php-7.3.22.tar.xz"
+  mirror "https://fossies.org/linux/www/php-7.3.22.tar.xz"
+  sha256 "0e66606d3bdab5c2ae3f778136bfe8788e574913a3d8138695e54d98562f1fb5"
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
