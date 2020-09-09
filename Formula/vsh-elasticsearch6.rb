@@ -2,7 +2,7 @@ class VshElasticsearch6 < Formula
   desc "Distributed search & analytics engine"
   homepage "https://www.elastic.co/products/elasticsearch"
   url "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-oss-6.8.12.tar.gz"
-  sha256 "e7710bff2a2ab867f7538caddd009abaca90e0e33666d30e6e8acb480838d23c"
+  sha256 "feb6c43fe66055360754597350c088025b40566cee16175b005e55660d9e62fd"
   license "Apache-2.0"
 
   bottle do
