@@ -1,9 +1,9 @@
 class VshElasticsearch7 < Formula
   desc "Distributed search & analytics engine"
   homepage "https://www.elastic.co/products/elasticsearch"
-  url "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.8.0-darwin-x86_64.tar.gz"
-  version "7.8.0"
-  sha256 "840b4f97b5ad2baff98e0bbcd3a6021187d3c529d342f0f0056d0137a523289e"
+  url "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.9.1-darwin-x86_64.tar.gz"
+  version "7.9.1"
+  sha256 "1ac9fad6f5b94bd5d46116814b74352a352cedc1a91d77cc961d13ce8083afac"
   license "Apache-2.0"
 
   bottle do
