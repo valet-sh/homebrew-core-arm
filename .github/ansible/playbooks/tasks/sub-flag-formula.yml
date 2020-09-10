@@ -11,7 +11,12 @@
 
 - name: "read current formula revision from file"
   set_fact:
-    current_formula_revision: "{{ current_formula_file['content'] | b64decode | regex_findall('revision (.+)') | first }}"
+    found_formula_revision: "{{ current_formula_file['content'] | b64decode | regex_findall('revision (.+)') }}"
+
+- name: override defautlt revsision number
+  set_fact:
+    current_formula_revision: "{{ found_formula_revision | first }}"
+  when: found_formula_revision is defined and found_formula_revision | length > 0
 
 - name: increase formula revision
   set_fact:
