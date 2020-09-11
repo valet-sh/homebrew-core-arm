@@ -10,6 +10,8 @@ class VshPhp56 < Formula
     sha256 "19e706b4d0cb45e10cd158966141db64af09feec76223b9c62cc2d0498b5c910" => :mojave
   end
 
+  depends_on :xcode => ["11.5", :build]
+
   depends_on "pkg-config" => :build
   depends_on "bison"
   depends_on "apr"
