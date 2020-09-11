@@ -1,8 +1,8 @@
 class VshPhp56 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://github.com/microsoft/php-src/archive/php-5.6.40-14.tar.gz"
-  sha256 "4cba783904318f0ab15cca7272b2a778253468a25b9206c9c27fde53b9912226"
+  url "https://php.net/get/php-5.6.40.tar.xz/from/this/mirror"
+  sha256 "1369a51eee3995d7fbd1c5342e5cc917760e276d561595b6052b21ace2656d1c"
   
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
@@ -43,6 +43,11 @@ class VshPhp56 < Formula
   # PHP build system incorrectly links system libraries
   # see https://github.com/php/php-src/pull/3472
   patch :DATA
+
+  patch :p1 do
+    url "https://raw.githubusercontent.com/opencomputeproject/Rack-Manager/master/Contrib-Inspur/openbmc/meta-openembedded/meta-oe/recipes-devtools/php/php/0001-PHP-5.6-LibSSL-1.1-compatibility.patch"
+    sha256 "c9715b544ae249c0e76136dfadd9d282237233459694b9e75d0e3e094ab0c993"
+  end
 
   def install
     # Ensure that libxml2 will be detected correctly in older MacOS
