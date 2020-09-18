@@ -3,7 +3,7 @@ class VshElasticsearch7 < Formula
   homepage "https://www.elastic.co/products/elasticsearch"
   url "https://github.com/elastic/elasticsearch/archive/v7.8.1.tar.gz"
   sha256 "e222d4165fb4145222491e1ed33dad15acc7b56334ca6589202e2ee761900c78"
-  revision 1
+  revision 2
   license "Apache-2.0"
 
   bottle do
@@ -95,7 +95,7 @@ class VshElasticsearch7 < Formula
     (var/"#{name}/plugins").mkpath
     ln_s var/"#{name}/plugins", libexec/"plugins" unless (libexec/"plugins").exist?
     # fix test not being able to create keystore because of sandbox permissions
-    system libexec/"bin/elasticsearch-keystore", "create" unless (etc/"elasticsearch/elasticsearch.keystore").exist?
+    system libexec/"bin/elasticsearch-keystore", "create" unless (etc/"#{name}/elasticsearch.keystore").exist?
 
     system libexec/"bin/elasticsearch-plugin-update"
   end
