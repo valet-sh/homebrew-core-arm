@@ -3,6 +3,7 @@ class VshElasticsearch7 < Formula
   homepage "https://www.elastic.co/products/elasticsearch"
   url "https://github.com/elastic/elasticsearch/archive/v7.8.1.tar.gz"
   sha256 "e222d4165fb4145222491e1ed33dad15acc7b56334ca6589202e2ee761900c78"
+  revision 1
   license "Apache-2.0"
 
   bottle do
@@ -28,10 +29,10 @@ class VshElasticsearch7 < Formula
         Dir["../distribution/archives/oss-no-jdk-darwin-tar/build/distributions/elasticsearch-oss-*.tar.gz"].first
 
       # Install into package directory
-      libexec.install "bin", "lib", "modules"
+      libexec.install "bin", "config", "lib", "modules"
 
       # Set up Elasticsearch for local development:
-      inreplace "config/elasticsearch.yml" do |s|
+      inreplace "#{libexec}/config/elasticsearch.yml" do |s|
         # 1. Give the cluster a unique name
         s.gsub!(/#\s*cluster\.name: .*/, "cluster.name: #{cluster_name}")
         s.gsub!(/#\s*network\.host: .*/, "network.host: 127.0.0.1")
@@ -43,12 +44,13 @@ class VshElasticsearch7 < Formula
 
       inreplace "#{libexec}/config/jvm.options", %r{logs/gc.log}, "#{var}/log/#{name}/gc.log"
 
+      config_file = "#{libexec}/config/elasticsearch.yml"
+      open(config_file, "a") { |f| f.puts "transport.host: 127.0.0.1\n" }
+
       # Move config files into etc
-      (etc/"elasticsearch").install Dir["config/*"]
+      #(etc/"#{name}").install Dir["config/*"]
     end
 
-    config_file = "#{libexec}/config/elasticsearch.yml"
-    open(config_file, "a") { |f| f.puts "transport.host: 127.0.0.1\n" }
 
     # Move config files into etc
     (etc/"#{name}").install Dir[libexec/"config/*"]
@@ -57,7 +59,7 @@ class VshElasticsearch7 < Formula
     (libexec/"bin/elasticsearch-plugin-update").write <<~EOS
         #!/bin/bash
 
-        export JAVA_HOME="$(/usr/libexec/java_home -v 1.8)"
+        export JAVA_HOME="#{Formula["openjdk"].opt_libexec}/openjdk.jdk/Contents/Home"
 
         base_dir=$(dirname $0)
         PLUGIN_BIN=${base_dir}/elasticsearch-plugin
@@ -74,6 +76,10 @@ class VshElasticsearch7 < Formula
               "if [ -z \"$ES_PATH_CONF\" ]; then ES_PATH_CONF=\"$ES_HOME\"/config; fi",
               "if [ -z \"$ES_PATH_CONF\" ]; then ES_PATH_CONF=\"#{etc}/#{name}\"; fi"
 
+    inreplace libexec/"bin/elasticsearch-env",
+              "CDPATH=\"\"",
+              "JAVA_HOME=\"#{Formula['openjdk'].opt_libexec}/openjdk.jdk/Contents/Home\"\nCDPATH=\"\""
+
 #    bin.install libexec/"bin/elasticsearch",
 #                libexec/"bin/elasticsearch-keystore",
 #                libexec/"bin/elasticsearch-plugin",
@@ -89,7 +95,7 @@ class VshElasticsearch7 < Formula
     (var/"#{name}/plugins").mkpath
     ln_s var/"#{name}/plugins", libexec/"plugins" unless (libexec/"plugins").exist?
     # fix test not being able to create keystore because of sandbox permissions
-    system bin/"elasticsearch-keystore", "create" unless (etc/"elasticsearch/elasticsearch.keystore").exist?
+    system libexec/"bin/elasticsearch-keystore", "create" unless (etc/"elasticsearch/elasticsearch.keystore").exist?
 
     system libexec/"bin/elasticsearch-plugin-update"
   end
