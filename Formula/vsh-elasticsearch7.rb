@@ -1,19 +1,18 @@
 class VshElasticsearch7 < Formula
   desc "Distributed search & analytics engine"
   homepage "https://www.elastic.co/products/elasticsearch"
-  url "https://github.com/elastic/elasticsearch/archive/v7.8.1.tar.gz"
-  sha256 "e222d4165fb4145222491e1ed33dad15acc7b56334ca6589202e2ee761900c78"
-  revision 2
+  url "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.9.1-darwin-x86_64.tar.gz"
+  version "7.9.1"
+  sha256 "1ac9fad6f5b94bd5d46116814b74352a352cedc1a91d77cc961d13ce8083afac"
   license "Apache-2.0"
+  revision 3
 
   bottle do
-    cellar :any_skip_relocation
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 "b721512c0bb701f422de375f5f701cd030dae2cf7416ca176d499908349693a0" => :catalina
-    sha256 "be396c189d92d4258dea1c55bf70dd246a8547d9f96f6c1ccbbe688420d71c7a" => :mojave
+    sha256 "f5f85c0edca4a0e81b399b02b844ecfab1db9e916d7279a43d7724e537d24938" => :catalina
+    sha256 "97df993fdd3ddfdb9fa9c65b51edb13bdc127a9d9d98783227d51bf3bb0e32ef" => :mojave
   end
 
-  depends_on "gradle" => :build
   depends_on "openjdk"
 
   def cluster_name
@@ -21,37 +20,36 @@ class VshElasticsearch7 < Formula
   end
 
   def install
-    system "gradle", ":distribution:archives:oss-no-jdk-darwin-tar:assemble"
+    # Remove Windows files
+    rm_f Dir["bin/*.bat"]
+    rm_f Dir["bin/*.exe"]
 
-    mkdir "tar" do
-      # Extract the package to the tar directory
-      system "tar", "--strip-components=1", "-xf",
-        Dir["../distribution/archives/oss-no-jdk-darwin-tar/build/distributions/elasticsearch-oss-*.tar.gz"].first
+    # Install everything else into package directory
+    libexec.install "bin", "config", "lib", "modules"
 
-      # Install into package directory
-      libexec.install "bin", "config", "lib", "modules"
+    inreplace libexec/"bin/elasticsearch-env",
+              "if [ -z \"$ES_PATH_CONF\" ]; then ES_PATH_CONF=\"$ES_HOME\"/config; fi",
+              "if [ -z \"$ES_PATH_CONF\" ]; then ES_PATH_CONF=\"#{etc}/#{name}\"; fi"
 
-      # Set up Elasticsearch for local development:
-      inreplace "#{libexec}/config/elasticsearch.yml" do |s|
-        # 1. Give the cluster a unique name
-        s.gsub!(/#\s*cluster\.name: .*/, "cluster.name: #{cluster_name}")
-        s.gsub!(/#\s*network\.host: .*/, "network.host: 127.0.0.1")
-        s.gsub!(/#\s*http\.port: .*/, "http.port: 9207")
+    # Set up Elasticsearch for local development:
+    inreplace "#{libexec}/config/elasticsearch.yml" do |s|
+      s.gsub!(/#\s*cluster\.name: .*/, "cluster.name: #{cluster_name}")
+      s.gsub!(/#\s*network\.host: .*/, "network.host: 127.0.0.1")
+      s.gsub!(/#\s*http\.port: .*/, "http.port: 9207")
 
-        s.sub!(%r{#\s*path\.data: /path/to.+$}, "path.data: #{var}/lib/#{name}/")
-        s.sub!(%r{#\s*path\.logs: /path/to.+$}, "path.logs: #{var}/log/#{name}/")
-      end
+      s.sub!(%r{#\s*path\.data: /path/to.+$}, "path.data: #{var}/lib/#{name}/")
+      s.sub!(%r{#\s*path\.logs: /path/to.+$}, "path.logs: #{var}/log/#{name}/")
 
       inreplace "#{libexec}/config/jvm.options", %r{logs/gc.log}, "#{var}/log/#{name}/gc.log"
-
-      config_file = "#{libexec}/config/elasticsearch.yml"
-      open(config_file, "a") { |f| f.puts "transport.host: 127.0.0.1\n" }
-
-      # Move config files into etc
-      #(etc/"#{name}").install Dir["config/*"]
-      system "gradle", "clean"
     end
 
+    inreplace libexec/"bin/elasticsearch-env",
+              "CDPATH=\"\"",
+              "JAVA_HOME=\"#{Formula['openjdk'].opt_libexec}/openjdk.jdk/Contents/Home\"\nCDPATH=\"\""
+
+
+    config_file = "#{libexec}/config/elasticsearch.yml"
+    open(config_file, "a") { |f| f.puts "transport.host: 127.0.0.1\n" }
 
     # Move config files into etc
     (etc/"#{name}").install Dir[libexec/"config/*"]
@@ -73,19 +71,7 @@ class VshElasticsearch7 < Formula
 
     chmod 0755, libexec/"bin/elasticsearch-plugin-update"
 
-    inreplace libexec/"bin/elasticsearch-env",
-              "if [ -z \"$ES_PATH_CONF\" ]; then ES_PATH_CONF=\"$ES_HOME\"/config; fi",
-              "if [ -z \"$ES_PATH_CONF\" ]; then ES_PATH_CONF=\"#{etc}/#{name}\"; fi"
-
-    inreplace libexec/"bin/elasticsearch-env",
-              "CDPATH=\"\"",
-              "JAVA_HOME=\"#{Formula['openjdk'].opt_libexec}/openjdk.jdk/Contents/Home\"\nCDPATH=\"\""
-
-#    bin.install libexec/"bin/elasticsearch",
-#                libexec/"bin/elasticsearch-keystore",
-#                libexec/"bin/elasticsearch-plugin",
-#                libexec/"bin/elasticsearch-shard"
-    bin.env_script_all_files(libexec/"bin", JAVA_HOME: Formula["openjdk"].opt_prefix)
+    #bin.env_script_all_files(libexec/"bin", Language::Java.java_home_env("1.8"))
   end
 
   def post_install
@@ -95,8 +81,6 @@ class VshElasticsearch7 < Formula
     ln_s etc/"#{name}", libexec/"config" unless (libexec/"config").exist?
     (var/"#{name}/plugins").mkpath
     ln_s var/"#{name}/plugins", libexec/"plugins" unless (libexec/"plugins").exist?
-    # fix test not being able to create keystore because of sandbox permissions
-    system libexec/"bin/elasticsearch-keystore", "create" unless (etc/"#{name}/elasticsearch.keystore").exist?
 
     system libexec/"bin/elasticsearch-plugin-update"
   end
@@ -124,7 +108,7 @@ class VshElasticsearch7 < Formula
           <string>#{plist_name}</string>
           <key>ProgramArguments</key>
           <array>
-            <string>#{opt_libexec}/elasticsearch</string>
+            <string>#{opt_libexec}/bin/elasticsearch</string>
           </array>
           <key>EnvironmentVariables</key>
           <dict>
