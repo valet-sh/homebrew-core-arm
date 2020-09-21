@@ -49,6 +49,7 @@ class VshElasticsearch7 < Formula
 
       # Move config files into etc
       #(etc/"#{name}").install Dir["config/*"]
+      system "gradle", "clean"
     end
 
 
