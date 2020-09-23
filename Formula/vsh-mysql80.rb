@@ -10,7 +10,7 @@ class VshMysql80 < Formula
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
     sha256 "bc6f94ae2a3784b064dda33d37fa379a53d9b13b506732e07c9e4cee0ed86b9b" => :catalina
-    sha256 "6693ff964e7e6bb9bab3833753f856f8a6adf26a277993ab35a722b47dc14f28" => :mojave
+    sha256 "944b48dc12f58f77ab0efe974a4af26589817bc22b0cce7d383620f8619a64b5" => :mojave
   end
 
   depends_on "cmake" => :build
