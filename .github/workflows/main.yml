@@ -21,7 +21,7 @@ jobs:
         working-directory: .github/ansible
         run: |
           brew update
-          brew upgrade $(brew outdated --formula -q)
+          brew upgrade $(brew outdated --formula -q) || true
           python -m pip install --upgrade pip
           pip install -Iq -r requirements.txt
 
