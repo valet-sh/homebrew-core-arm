@@ -9,7 +9,7 @@ jobs:
 
   - script: |
       brew update
-      brew upgrade
+      brew upgrade $(brew outdated --formula -q)
       pip install --upgrade pip
       pip install -Iq -r requirements.txt
     workingDirectory: .github/ansible
