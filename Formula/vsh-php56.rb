@@ -2,7 +2,7 @@ class VshPhp56 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   url "https://php.net/get/php-5.6.40.tar.xz/from/this/mirror"
-  revision 7
+  revision 8
   sha256 "1369a51eee3995d7fbd1c5342e5cc917760e276d561595b6052b21ace2656d1c"
   
   bottle do
