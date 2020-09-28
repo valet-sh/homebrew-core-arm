@@ -21,7 +21,7 @@ class VshElasticsearch7 < Formula
   end
 
   def install
-    system "gradle", ":distribution:archives:oss-no-jdk-darwin-tar:assemble"
+    system "gradle", ":distribution:archives:oss-no-jdk-darwin-tar:assemble", "-Dbuild.snapshot=false", "-Dlicense.key=./x-pack/plugin/core/snapshot.key"
 
     mkdir "tar" do
       # Extract the package to the tar directory
@@ -49,7 +49,6 @@ class VshElasticsearch7 < Formula
 
       # Move config files into etc
       #(etc/"#{name}").install Dir["config/*"]
-      system "gradle", "clean"
     end
 
 
