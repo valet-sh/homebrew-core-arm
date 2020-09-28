@@ -1,4 +1,4 @@
-class PhpAT56 < Formula
+class VshPhp56 < Formula
   desc "General-purpose scripting language"
   homepage "https://secure.php.net/"
   url "https://php.net/get/php-5.6.40.tar.xz/from/this/mirror"
