@@ -54,18 +54,6 @@ class VshPhp56 < Formula
     # buildconf required due to system library linking bug patch
     system "./buildconf", "--force"
 
-    inreplace "configure" do |s|
-      s.gsub! "APACHE_THREADED_MPM=`$APXS_HTTPD -V | grep 'threaded:.*yes'`",
-              "APACHE_THREADED_MPM="
-      s.gsub! "APXS_LIBEXECDIR='$(INSTALL_ROOT)'`$APXS -q LIBEXECDIR`",
-              "APXS_LIBEXECDIR='$(INSTALL_ROOT)#{lib}/httpd/modules'"
-      s.gsub! "-z `$APXS -q SYSCONFDIR`",
-              "-z ''"
-      # apxs will interpolate the @ in the versioned prefix: https://bz.apache.org/bugzilla/show_bug.cgi?id=61944
-      s.gsub! "LIBEXECDIR='$APXS_LIBEXECDIR'",
-              "LIBEXECDIR='" + "#{lib}/httpd/modules".gsub("@", "\\@") + "'"
-    end
-
     # Update error message in apache sapi to better explain the requirements
     # of using Apache http in combination with php if the non-compatible MPM
     # has been selected. Homebrew has chosen not to support being able to
@@ -125,7 +113,6 @@ class VshPhp56 < Formula
       --enable-mbstring
       --enable-mysqlnd
       --enable-pcntl
-      --enable-phpdbg
       --enable-shmop
       --enable-soap
       --enable-sockets
@@ -134,7 +121,6 @@ class VshPhp56 < Formula
       --enable-sysvshm
       --enable-wddx
       --enable-zip
-      --with-apxs2=#{Formula["httpd"].opt_bin}/apxs
       --with-bz2#{headers_path}
       --with-curl=#{Formula["curl-openssl"].opt_prefix}
       --with-fpm-user=_www
@@ -181,14 +167,7 @@ class VshPhp56 < Formula
     system "make"
     system "make", "install"
 
-    # Allow pecl to install outside of Cellar
-    extension_dir = Utils.safe_popen_read("#{bin}/php-config --extension-dir").chomp
-    orig_ext_dir = File.basename(extension_dir)
-    inreplace bin/"php-config", lib/"php", prefix/"pecl"
-    inreplace "php.ini-development", %r{; ?extension_dir = "\./"},
-      "extension_dir = \"#{HOMEBREW_PREFIX}/lib/php/pecl/#{orig_ext_dir}\""
-
-    # Use OpenSSL cert bundle
+   # Use OpenSSL cert bundle
     openssl = Formula["openssl@1.1"]
     inreplace "php.ini-development", /; ?openssl\.cafile=/,
       "openssl.cafile = \"#{openssl.pkgetc}/cert.pem\""
