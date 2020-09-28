@@ -174,9 +174,9 @@ class VshPhp56 < Formula
     inreplace "php.ini-development", /; ?openssl\.capath=/,
       "openssl.capath = \"#{openssl.pkgetc}/certs\""
 
-    inreplace "sapi/fpm/www.conf" do |s|
-      s.gsub!(/listen =.*/, "listen = /tmp/#{name}.sock")
-    end
+    #inreplace "sapi/fpm/www.conf" do |s|
+    #  s.gsub!(/listen =.*/, "listen = /tmp/#{name}.sock")
+    #end
 
     config_files = {
       "php.ini-development"   => "php.ini",
