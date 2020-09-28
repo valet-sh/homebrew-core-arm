@@ -1,20 +1,18 @@
-class VshPhp56 < Formula
+class PhpAT56 < Formula
   desc "General-purpose scripting language"
-  homepage "https://www.php.net/"
+  homepage "https://secure.php.net/"
   url "https://php.net/get/php-5.6.40.tar.xz/from/this/mirror"
-  revision 10
   sha256 "1369a51eee3995d7fbd1c5342e5cc917760e276d561595b6052b21ace2656d1c"
-  
+  license "PHP-3.01"
+  revision 13
+
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
     sha256 "b159bbad765149665d434b43ef9f69c09a7fa775d368a77d5e310c4b0b46b965" => :catalina
     sha256 "19e706b4d0cb45e10cd158966141db64af09feec76223b9c62cc2d0498b5c910" => :mojave
   end
 
-  depends_on :xcode => ["11.5", :build]
-
   depends_on "pkg-config" => :build
-  depends_on "bison"
   depends_on "apr"
   depends_on "apr-util"
   depends_on "aspell"
@@ -30,13 +28,12 @@ class VshPhp56 < Formula
   depends_on "libpng"
   depends_on "libpq"
   depends_on "libyaml"
-  depends_on "pcre"
   depends_on "libtool"
-  depends_on "mcrypt"
   depends_on "libzip"
+  depends_on "mcrypt"
   depends_on "openldap"
-  depends_on "ninja"
   depends_on "openssl@1.1"
+  depends_on "pcre"
   depends_on "sqlite"
   depends_on "tidy-html5"
   depends_on "unixodbc"
@@ -45,19 +42,29 @@ class VshPhp56 < Formula
   # see https://github.com/php/php-src/pull/3472
   patch :DATA
 
-  patch :p1 do
-    url "https://raw.githubusercontent.com/opencomputeproject/Rack-Manager/master/Contrib-Inspur/openbmc/meta-openembedded/meta-oe/recipes-devtools/php/php/0001-PHP-5.6-LibSSL-1.1-compatibility.patch"
+  patch do
+    url "https://raw.githubusercontent.com/shivammathur/homebrew-php/ec95dab7ee3a9e20416b4c96c511a9a31d8f43f0/Patches/openssl.patch"
     sha256 "c9715b544ae249c0e76136dfadd9d282237233459694b9e75d0e3e094ab0c993"
   end
 
   def install
     # Ensure that libxml2 will be detected correctly in older MacOS
-    if MacOS.version == :el_capitan || MacOS.version == :sierra
-      ENV["SDKROOT"] = MacOS.sdk_path
-    end
+    ENV["SDKROOT"] = MacOS.sdk_path if MacOS.version == :el_capitan || MacOS.version == :sierra
 
     # buildconf required due to system library linking bug patch
     system "./buildconf", "--force"
+
+    inreplace "configure" do |s|
+      s.gsub! "APACHE_THREADED_MPM=`$APXS_HTTPD -V | grep 'threaded:.*yes'`",
+              "APACHE_THREADED_MPM="
+      s.gsub! "APXS_LIBEXECDIR='$(INSTALL_ROOT)'`$APXS -q LIBEXECDIR`",
+              "APXS_LIBEXECDIR='$(INSTALL_ROOT)#{lib}/httpd/modules'"
+      s.gsub! "-z `$APXS -q SYSCONFDIR`",
+              "-z ''"
+      # apxs will interpolate the @ in the versioned prefix: https://bz.apache.org/bugzilla/show_bug.cgi?id=61944
+      s.gsub! "LIBEXECDIR='$APXS_LIBEXECDIR'",
+              "LIBEXECDIR='" + "#{lib}/httpd/modules".gsub("@", "\\@") + "'"
+    end
 
     # Update error message in apache sapi to better explain the requirements
     # of using Apache http in combination with php if the non-compatible MPM
@@ -110,7 +117,6 @@ class VshPhp56 < Formula
       --enable-bcmath
       --enable-calendar
       --enable-dba
-      --enable-dtrace
       --enable-exif
       --enable-ftp
       --enable-fpm
@@ -119,6 +125,7 @@ class VshPhp56 < Formula
       --enable-mbstring
       --enable-mysqlnd
       --enable-pcntl
+      --enable-phpdbg
       --enable-shmop
       --enable-soap
       --enable-sockets
@@ -127,6 +134,7 @@ class VshPhp56 < Formula
       --enable-sysvshm
       --enable-wddx
       --enable-zip
+      --with-apxs2=#{Formula["httpd"].opt_bin}/apxs
       --with-bz2#{headers_path}
       --with-curl=#{Formula["curl-openssl"].opt_prefix}
       --with-fpm-user=_www
@@ -142,8 +150,8 @@ class VshPhp56 < Formula
       --with-layout=GNU
       --with-ldap=#{Formula["openldap"].opt_prefix}
       --with-ldap-sasl#{headers_path}
-      --with-libxml-dir#{headers_path}
       --with-libedit#{headers_path}
+      --with-libxml-dir#{headers_path}
       --with-libzip
       --with-mcrypt=#{Formula["mcrypt"].opt_prefix}
       --with-mhash#{headers_path}
@@ -173,9 +181,12 @@ class VshPhp56 < Formula
     system "make"
     system "make", "install"
 
-    #unless (var/"#{name}/#{php_ext_dir}").exist?
-    #  (var/"#{name}/#{php_ext_dir}").mkpath
-    #end
+    # Allow pecl to install outside of Cellar
+    extension_dir = Utils.safe_popen_read("#{bin}/php-config --extension-dir").chomp
+    orig_ext_dir = File.basename(extension_dir)
+    inreplace bin/"php-config", lib/"php", prefix/"pecl"
+    inreplace "php.ini-development", %r{; ?extension_dir = "\./"},
+      "extension_dir = \"#{HOMEBREW_PREFIX}/lib/php/pecl/#{orig_ext_dir}\""
 
     # Use OpenSSL cert bundle
     openssl = Formula["openssl@1.1"]
@@ -367,7 +378,7 @@ class VshPhp56 < Formula
       (testpath/"httpd.conf").write <<~EOS
         #{main_config}
         LoadModule mpm_prefork_module lib/httpd/modules/mod_mpm_prefork.so
-        LoadModule php7_module #{lib}/httpd/modules/libphp7.so
+        LoadModule php5_module #{lib}/httpd/modules/libphp5.so
         <FilesMatch \\.(php|phar)$>
           SetHandler application/x-httpd-php
         </FilesMatch>
