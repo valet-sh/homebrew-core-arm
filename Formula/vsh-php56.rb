@@ -180,8 +180,7 @@ class VshPhp56 < Formula
 
     config_files = {
       "php.ini-development"   => "php.ini",
-      "sapi/fpm/php-fpm.conf" => "php-fpm.conf",
-      "sapi/fpm/www.conf"     => "php-fpm.d/www.conf",
+      "sapi/fpm/php-fpm.conf" => "php-fpm.conf"
     }
     config_files.each_value do |dst|
       dst_default = config_path/"#{dst}.default"
