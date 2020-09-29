@@ -43,7 +43,7 @@ class VshPhp56 < Formula
   patch :DATA
 
   patch do
-    url "https://raw.githubusercontent.com/shivammathur/homebrew-php/ec95dab7ee3a9e20416b4c96c511a9a31d8f43f0/Patches/openssl.patch"
+    url "https://raw.githubusercontent.com/valet-sh/homebrew-core/master/Patch/openssl.patch"
     sha256 "c9715b544ae249c0e76136dfadd9d282237233459694b9e75d0e3e094ab0c993"
   end
 
