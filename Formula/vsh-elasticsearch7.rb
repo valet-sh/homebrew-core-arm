@@ -3,7 +3,7 @@ class VshElasticsearch7 < Formula
   homepage "https://www.elastic.co/products/elasticsearch"
   url "https://github.com/elastic/elasticsearch/archive/v7.8.1.tar.gz"
   sha256 "e222d4165fb4145222491e1ed33dad15acc7b56334ca6589202e2ee761900c78"
-  revision 3
+  revision 4
   license "Apache-2.0"
 
   bottle do
@@ -123,7 +123,7 @@ class VshElasticsearch7 < Formula
           <string>#{plist_name}</string>
           <key>ProgramArguments</key>
           <array>
-            <string>#{opt_libexec}/elasticsearch</string>
+            <string>#{opt_libexec}/bin/elasticsearch</string>
           </array>
           <key>EnvironmentVariables</key>
           <dict>
