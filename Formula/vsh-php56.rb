@@ -37,6 +37,7 @@ class VshPhp56 < Formula
   depends_on "sqlite"
   depends_on "tidy-html5"
   depends_on "unixodbc"
+  depends_on "imagemagick"
 
   # PHP build system incorrectly links system libraries
   # see https://github.com/php/php-src/pull/3472
