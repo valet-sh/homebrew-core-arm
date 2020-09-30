@@ -4,7 +4,7 @@ class VshPhp56 < Formula
   url "https://php.net/get/php-5.6.40.tar.xz/from/this/mirror"
   sha256 "1369a51eee3995d7fbd1c5342e5cc917760e276d561595b6052b21ace2656d1c"
   license "PHP-3.01"
-  revision 15
+  revision 16
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
@@ -188,9 +188,9 @@ class VshPhp56 < Formula
     inreplace "php.ini-development", /; ?openssl\.capath=/,
       "openssl.capath = \"#{openssl.pkgetc}/certs\""
 
-    #inreplace "sapi/fpm/www.conf" do |s|
-    #  s.gsub!(/listen =.*/, "listen = /tmp/#{name}.sock")
-    #end
+    inreplace "sapi/fpm/php-fpm.conf" do |s|
+      s.gsub!(/listen =.*/, "listen = /tmp/#{name}.sock")
+    end
 
     config_files = {
       "php.ini-development"   => "php.ini",
