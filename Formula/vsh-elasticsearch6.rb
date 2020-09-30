@@ -14,7 +14,7 @@ class VshElasticsearch6 < Formula
   depends_on :java => "1.8"
 
   def cluster_name
-    "elasticsearch_#{ENV["USER"]}"
+    "elasticsearch6"
   end
 
   def install
@@ -40,7 +40,7 @@ class VshElasticsearch6 < Formula
     end
 
     config_file = "#{libexec}/config/elasticsearch.yml"
-    open(config_file, "a") { |f| f.puts "transport.host: 127.0.0.1\n" }
+    open(config_file, "a") { |f| f.puts "transport.host: 127.0.0.1\ntransport.port: 9306\n" }
 
     # Move config files into etc
     (etc/"#{name}").install Dir[libexec/"config/*"]
@@ -73,6 +73,7 @@ class VshElasticsearch6 < Formula
     (var/"#{name}/plugins").mkpath
     ln_s var/"#{name}/plugins", libexec/"plugins" unless (libexec/"plugins").exist?
 
+    # run plugin update
     system libexec/"bin/elasticsearch-plugin-update"
   end
 
