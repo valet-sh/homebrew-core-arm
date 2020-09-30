@@ -68,6 +68,8 @@ class VshPhp70 < Formula
     # Required due to icu4c dependency
     ENV.cxx11
 
+    ENV.append "CPPFLAGS", "-DU_USING_ICU_NAMESPACE=1"
+
     config_path = etc/"#{name}"
     # Prevent system pear config from inhibiting pear install
     (config_path/"pear.conf").delete if (config_path/"pear.conf").exist?
