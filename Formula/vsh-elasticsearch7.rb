@@ -3,7 +3,7 @@ class VshElasticsearch7 < Formula
   homepage "https://www.elastic.co/products/elasticsearch"
   url "https://github.com/elastic/elasticsearch/archive/v7.8.1.tar.gz"
   sha256 "e222d4165fb4145222491e1ed33dad15acc7b56334ca6589202e2ee761900c78"
-  revision 5
+  revision 6
   license "Apache-2.0"
 
   bottle do
@@ -17,7 +17,7 @@ class VshElasticsearch7 < Formula
   depends_on "openjdk"
 
   def cluster_name
-    "elasticsearch_#{ENV["USER"]}"
+    "elasticsearch7"
   end
 
   def install
@@ -45,10 +45,7 @@ class VshElasticsearch7 < Formula
       inreplace "#{libexec}/config/jvm.options", %r{logs/gc.log}, "#{var}/log/#{name}/gc.log"
 
       config_file = "#{libexec}/config/elasticsearch.yml"
-      open(config_file, "a") { |f| f.puts "transport.host: 127.0.0.1\n" }
-
-      # Move config files into etc
-      #(etc/"#{name}").install Dir["config/*"]
+      open(config_file, "a") { |f| f.puts "transport.host: 127.0.0.1\ntransport.port: 9307\n" }
     end
 
 
@@ -80,10 +77,6 @@ class VshElasticsearch7 < Formula
               "CDPATH=\"\"",
               "JAVA_HOME=\"#{Formula['openjdk'].opt_libexec}/openjdk.jdk/Contents/Home\"\nCDPATH=\"\""
 
-#    bin.install libexec/"bin/elasticsearch",
-#                libexec/"bin/elasticsearch-keystore",
-#                libexec/"bin/elasticsearch-plugin",
-#                libexec/"bin/elasticsearch-shard"
     bin.env_script_all_files(libexec/"bin", JAVA_HOME: Formula["openjdk"].opt_prefix)
   end
 
@@ -97,6 +90,7 @@ class VshElasticsearch7 < Formula
     # fix test not being able to create keystore because of sandbox permissions
     system libexec/"bin/elasticsearch-keystore", "create" unless (etc/"#{name}/elasticsearch.keystore").exist?
 
+    # run plugin update script
     system libexec/"bin/elasticsearch-plugin-update"
   end
 
