@@ -10,7 +10,7 @@ class VshElasticsearch7 < Formula
     cellar :any_skip_relocation
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
     sha256 "fba5448e2af6d1a38f7be24c5e05f86bf37e61f77b639701ec86e74b0e72c518" => :catalina
-    sha256 "459d752923d81928b67ca7052643ede5484edb93e84d0a9fbfa9d498a0d7223a" => :mojave
+    sha256 "e2ff573f0683db50752c356c699b6b9398b3ef91aa52cda47fa99e467cee2206" => :mojave
   end
 
   depends_on "gradle" => :build
