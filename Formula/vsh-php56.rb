@@ -47,23 +47,22 @@ class VshPhp56 < Formula
     sha256 "c9715b544ae249c0e76136dfadd9d282237233459694b9e75d0e3e094ab0c993"
   end
 
+  resource "xdebug_module" do
+    url "https://github.com/xdebug/xdebug/archive/XDEBUG_2_5_5.tar.gz"
+    sha256 "77faf3bc49ca85d9b67ae2aa9d9cc4b017544f2566e918bf90fe23d68e044244"
+  end
+
+  resource "imagick_module" do
+    url "https://github.com/Imagick/imagick/archive/3.4.4.tar.gz"
+    sha256 "8204d228ecbe5f744d625c90364808616127471581227415bca18857af981369"
+  end
+
   def install
     # Ensure that libxml2 will be detected correctly in older MacOS
     ENV["SDKROOT"] = MacOS.sdk_path if MacOS.version == :el_capitan || MacOS.version == :sierra
 
     # buildconf required due to system library linking bug patch
     system "./buildconf", "--force"
-
-    # Update error message in apache sapi to better explain the requirements
-    # of using Apache http in combination with php if the non-compatible MPM
-    # has been selected. Homebrew has chosen not to support being able to
-    # compile a thread safe version of PHP and therefore it is not
-    # possible to recompile as suggested in the original message
-    inreplace "sapi/apache2handler/sapi_apache2.c",
-              "You need to recompile PHP.",
-              "Homebrew PHP does not support a thread-safe php binary. "\
-              "To use the PHP apache sapi please change "\
-              "your httpd config to use the prefork MPM"
 
     inreplace "sapi/fpm/php-fpm.conf.in", ";daemonize = yes", "daemonize = no"
 
@@ -73,10 +72,7 @@ class VshPhp56 < Formula
     # Required due to icu4c dependency
     ENV.cxx11
 
-    # icu4c 61.1 compatability
-    ENV.append "CPPFLAGS", "-DU_USING_ICU_NAMESPACE=1"
-
-    config_path = etc/"vsh-php/#{php_version}"
+    config_path = etc/"#{name}"
     # Prevent system pear config from inhibiting pear install
     (config_path/"pear.conf").delete if (config_path/"pear.conf").exist?
 
@@ -87,9 +83,8 @@ class VshPhp56 < Formula
     # sdk path or it won't find the headers
     headers_path = "=#{MacOS.sdk_path_if_needed}/usr"
 
+    ENV["EXTENSION_DIR"] = "#{prefix}/lib/#{name}/20131226"
     ENV["PHP_PEAR_PHP_BIN"] = "#{bin}/php#{bin_suffix}"
-
-    ENV["YACC"] = "#{Formula["bison"].opt_bin}/bison"
 
     args = %W[
       --prefix=#{prefix}
@@ -166,6 +161,22 @@ class VshPhp56 < Formula
     system "./configure", *args
     system "make"
     system "make", "install"
+
+    resource("xdebug_module").stage {
+      system "#{bin}/phpize#{bin_suffix}"
+      system "./configure", "--with-php-config=#{bin}/php-config#{bin_suffix}"
+      system "make", "clean"
+      system "make", "all"
+      system "make", "install"
+    }
+
+    resource("imagick_module").stage {
+      system "#{bin}/phpize#{bin_suffix}"
+      system "./configure", "--with-php-config=#{bin}/php-config#{bin_suffix}"
+      system "make", "clean"
+      system "make", "all"
+      system "make", "install"
+    }
 
    # Use OpenSSL cert bundle
     openssl = Formula["openssl@1.1"]

@@ -44,8 +44,8 @@ class VshPhp71 < Formula
   patch :DATA
 
   resource "xdebug_module" do
-    url "https://github.com/xdebug/xdebug/archive/2.8.1.tar.gz"
-    sha256 "18b5ad4d8fb19233aef5057b4695927647e2da5a3c2812c9663863d00a5a654c"
+    url "https://github.com/xdebug/xdebug/archive/2.9.8.tar.gz"
+    sha256 "28f8de8e6491f51ac9f551a221275360458a01c7690c42b23b9a0d2e6429eff4"
   end
 
   resource "imagick_module" do
@@ -55,14 +55,7 @@ class VshPhp71 < Formula
 
   def install
     # Ensure that libxml2 will be detected correctly in older MacOS
-    if MacOS.version == :el_capitan || MacOS.version == :sierra
-      ENV["SDKROOT"] = MacOS.sdk_path
-    end
-
-    current_working_dir = Dir.pwd
-    resource("imagick_module").stage {
-      mv Dir.pwd, "#{current_working_dir}/ext/imagick"
-    }
+    ENV["SDKROOT"] = MacOS.sdk_path if MacOS.version == :el_capitan || MacOS.version == :sierra
 
     # buildconf required due to system library linking bug patch
     system "./buildconf", "--force"
@@ -97,7 +90,6 @@ class VshPhp71 < Formula
       --with-config-file-scan-dir=#{config_path}/conf.d
       --program-suffix=#{bin_suffix}
       --with-pear=#{pkgshare}/pear
-      --with-imagick=shared
       --enable-bcmath
       --enable-calendar
       --enable-dba
@@ -168,6 +160,14 @@ class VshPhp71 < Formula
     system "make", "install"
 
     resource("xdebug_module").stage {
+      system "#{bin}/phpize#{bin_suffix}"
+      system "./configure", "--with-php-config=#{bin}/php-config#{bin_suffix}"
+      system "make", "clean"
+      system "make", "all"
+      system "make", "install"
+    }
+
+    resource("imagick_module").stage {
       system "#{bin}/phpize#{bin_suffix}"
       system "./configure", "--with-php-config=#{bin}/php-config#{bin_suffix}"
       system "make", "clean"

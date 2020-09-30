@@ -37,30 +37,28 @@ class VshPhp70 < Formula
   depends_on "tidy-html5"
   depends_on "unixodbc"
   depends_on "webp"
+  depends_on "imagemagick"
 
   # PHP build system incorrectly links system libraries
   # see https://github.com/php/php-src/pull/3472
   patch :DATA
 
+  resource "xdebug_module" do
+    url "https://github.com/xdebug/xdebug/archive/2.7.2.tar.gz"
+    sha256 "b2aeb55335c5649034fe936abb90f61df175c4f0a0f0b97a219b3559541edfbd"
+  end
+
+  resource "imagick_module" do
+    url "https://github.com/Imagick/imagick/archive/3.4.4.tar.gz"
+    sha256 "8204d228ecbe5f744d625c90364808616127471581227415bca18857af981369"
+  end
+
   def install
     # Ensure that libxml2 will be detected correctly in older MacOS
-    if MacOS.version == :el_capitan || MacOS.version == :sierra
-      ENV["SDKROOT"] = MacOS.sdk_path
-    end
+    ENV["SDKROOT"] = MacOS.sdk_path if MacOS.version == :el_capitan || MacOS.version == :sierra
 
     # buildconf required due to system library linking bug patch
     system "./buildconf", "--force"
-
-    # Update error message in apache sapi to better explain the requirements
-    # of using Apache http in combination with php if the non-compatible MPM
-    # has been selected. Homebrew has chosen not to support being able to
-    # compile a thread safe version of PHP and therefore it is not
-    # possible to recompile as suggested in the original message
-    inreplace "sapi/apache2handler/sapi_apache2.c",
-              "You need to recompile PHP.",
-              "Homebrew PHP does not support a thread-safe php binary. "\
-              "To use the PHP apache sapi please change "\
-              "your httpd config to use the prefork MPM"
 
     inreplace "sapi/fpm/php-fpm.conf.in", ";daemonize = yes", "daemonize = no"
 
@@ -70,10 +68,7 @@ class VshPhp70 < Formula
     # Required due to icu4c dependency
     ENV.cxx11
 
-    # icu4c 61.1 compatability
-    ENV.append "CPPFLAGS", "-DU_USING_ICU_NAMESPACE=1"
-
-    config_path = etc/"vsh-php/#{php_version}"
+    config_path = etc/"#{name}"
     # Prevent system pear config from inhibiting pear install
     (config_path/"pear.conf").delete if (config_path/"pear.conf").exist?
 
@@ -84,12 +79,16 @@ class VshPhp70 < Formula
     # sdk path or it won't find the headers
     headers_path = "=#{MacOS.sdk_path_if_needed}/usr"
 
+    ENV["EXTENSION_DIR"] = "#{prefix}/lib/#{name}/20151012"
     ENV["PHP_PEAR_PHP_BIN"] = "#{bin}/php#{bin_suffix}"
 
     args = %W[
       --prefix=#{prefix}
       --localstatedir=#{var}
       --sysconfdir=#{config_path}
+      --libdir=#{prefix}/lib/#{name}
+      --includedir=#{prefix}/include/#{name}
+      --datadir=#{prefix}/share/#{name}
       --with-config-file-path=#{config_path}
       --with-config-file-scan-dir=#{config_path}/conf.d
       --program-suffix=#{bin_suffix}
@@ -163,14 +162,21 @@ class VshPhp70 < Formula
     system "make"
     system "make", "install"
 
-    #unless (var/"#{name}/#{php_ext_dir}").exist?
-    #  (var/"#{name}/#{php_ext_dir}").mkpath
-    #end
+    resource("xdebug_module").stage {
+      system "#{bin}/phpize#{bin_suffix}"
+      system "./configure", "--with-php-config=#{bin}/php-config#{bin_suffix}"
+      system "make", "clean"
+      system "make", "all"
+      system "make", "install"
+    }
 
-    #inreplace bin/"php-config#{bin_suffix}", lib/"php/#{php_ext_dir}", var/"#{name}/#{php_ext_dir}"
-
-    #inreplace "php.ini-development", %r{; ?extension_dir = "\./"},
-        #"extension_dir = \"#{var}/#{name}/#{php_ext_dir}\""
+    resource("imagick_module").stage {
+      system "#{bin}/phpize#{bin_suffix}"
+      system "./configure", "--with-php-config=#{bin}/php-config#{bin_suffix}"
+      system "make", "clean"
+      system "make", "all"
+      system "make", "install"
+    }
 
     config_files = {
       "php.ini-development"   => "php.ini",
@@ -196,24 +202,27 @@ class VshPhp70 < Formula
     rm_f "#{bin}/phar"
     ln_s "#{bin}/phar#{bin_suffix}.phar", "#{bin}/phar#{bin_suffix}"
 
+    mv "#{man1}/phar.1", "#{man1}/phar#{bin_suffix}.1"
+    mv "#{man1}/phar.phar.1", "#{man1}/phar#{bin_suffix}.phar.1"
+
   end
 
   def post_install
 
     # check if php extension dir (e.g. 20180731) exists and is not a symlink
     # only relevant when running "brew postinstall" manually
-    if (lib/"php/#{php_ext_dir}").exist? && !(lib/"php/#{php_ext_dir}").symlink?
+    if (lib/"#{name}/#{php_ext_dir}").exist? && !(lib/"#{name}/#{php_ext_dir}").symlink?
         unless (var/"#{name}/#{php_ext_dir}").exist?
             (var/"#{name}/#{php_ext_dir}").mkpath
         end
 
-        Dir.glob(lib/"php/#{php_ext_dir}/*") do |php_module|
+        Dir.glob(lib/"#{name}/#{php_ext_dir}/*") do |php_module|
             php_module_name = File.basename(php_module)
             mv "#{php_module}", var/"#{name}/#{php_ext_dir}/#{php_module_name}"
         end
 
-        rm_r lib/"php/#{php_ext_dir}"
-        ln_s var/"#{name}/#{php_ext_dir}", lib/"php/#{php_ext_dir}"
+        rm_r lib/"#{name}/#{php_ext_dir}"
+        ln_s var/"#{name}/#{php_ext_dir}", lib/"#{name}/#{php_ext_dir}"
     end
 
     pear_prefix = pkgshare/"pear"
@@ -238,7 +247,7 @@ class VshPhp70 < Formula
     chmod 0644, pear_files
 
     {
-      "php_ini"  => etc/"vsh-php/#{php_version}/php.ini"
+      "php_ini"  => etc/"#{name}/php.ini"
     }.each do |key, value|
       value.mkpath if /(?<!bin|man)_dir$/.match?(key)
       system bin/"pear#{bin_suffix}", "config-set", key, value, "system"
@@ -249,7 +258,7 @@ class VshPhp70 < Formula
     %w[
       opcache
     ].each do |e|
-      ext_config_path = etc/"vsh-php/#{php_version}/conf.d/ext-#{e}.ini"
+      ext_config_path = etc/"#{name}/conf.d/ext-#{e}.ini"
       extension_type = (e == "opcache") ? "zend_extension" : "extension"
       if ext_config_path.exist?
         inreplace ext_config_path,
@@ -297,7 +306,7 @@ class VshPhp70 < Formula
         <key>WorkingDirectory</key>
         <string>#{var}</string>
         <key>StandardErrorPath</key>
-        <string>#{var}/log/php-fpm#{bin_suffix}.log</string>
+        <string>#{var}/log/#{name}.log</string>
       </dict>
     </plist>
   EOS
