@@ -2,7 +2,7 @@ class VshPhp73 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   url "https://www.php.net/distributions/php-7.3.22.tar.xz"
-  revision 38
+  revision 39
   mirror "https://fossies.org/linux/www/php-7.3.22.tar.xz"
   sha256 "0e66606d3bdab5c2ae3f778136bfe8788e574913a3d8138695e54d98562f1fb5"
 
