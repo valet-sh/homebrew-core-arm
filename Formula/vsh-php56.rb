@@ -4,7 +4,7 @@ class VshPhp56 < Formula
   url "https://php.net/get/php-5.6.40.tar.xz/from/this/mirror"
   sha256 "1369a51eee3995d7fbd1c5342e5cc917760e276d561595b6052b21ace2656d1c"
   license "PHP-3.01"
-  revision 35
+  revision 36
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
@@ -38,6 +38,7 @@ class VshPhp56 < Formula
   depends_on "tidy-html5"
   depends_on "unixodbc"
   depends_on "imagemagick"
+  depends_on "geoip"
 
   # PHP build system incorrectly links system libraries
   # see https://github.com/php/php-src/pull/3472
@@ -56,6 +57,11 @@ class VshPhp56 < Formula
   resource "imagick_module" do
     url "https://github.com/Imagick/imagick/archive/3.4.4.tar.gz"
     sha256 "8204d228ecbe5f744d625c90364808616127471581227415bca18857af981369"
+  end
+
+  resource "geoip_module" do
+    url "https://github.com/valet-sh/php-geoip/releases/download/1.1.1/geoip-1.1.1.tar.gz"
+    sha256 "33280eb74a4ea4cbc1a3867f8fd0f633f9de2d19043d4825bf57863d0c5e20e7"
   end
 
   def install
@@ -174,6 +180,14 @@ class VshPhp56 < Formula
     }
 
     resource("imagick_module").stage {
+      system "#{bin}/phpize#{bin_suffix}"
+      system "./configure", "--with-php-config=#{bin}/php-config#{bin_suffix}"
+      system "make", "clean"
+      system "make", "all"
+      system "make", "install"
+    }
+
+    resource("geoip_module").stage {
       system "#{bin}/phpize#{bin_suffix}"
       system "./configure", "--with-php-config=#{bin}/php-config#{bin_suffix}"
       system "make", "clean"
