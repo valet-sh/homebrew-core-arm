@@ -4,8 +4,8 @@ class VshElasticsearch2 < Formula
   url "https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/tar/elasticsearch/2.4.6/elasticsearch-2.4.6.tar.gz"
   sha256 "5f7e4bb792917bb7ffc2a5f612dfec87416d54563f795d6a70637befef4cfc6f"
   license "Apache-2.0"
-  
-  # 2
+  revision 1
+
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
     sha256 "cd3dfc134ee02f1192f98b8cc926869d0f5d6f894b440314d8cb542c87540301" => :catalina
@@ -60,7 +60,9 @@ class VshElasticsearch2 < Formula
     (etc/"#{name}").install Dir[libexec/"config/*"]
     (libexec/"config").rmtree
 
-    #bin.env_script_all_files(libexec/"bin", Language::Java.java_home_env("1.8"))
+    inreplace libexec/"bin/elasticsearch-env",
+          "CDPATH=\"\"",
+          "JAVA_HOME=\"/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home\"\nCDPATH=\"\""
   end
 
   def post_install

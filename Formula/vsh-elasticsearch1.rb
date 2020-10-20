@@ -4,6 +4,7 @@ class VshElasticsearch1 < Formula
   url "https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.7.6.tar.gz"
   sha256 "78affc30353730ec245dad1f17de242a4ad12cf808eaa87dd878e1ca10ed77df"
   license "Apache-2.0"
+  revision 1
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
@@ -26,10 +27,6 @@ class VshElasticsearch1 < Formula
 
     # Install everything else into package directory
     libexec.install "bin", "config", "lib"
-
-#    inreplace libexec/"bin/elasticsearch-env",
-#              "if [ -z \"$ES_PATH_CONF\" ]; then ES_PATH_CONF=\"$ES_HOME\"/config; fi",
-#              "if [ -z \"$ES_PATH_CONF\" ]; then ES_PATH_CONF=\"#{etc}/#{name}\"; fi"
 
     # Set up Elasticsearch for local development:
     inreplace "#{libexec}/config/elasticsearch.yml" do |s|
@@ -58,7 +55,9 @@ class VshElasticsearch1 < Formula
     (etc/"#{name}").install Dir[libexec/"config/*"]
     (libexec/"config").rmtree
 
-    #bin.env_script_all_files(libexec/"bin", Language::Java.java_home_env("1.8"))
+    inreplace libexec/"bin/elasticsearch-env",
+          "CDPATH=\"\"",
+          "JAVA_HOME=\"/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home\"\nCDPATH=\"\""
   end
 
   def post_install

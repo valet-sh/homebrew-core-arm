@@ -4,7 +4,7 @@ class VshElasticsearch5 < Formula
   url "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.6.16.tar.gz"
   sha256 "6b035a59337d571ab70cea72cc55225c027ad142fbb07fd8984e54261657c77f"
   license "Apache-2.0"
-  revision 1
+  revision 2
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
@@ -68,7 +68,9 @@ class VshElasticsearch5 < Formula
 
     chmod 0755, libexec/"bin/elasticsearch-plugin-update"
 
-    bin.env_script_all_files(libexec/"bin", Language::Java.java_home_env("1.8"))
+    inreplace libexec/"bin/elasticsearch-env",
+              "CDPATH=\"\"",
+              "JAVA_HOME=\"/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home\"\nCDPATH=\"\""
   end
 
   def post_install

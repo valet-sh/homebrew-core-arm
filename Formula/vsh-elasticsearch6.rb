@@ -3,6 +3,7 @@ class VshElasticsearch6 < Formula
   homepage "https://www.elastic.co/products/elasticsearch"
   url "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-oss-6.8.12.tar.gz"
   sha256 "feb6c43fe66055360754597350c088025b40566cee16175b005e55660d9e62fd"
+  revision 1
   license "Apache-2.0"
 
   bottle do
@@ -39,8 +40,6 @@ class VshElasticsearch6 < Formula
       s.sub!(%r{#\s*path\.logs: /path/to.+$}, "path.logs: #{var}/log/#{name}/")
     end
 
-    inreplace "#{libexec}/config/jvm.options", %r{logs/gc.log}, "#{var}/log/#{name}/gc.log"
-
     config_file = "#{libexec}/config/elasticsearch.yml"
     open(config_file, "a") { |f| f.puts "transport.host: 127.0.0.1\ntransport.port: 9306\n" }
 
@@ -63,6 +62,10 @@ class VshElasticsearch6 < Formula
     EOS
 
     chmod 0755, libexec/"bin/elasticsearch-plugin-update"
+
+    inreplace libexec/"bin/elasticsearch-env",
+              "CDPATH=\"\"",
+              "JAVA_HOME=\"/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home\"\nCDPATH=\"\""
 
     bin.env_script_all_files(libexec/"bin", Language::Java.java_home_env("1.8"))
   end
