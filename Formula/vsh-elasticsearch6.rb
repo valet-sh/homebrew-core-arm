@@ -39,6 +39,8 @@ class VshElasticsearch6 < Formula
       s.sub!(%r{#\s*path\.logs: /path/to.+$}, "path.logs: #{var}/log/#{name}/")
     end
 
+    inreplace "#{libexec}/config/jvm.options", %r{logs/gc.log}, "#{var}/log/#{name}/gc.log"
+
     config_file = "#{libexec}/config/elasticsearch.yml"
     open(config_file, "a") { |f| f.puts "transport.host: 127.0.0.1\ntransport.port: 9306\n" }
 
