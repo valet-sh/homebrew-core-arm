@@ -90,4 +90,15 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         working-directory: .github/ansible
         run: ansible-playbook playbooks/update-formulas.yml
+   
+  automerge:
+    if: "!contains(github.event.commits[0].message, '[skip ci]')"
+    needs: [update-formulas]
+    runs-on: ubuntu-latest
+    steps:
+      - name: automerge
+        uses: "pascalgn/automerge-action@v0.12.0"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          MERGE_DELETE_BRANCH: true
 
