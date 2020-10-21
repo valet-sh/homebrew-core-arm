@@ -90,6 +90,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         working-directory: .github/ansible
         run: ansible-playbook playbooks/update-formulas.yml
+      
+      - uses: actions/labeler@main
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
    
   automerge:
     if: "!contains(github.event.commits[0].message, '[skip ci]')"
