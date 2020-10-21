@@ -17,7 +17,7 @@
       when: git_last_commit_author == git_author_name
 
     - name: "Get list of modified formulas since last commit"
-      shell: git show --pretty="" --name-only HEAD | grep "Formula/" | cut -d / -f 2
+      shell: "git log -m -1 --name-only --pretty=\"format:\" | grep \"Formula/\" | cut -d / -f 2"
       register: git_show_result
 
     - set_fact:
