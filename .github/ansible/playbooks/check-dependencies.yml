@@ -12,24 +12,9 @@
       set_fact:
         github_commit_filter_timestamp: "{{ github_commit_filter_timestamp_obj.stdout }}"
 
-    - name: Configure git
-      shell: |
-        git config --global user.name "{{ git_author_dependencies_name }}"
-        git config --global user.email "{{ git_author_dependencies_email }}"
-        git config --global core.mergeoptions --no-edit
-        git pull origin master
-      args:
-        chdir: "{{ base_path }}"
-
     - name: check for formula dependencies
       include_tasks: tasks/flag-formula.yml
       with_items: "{{ github_commit_filter }}"
       loop_control:
         loop_var: github_commit_filter_item
 
-    - name: Commit and push changes
-      shell: |
-        git commit -a -m "{{ git_dependency_update_commit_message }}"
-        git push {{ github_repository_url }} HEAD:master --follow-tags
-      args:
-        chdir: "{{ base_path }}"
