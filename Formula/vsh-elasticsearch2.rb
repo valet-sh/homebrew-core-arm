@@ -60,7 +60,7 @@ class VshElasticsearch2 < Formula
     (etc/"#{name}").install Dir[libexec/"config/*"]
     (libexec/"config").rmtree
 
-    inreplace libexec/"bin/elasticsearch-env",
+    inreplace libexec/"bin/elasticsearch",
           "CDPATH=\"\"",
           "JAVA_HOME=\"/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home\"\nCDPATH=\"\""
   end
