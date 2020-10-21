@@ -2,7 +2,7 @@ name: dependencies
 
 on:
   schedule:
-    - cron: "*/45 * * * *"
+    - cron: "*/55 * * * *"
 
 jobs:
 
@@ -22,7 +22,11 @@ jobs:
           pip install -Iq -r requirements.txt
 
       - name: Check dependencies
-        env:
-          GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
         working-directory: .github/ansible
         run: ansible-playbook playbooks/check-dependencies.yml
+        
+      - uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.DEPLOY_TOKEN }}
+          commit-message: Trigger bottle rebuild
+          committer: valet.sh dependency bot <noreply@valet.sh>
