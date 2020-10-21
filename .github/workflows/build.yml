@@ -1,9 +1,9 @@
 name: build
 
 on:
-  push:
+  pull_request:
     paths:
-    - 'Formula/**.rb'
+      - 'Formula/**.rb'
 
 jobs:
 
