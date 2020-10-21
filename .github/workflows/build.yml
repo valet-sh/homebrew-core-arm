@@ -7,9 +7,9 @@ on:
 
 jobs:
 
-  build-bottles:
+  build-catalina-bottles:
     if: "!contains(github.event.commits[0].message, '[skip ci]')"
-    runs-on: macOS-latest
+    runs-on: macos-10.15
     steps:
       - uses: actions/setup-python@v1
         with:
@@ -35,10 +35,41 @@ jobs:
           name: build
           path: build
 
+  build-bigsur-bottles:
+    if: "!contains(github.event.commits[0].message, '[skip ci]')"
+    runs-on: macos-11.0
+    steps:
+      - uses: actions/setup-python@v1
+        with:
+          python-version: 3.6
+
+      - uses: actions/checkout@v1
+      
+      - uses: actions/download-artifact@v1
+        with:
+          name: build
+
+      - name: Install dependencies
+        working-directory: .github/ansible
+        run: |
+          brew doctor || true
+          brew update || true
+          brew upgrade $(brew outdated --formula -q) || true
+          python -m pip install --upgrade pip
+          pip install -Iq -r requirements.txt
+
+      - name: Build bottles
+        working-directory: .github/ansible
+        run: ansible-playbook -vvv playbooks/build-bottles.yml
+
+      - uses: actions/upload-artifact@v1
+        with:
+          name: build
+          path: build
 
   upload-bottles:
     if: "!contains(github.event.commits[0].message, '[skip ci]')"
-    needs: [build-bottles]
+    needs: [build-catalina-bottles, build-bigsur-bottles]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/setup-python@v1
