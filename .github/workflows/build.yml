@@ -20,7 +20,7 @@ jobs:
       - name: Install dependencies
         working-directory: .github/ansible
         run: |
-          brew update
+          brew update || true
           brew upgrade $(brew outdated --formula -q) || true
           python -m pip install --upgrade pip
           pip install -Iq -r requirements.txt
