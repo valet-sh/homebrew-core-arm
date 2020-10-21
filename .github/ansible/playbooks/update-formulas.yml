@@ -34,7 +34,7 @@
     - name: Commit and push changes
       shell: |
         git commit -a -m "{{ git_commit_message }}"
-        git push {{ github_repository_url }} HEAD:master --follow-tags
+        git push {{ github_repository_url }} HEAD --follow-tags
       args:
         chdir: "{{ base_path }}"
    
