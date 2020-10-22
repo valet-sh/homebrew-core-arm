@@ -28,5 +28,6 @@ jobs:
       - uses: peter-evans/create-pull-request@v3
         with:
           token: ${{ secrets.DEPLOY_TOKEN }}
+          base: master
           commit-message: Trigger bottle rebuild
           committer: valet.sh dependency bot <noreply@valet.sh>
