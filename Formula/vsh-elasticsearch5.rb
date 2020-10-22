@@ -68,7 +68,7 @@ class VshElasticsearch5 < Formula
 
     chmod 0755, libexec/"bin/elasticsearch-plugin-update"
 
-    inreplace libexec/"bin/elasticsearch-env",
+    inreplace libexec/"bin/elasticsearch",
               "CDPATH=\"\"",
               "JAVA_HOME=\"/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home\"\nCDPATH=\"\""
   end
