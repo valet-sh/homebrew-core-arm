@@ -37,7 +37,7 @@ jobs:
 
   upload-bottles:
     if: "!contains(github.event.commits[0].message, '[skip ci]')"
-    needs: [build-catalina-bottles, build-bigsur-bottles]
+    needs: [build-catalina-bottles]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/setup-python@v1
