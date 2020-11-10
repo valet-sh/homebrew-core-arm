@@ -23,6 +23,16 @@
     - set_fact:
         git_modified_formulas: "{{ git_show_result.stdout_lines }}"
 
+    - name: "ensure xcode 11.7 is installed on macos 10.15"
+      shell: "xcode-select -s /Applications/Xcode_11.7.app"
+      when: ansible_distribution_version is version('10.15.0', '>=') and ansible_distribution_version is version('10.16.0', '<')
+      become: true
+
+    - name: "ensure xcode 12.2 is installed on macos 11.0"
+      shell: "xcode-select -s /Applications/Xcode_12.2.app"
+      when: ansible_distribution_version is version('11.0.0', '>=')
+      become: true
+
     - name: Build bottles for modified formulas
       shell: |
         brew install -v --build-bottle {{ formula_path }}/{{ item }}
