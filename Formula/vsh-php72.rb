@@ -1,10 +1,10 @@
 class VshPhp72 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://www.php.net/distributions/php-7.2.33.tar.xz"
+  url "https://www.php.net/distributions/php-7.2.34.tar.xz"
   revision 59
-  mirror "https://fossies.org/linux/www/php-7.2.33.tar.xz"
-  sha256 "0f160a3483ffce36be5962fab7bcf09d605ee66c5707df83e4195cb796bbb03a"
+  mirror "https://fossies.org/linux/www/php-7.2.34.tar.xz"
+  sha256 "409e11bc6a2c18707dfc44bc61c820ddfd81e17481470f3405ee7822d8379903"
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
