@@ -3,13 +3,13 @@ class VshMysql80 < Formula
   desc "Open source relational database management system"
   homepage "https://dev.mysql.com/doc/refman/8.0/en/"
   url "https://cdn.mysql.com/Downloads/MySQL-8.0/mysql-boost-8.0.21.tar.gz"
-  revision 5
+  revision 6
   sha256 "37231a123372a95f409857364dc1deb196b6f2c0b1fe60cc8382c7686b487f11"
   license "GPL-2.0"
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 "6dd9d5cf30e1f481ef9edd73fc6d6ce08865ad2ec02e33d7e1304a5f7ec8665e" => :catalina
+    sha256 "24d5c31b85061d61e83088b4cedd4208d24f4ca8f4b68e9617e227993c8e70be" => :catalina
     sha256 "279a93421cec441b0ef3193008341116c96f444950fb8e3e63e968a5664f4ef4" => :mojave
   end
 
