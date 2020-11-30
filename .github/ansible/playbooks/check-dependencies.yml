@@ -5,7 +5,7 @@
 
   tasks:
     - name: "get github timestamp filter"
-      shell: "date -d '1 hour ago' --utc +%FT%TZ"
+      shell: "date -d '6 hour ago' --utc +%FT%TZ"
       register: github_commit_filter_timestamp_obj
 
     - name: "prepare var 'github_commit_filter_timestamp'"
