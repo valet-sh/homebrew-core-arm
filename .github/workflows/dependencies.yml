@@ -29,5 +29,6 @@ jobs:
         with:
           token: ${{ secrets.DEPLOY_TOKEN }}
           base: master
+          branch-suffix: timestamp
           commit-message: Trigger bottle rebuild
           committer: valet.sh dependency bot <noreply@valet.sh>
