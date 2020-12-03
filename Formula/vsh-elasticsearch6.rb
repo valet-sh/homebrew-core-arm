@@ -3,7 +3,7 @@ class VshElasticsearch6 < Formula
   homepage "https://www.elastic.co/products/elasticsearch"
   url "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-oss-6.8.12.tar.gz"
   sha256 "feb6c43fe66055360754597350c088025b40566cee16175b005e55660d9e62fd"
-  revision 4
+  revision 5
   license "Apache-2.0"
 
   bottle do
@@ -11,7 +11,7 @@ class VshElasticsearch6 < Formula
     sha256 "1ce651df65c03c4db54ca0b770201ede75f0ddb976c8cf59cc27abb7592d88a6" => :catalina
   end
 
-  depends_on :java => "1.8"
+  depends_on "openjdk@8"
 
   def cluster_name
     "elasticsearch6"
