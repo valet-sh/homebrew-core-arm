@@ -9,7 +9,7 @@ class VshPhp73 < Formula
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 "36f924fa766139ac99425988e787ded247fcbbf0adefa593850e7ade84217db1" => :catalina
+    sha256 "e1b6ddb5f42c0351698e5a8f215be98c6dbc26b3a12f81ccc5043ebb3c2fc1a4" => :catalina
   end
 
   depends_on "pkg-config" => :build
