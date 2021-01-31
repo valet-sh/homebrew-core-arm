@@ -2,14 +2,14 @@ class VshPhp73 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   url "https://www.php.net/distributions/php-7.3.24.tar.xz"
-  revision 22
+  revision 23
   mirror "https://fossies.org/linux/www/php-7.3.24.tar.xz"
   sha256 "78b0b417a147ab7572c874334d11654e3c61ec5b3f2170098e5db02fb0c89888"
   license "PHP-3.01"
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 "4e3112d78a86720356e431b377678c93d2da00b91bb78b941842c858bb0382fa" => :catalina
+    sha256 "0e879867a471cf8b904981a45a8d45dbd523dab2c61faa190c1ab310b0524cd0" => :catalina
   end
 
   depends_on "pkg-config" => :build
