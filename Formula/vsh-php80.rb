@@ -2,7 +2,7 @@ class VshPhp80 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   url "https://www.php.net/distributions/php-8.0.0.tar.xz"
-  revision 15
+  revision 16
   license "PHP-3.01"
 
   bottle do
