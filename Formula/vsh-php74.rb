@@ -4,7 +4,7 @@ class VshPhp74 < Formula
   url "https://www.php.net/distributions/php-7.4.15.tar.xz"
   revision 1
   mirror "https://fossies.org/linux/www/php-7.4.15.tar.xz"
-  sha256 "c7403988b69212335dec79e869abe9dbb23d60ea7f6eb16fd6ff99ed6b5f1c87"
+  sha256 "9b859c65f0cf7b3eff9d4a28cfab719fb3d36a1db3c20d874a79b5ec44d43cb8"
   license "PHP-3.01"
 
   bottle do
