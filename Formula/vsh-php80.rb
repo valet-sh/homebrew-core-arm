@@ -295,7 +295,7 @@ class VshPhp80 < Formula
     File.basename(extension_dir)
   end
 
-  plist_options :manual => "php-fpm7.4"
+  plist_options :manual => "php-fpm8.0"
 
   def plist; <<~EOS
     <?xml version="1.0" encoding="UTF-8"?>
