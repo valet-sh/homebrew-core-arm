@@ -2,12 +2,12 @@ class VshPhp71 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   url "https://www.php.net/distributions/php-7.1.33.tar.xz"
-  revision 79
+  revision 80
   sha256 "bd7c0a9bd5433289ee01fd440af3715309faf583f75832b64fe169c100d52968"
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 "70e39feeda1d866fc3eb303a992243e535b039fb1ed5fbe997a0d86b5c133690" => :catalina
+    sha256 "41d7d9ec88c302b1dcceb4e328951b3b08b769e8d0a9e3ab23eb41d28ff8496d" => :catalina
   end
 
   depends_on "pkg-config" => :build
