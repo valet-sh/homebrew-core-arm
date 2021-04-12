@@ -32,3 +32,6 @@ jobs:
           branch-suffix: timestamp
           commit-message: Trigger bottle rebuild
           committer: valet.sh dependency bot <noreply@valet.sh>
+          labels: |
+            build
+            automerge
