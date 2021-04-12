@@ -21,11 +21,6 @@ jobs:
     needs: [verify]
     runs-on: macos-10.15
     steps:
-        
-      - uses: jesusvasquez333/verify-pr-label-action@v1.4.0
-        with:
-          github-token: '${{ secrets.GITHUB_TOKEN }}'
-          valid-labels: 'build'
       
       - uses: actions/setup-python@v1
         with:
