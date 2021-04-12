@@ -7,12 +7,21 @@ on:
       - 'Formula/**.rb'
 
 jobs:
+  
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: jesusvasquez333/verify-pr-label-action@v1.4.0
+        with:
+          github-token: '${{ secrets.GITHUB_TOKEN }}'
+          valid-labels: 'build'
 
   build-catalina-bottles:
     if: "!contains(github.event.commits[0].message, '[skip ci]')"
+    needs: [verify]
     runs-on: macos-10.15
     steps:
-    
+        
       - uses: jesusvasquez333/verify-pr-label-action@v1.4.0
         with:
           github-token: '${{ secrets.GITHUB_TOKEN }}'
