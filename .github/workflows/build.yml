@@ -7,19 +7,9 @@ on:
       - 'Formula/**.rb'
 
 jobs:
-  
-  verify:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: mheap/github-action-required-labels@v1
-        with:
-          mode: exactly
-          count: 1
-          labels: "build"
 
   build-catalina-bottles:
-    if: "!contains(github.event.commits[0].message, '[skip ci]')"
-    needs: [verify]
+    if: "!contains(github.event.commits[0].message, '[skip ci]') && contains( github.event.pull_request.labels.*.name, 'build')"
     runs-on: macos-10.15
     steps:
       
@@ -48,7 +38,7 @@ jobs:
           path: build
  
   upload-bottles:
-    if: "!contains(github.event.commits[0].message, '[skip ci]')"
+    if: "!contains(github.event.commits[0].message, '[skip ci]') && contains( github.event.pull_request.labels.*.name, 'build')"
     needs: [build-catalina-bottles]
     runs-on: ubuntu-latest
     steps:
@@ -76,7 +66,7 @@ jobs:
 
 
   update-formulas:
-    if: "!contains(github.event.commits[0].message, '[skip ci]')"
+    if: "!contains(github.event.commits[0].message, '[skip ci]') && contains( github.event.pull_request.labels.*.name, 'build')"
     needs: [upload-bottles]
     runs-on: ubuntu-latest
     steps:
@@ -105,7 +95,7 @@ jobs:
         run: ansible-playbook playbooks/update-formulas.yml
          
   automerge:
-    if: "!contains(github.event.commits[0].message, '[skip ci]')"
+    if: "!contains(github.event.commits[0].message, '[skip ci]') && contains( github.event.pull_request.labels.*.name, 'build')"
     needs: [update-formulas]
     runs-on: ubuntu-latest
     steps:
