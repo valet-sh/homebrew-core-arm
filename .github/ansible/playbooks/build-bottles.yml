@@ -35,8 +35,8 @@
 
     - name: Build bottles for modified formulas
       shell: |
-        brew install -v --build-bottle {{ formula_path }}/{{ item }}
-        brew bottle {{ formula_path }}/{{ item }} --json --force-core-tap
+        brew install --build-bottle --formula {{ formula_path }}/{{ item }}
+        brew bottle {{ formula_path }}/{{ item }} --json --force-core-tap --only-json-tab --no-rebuild
       loop: "{{ git_modified_formulas }}"
 
     - name: Creates build folder
