@@ -3,13 +3,13 @@ class VshMysql57 < Formula
   desc "Open source relational database management system"
   homepage "https://dev.mysql.com/doc/refman/5.7/en/"
   url "https://cdn.mysql.com/Downloads/MySQL-5.7/mysql-5.7.31-macos10.14-x86_64.tar.gz"
-  revision 1
+  revision 2
   version "5.7.31"
   sha256 "0d949c4dda2d9bd3e2fd5d5068c14cda48c995bbe0c3da2f5334ff449126f6be"
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 catalina: "2a29fd641e63bfec0870d0f76132b4b306873e78930f47e80e2882a84d1953d3"
+    sha256 catalina: "fc73aebd84007d32a729a43154dbc22ef5f425f1d145107e5d7185ce4c8e8d82"
   end
 
   def datadir
