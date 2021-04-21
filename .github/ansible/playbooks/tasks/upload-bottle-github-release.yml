@@ -32,6 +32,10 @@
     status_code: 204
   when: github_release_asset_id != ""
 
+- name: debug var
+  debug:
+    msg: "{{ bottle_filename }}"
+
 - name: "upload bottle asset on github release"
   uri:
     url: "https://uploads.github.com/repos/valet-sh/homebrew-core/releases/{{ github_release_id }}/assets?name={{ bottle_filename }}"
