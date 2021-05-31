@@ -11,7 +11,7 @@ class VshElasticsearch7 < Formula
     sha256 cellar: :any_skip_relocation, catalina: "e75c7c3b9c63af9607228d671c700bd3c687bbec61bbd01485a51638d00f5017"
   end
 
-  depends_on "gradle" => :build
+  depends_on "gradle@6" => :build
   depends_on "openjdk@11"
 
   def cluster_name
