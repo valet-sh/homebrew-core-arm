@@ -149,3 +149,4 @@ class VshElasticsearch7 < Formula
     system "#{bin}/elasticsearch-plugin", "list"
   end
 end
+    sha256 catalina: "dca94007a295a851ebea113e12fa505490d76243afebc6c83b078b7f38e3bb61"
