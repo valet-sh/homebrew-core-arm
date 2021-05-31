@@ -12,7 +12,7 @@ class VshElasticsearch7 < Formula
   end
 
   depends_on "gradle" => :build
-  depends_on "openjdk@14"
+  depends_on "openjdk@11"
 
   def cluster_name
     "elasticsearch7"
