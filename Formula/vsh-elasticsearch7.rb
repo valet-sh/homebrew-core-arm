@@ -1,9 +1,9 @@
 class VshElasticsearch7 < Formula
   desc "Distributed search & analytics engine"
   homepage "https://www.elastic.co/products/elasticsearch"
-  url "https://github.com/elastic/elasticsearch/archive/v7.9.3.tar.gz"
-  revision 3
-  sha256 "b378ebfcfcfa8c75007b7a6a06d2591d784902e08dc833e004007146fa5733cc"
+  url "https://github.com/elastic/elasticsearch/archive/v7.10.2.tar.gz"
+  sha256 "bdb7811882a0d9436ac202a947061b565aa71983c72e1c191e7373119a1cdd1c"
+  revision 1
   license "Apache-2.0"
 
   bottle do
@@ -11,8 +11,8 @@ class VshElasticsearch7 < Formula
     sha256 cellar: :any_skip_relocation, catalina: "e75c7c3b9c63af9607228d671c700bd3c687bbec61bbd01485a51638d00f5017"
   end
 
-  depends_on "gradle" => :build
-  depends_on "openjdk"
+  depends_on "gradle@6" => :build
+  depends_on "openjdk@11"
 
   def cluster_name
     "elasticsearch7"
@@ -149,3 +149,4 @@ class VshElasticsearch7 < Formula
     system "#{bin}/elasticsearch-plugin", "list"
   end
 end
+    sha256 catalina: "dca94007a295a851ebea113e12fa505490d76243afebc6c83b078b7f38e3bb61"
