@@ -54,7 +54,7 @@ class VshElasticsearch7 < Formula
     (libexec/"bin/elasticsearch-plugin-update").write <<~EOS
         #!/bin/bash
 
-        export JAVA_HOME="#{Formula["openjdk"].opt_libexec}/openjdk.jdk/Contents/Home"
+        export JAVA_HOME="#{Formula["openjdk@11"].opt_libexec}/openjdk.jdk/Contents/Home"
 
         base_dir=$(dirname $0)
         PLUGIN_BIN=${base_dir}/elasticsearch-plugin
@@ -73,9 +73,9 @@ class VshElasticsearch7 < Formula
 
     inreplace libexec/"bin/elasticsearch-env",
               "CDPATH=\"\"",
-              "JAVA_HOME=\"#{Formula['openjdk'].opt_libexec}/openjdk.jdk/Contents/Home\"\nCDPATH=\"\""
+              "JAVA_HOME=\"#{Formula['openjdk@11'].opt_libexec}/openjdk.jdk/Contents/Home\"\nCDPATH=\"\""
 
-    bin.env_script_all_files(libexec/"bin", JAVA_HOME: Formula["openjdk"].opt_prefix)
+    bin.env_script_all_files(libexec/"bin", JAVA_HOME: Formula["openjdk@11"].opt_prefix)
   end
 
   def post_install
