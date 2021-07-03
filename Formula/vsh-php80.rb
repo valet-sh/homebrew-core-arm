@@ -2,12 +2,12 @@ class VshPhp80 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   url "https://www.php.net/distributions/php-8.0.0.tar.xz"
-  revision 69
+  revision 72
   license "PHP-3.01"
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 catalina: "f09ac7981633d53102a46c8d594186b37651213e45de1db339f0ab5efaee68a4"
+    sha256 catalina: "279f6165c371079786ffe198b5b41dba3a17f3b970b41882a9bc65be75ebf469"
   end
 
   depends_on "bison" => :build
