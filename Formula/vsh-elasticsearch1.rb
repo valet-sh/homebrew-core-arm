@@ -4,11 +4,11 @@ class VshElasticsearch1 < Formula
   url "https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.7.6.tar.gz"
   sha256 "78affc30353730ec245dad1f17de242a4ad12cf808eaa87dd878e1ca10ed77df"
   license "Apache-2.0"
-  revision 16
+  revision 17
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 catalina: "b08da10c583c95d3d99f818894f7bdaa6e85aee08fffebe541bf1b54c859f6aa"
+    sha256 catalina: "d917ee505c920fe842727fefdb5a27d7260b89fb776ae160b9b0139359254142"
   end
 
   depends_on "openjdk@8"
