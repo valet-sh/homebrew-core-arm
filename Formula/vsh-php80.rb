@@ -1,13 +1,15 @@
 class VshPhp80 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://www.php.net/distributions/php-8.0.0.tar.xz"
-  revision 82
+  url "https://www.php.net/distributions/php-8.0.9.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.0.9.tar.xz"
+  sha256 "71a01b2b56544e20e28696ad5b366e431a0984eaa39aa5e35426a4843e172010"
   license "PHP-3.01"
+  revision 1
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 catalina: "73c4bc37e5e277ef225ea6a846907caaa06188bb838acab7fe0394974c0f6703"
+    sha256 catalina: "632515ab1b3a2b0144b6a230f34f4b487a3d22148aba6365ab12625ba5d5594d"
   end
 
   depends_on "bison" => :build
@@ -53,8 +55,8 @@ class VshPhp80 < Formula
   patch :DATA
 
   resource "xdebug_module" do
-    url "https://github.com/xdebug/xdebug/archive/3.0.0.tar.gz"
-    sha256 "b33cd6e20d6f1978324ef1e4d50b6822b8b539e6284283c46440e017ed6fe451"
+    url "https://github.com/xdebug/xdebug/archive/3.0.4.tar.gz"
+    sha256 "7e4f28fc65c8b535de43b6d2ec57429476a6de1d53c4d440a9108ae8d28e01f4"
   end
 
   resource "imagick_module" do
