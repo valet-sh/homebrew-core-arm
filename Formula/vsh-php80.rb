@@ -42,6 +42,8 @@ class VshPhp80 < Formula
   depends_on "sqlite"
   depends_on "tidy-html5"
   depends_on "unixodbc"
+  depends_on "webp"
+  depends_on "imagemagick"
 
   uses_from_macos "xz" => :build
   uses_from_macos "bzip2"
