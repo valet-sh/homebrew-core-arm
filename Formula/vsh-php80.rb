@@ -5,11 +5,11 @@ class VshPhp80 < Formula
   mirror "https://fossies.org/linux/www/php-8.0.9.tar.xz"
   sha256 "71a01b2b56544e20e28696ad5b366e431a0984eaa39aa5e35426a4843e172010"
   license "PHP-3.01"
-  revision 1
+  revision 2
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 catalina: "632515ab1b3a2b0144b6a230f34f4b487a3d22148aba6365ab12625ba5d5594d"
+    sha256 catalina: "910b8ce41f7c9fc32841ef667deaccf6b3df0aa32aa91016e04e75f68e824b7f"
   end
 
   depends_on "bison" => :build
@@ -42,6 +42,8 @@ class VshPhp80 < Formula
   depends_on "sqlite"
   depends_on "tidy-html5"
   depends_on "unixodbc"
+  depends_on "webp"
+  depends_on "imagemagick"
 
   uses_from_macos "xz" => :build
   uses_from_macos "bzip2"
@@ -60,8 +62,8 @@ class VshPhp80 < Formula
   end
 
   resource "imagick_module" do
-    url "https://github.com/Imagick/imagick/archive/3.4.4.tar.gz"
-    sha256 "8204d228ecbe5f744d625c90364808616127471581227415bca18857af981369"
+    url "https://github.com/Imagick/imagick/archive/refs/tags/3.5.1.tar.gz"
+    sha256 "a70ccb298bb1f76d01e028d60cdfc787ffc14ab8355f61317e537f8c2a75c509"
   end
 
   def install
@@ -178,13 +180,13 @@ class VshPhp80 < Formula
       system "make", "install"
     }
 
-#    resource("imagick_module").stage {
-#      system "#{bin}/phpize#{bin_suffix}"
-#      system "./configure", "--with-php-config=#{bin}/php-config#{bin_suffix}"
-#      system "make", "clean"
-#      system "make", "all"
-#      system "make", "install"
-#    }
+    resource("imagick_module").stage {
+      system "#{bin}/phpize#{bin_suffix}"
+      system "./configure", "--with-php-config=#{bin}/php-config#{bin_suffix}"
+      system "make", "clean"
+      system "make", "all"
+      system "make", "install"
+    }
 
     # Use OpenSSL cert bundle
     openssl = Formula["openssl@1.1"]
