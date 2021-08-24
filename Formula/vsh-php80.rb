@@ -60,8 +60,8 @@ class VshPhp80 < Formula
   end
 
   resource "imagick_module" do
-    url "https://github.com/Imagick/imagick/archive/3.4.4.tar.gz"
-    sha256 "8204d228ecbe5f744d625c90364808616127471581227415bca18857af981369"
+    url "https://github.com/Imagick/imagick/archive/refs/tags/3.5.1.tar.gz"
+    sha256 "a70ccb298bb1f76d01e028d60cdfc787ffc14ab8355f61317e537f8c2a75c509"
   end
 
   def install
@@ -178,13 +178,13 @@ class VshPhp80 < Formula
       system "make", "install"
     }
 
-#    resource("imagick_module").stage {
-#      system "#{bin}/phpize#{bin_suffix}"
-#      system "./configure", "--with-php-config=#{bin}/php-config#{bin_suffix}"
-#      system "make", "clean"
-#      system "make", "all"
-#      system "make", "install"
-#    }
+    resource("imagick_module").stage {
+      system "#{bin}/phpize#{bin_suffix}"
+      system "./configure", "--with-php-config=#{bin}/php-config#{bin_suffix}"
+      system "make", "clean"
+      system "make", "all"
+      system "make", "install"
+    }
 
     # Use OpenSSL cert bundle
     openssl = Formula["openssl@1.1"]
