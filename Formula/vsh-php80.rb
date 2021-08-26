@@ -5,11 +5,11 @@ class VshPhp80 < Formula
   mirror "https://fossies.org/linux/www/php-8.0.9.tar.xz"
   sha256 "71a01b2b56544e20e28696ad5b366e431a0984eaa39aa5e35426a4843e172010"
   license "PHP-3.01"
-  revision 3
+  revision 4
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 catalina: "4259bc489334fac8d9ac9938534b7fe7c13b44ec2aa5696c168397edab1cba41"
+    sha256 catalina: "19bf21299ef8c9816f110f2d599499bae9049a491b76ce54ab3fa51cdf0ef1b4"
   end
 
   depends_on "bison" => :build
@@ -87,7 +87,7 @@ class VshPhp80 < Formula
     # sdk path or it won't find the headers
     headers_path = "=#{MacOS.sdk_path_if_needed}/usr"
 
-    ENV["EXTENSION_DIR"] = "#{prefix}/lib/#{name}/20180731"
+    ENV["EXTENSION_DIR"] = "#{prefix}/lib/#{name}/20200930"
     ENV["PHP_PEAR_PHP_BIN"] = "#{bin}/php#{bin_suffix}"
 
     args = %W[

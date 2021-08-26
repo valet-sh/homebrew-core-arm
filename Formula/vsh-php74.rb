@@ -2,14 +2,14 @@ class VshPhp74 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   url "https://www.php.net/distributions/php-7.4.15.tar.xz"
-  revision 84
+  revision 85
   mirror "https://fossies.org/linux/www/php-7.4.15.tar.xz"
   sha256 "9b859c65f0cf7b3eff9d4a28cfab719fb3d36a1db3c20d874a79b5ec44d43cb8"
   license "PHP-3.01"
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 catalina: "19c614094423598d7a36931db42df40c81fac810e0f551af67681e4de4d2e480"
+    sha256 catalina: "bf6999dcb4efde45c9694b5da05657ad2224c7e386b179162768f69fdca5251b"
   end
 
   depends_on "pkg-config" => :build
@@ -90,7 +90,7 @@ class VshPhp74 < Formula
     # sdk path or it won't find the headers
     headers_path = "=#{MacOS.sdk_path_if_needed}/usr"
 
-    ENV["EXTENSION_DIR"] = "#{prefix}/lib/#{name}/20180731"
+    ENV["EXTENSION_DIR"] = "#{prefix}/lib/#{name}/20190902"
     ENV["PHP_PEAR_PHP_BIN"] = "#{bin}/php#{bin_suffix}"
 
     args = %W[
