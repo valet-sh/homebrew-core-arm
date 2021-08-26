@@ -87,7 +87,7 @@ class VshPhp80 < Formula
     # sdk path or it won't find the headers
     headers_path = "=#{MacOS.sdk_path_if_needed}/usr"
 
-    ENV["EXTENSION_DIR"] = "#{prefix}/lib/#{name}/20180731"
+    ENV["EXTENSION_DIR"] = "#{prefix}/lib/#{name}/20200930"
     ENV["PHP_PEAR_PHP_BIN"] = "#{bin}/php#{bin_suffix}"
 
     args = %W[

@@ -1,10 +1,9 @@
 class VshPhp74 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://www.php.net/distributions/php-7.4.15.tar.xz"
-  revision 84
-  mirror "https://fossies.org/linux/www/php-7.4.15.tar.xz"
-  sha256 "9b859c65f0cf7b3eff9d4a28cfab719fb3d36a1db3c20d874a79b5ec44d43cb8"
+  url "https://www.php.net/distributions/php-7.4.22.tar.xz"
+  mirror "https://fossies.org/linux/www/php-7.4.22.tar.xz"
+  sha256 "8e078cd7d2f49ac3fcff902490a5bb1addc885e7e3b0d8dd068f42c68297bde8"
   license "PHP-3.01"
 
   bottle do
@@ -56,6 +55,11 @@ class VshPhp74 < Formula
   patch :DATA
 
   resource "xdebug_module" do
+    url "https://github.com/xdebug/xdebug/archive/3.0.4.tar.gz"
+    sha256 "7e4f28fc65c8b535de43b6d2ec57429476a6de1d53c4d440a9108ae8d28e01f4"
+  end
+
+  resource "xdebug2_module" do
     url "https://github.com/xdebug/xdebug/archive/2.9.8.tar.gz"
     sha256 "28f8de8e6491f51ac9f551a221275360458a01c7690c42b23b9a0d2e6429eff4"
   end
@@ -90,7 +94,7 @@ class VshPhp74 < Formula
     # sdk path or it won't find the headers
     headers_path = "=#{MacOS.sdk_path_if_needed}/usr"
 
-    ENV["EXTENSION_DIR"] = "#{prefix}/lib/#{name}/20180731"
+    ENV["EXTENSION_DIR"] = "#{prefix}/lib/#{name}/20190902"
     ENV["PHP_PEAR_PHP_BIN"] = "#{bin}/php#{bin_suffix}"
 
     args = %W[
@@ -171,6 +175,15 @@ class VshPhp74 < Formula
     system "./configure", *args
     system "make"
     system "make", "install"
+
+    resource("xdebug2_module").stage {
+      system "#{bin}/phpize#{bin_suffix}"
+      system "./configure", "--with-php-config=#{bin}/php-config#{bin_suffix}"
+      system "make", "clean"
+      system "make", "all"
+
+      mv "modules/xdebug.so", "#{php_ext_path}/xdebug2.so"
+    }
 
     resource("xdebug_module").stage {
       system "#{bin}/phpize#{bin_suffix}"
@@ -297,6 +310,10 @@ class VshPhp74 < Formula
   def php_ext_dir
     extension_dir = Utils.popen_read("#{bin}/php-config#{bin_suffix} --extension-dir").chomp
     File.basename(extension_dir)
+  end
+
+  def php_ext_path
+    Utils.popen_read("#{bin}/php-config#{bin_suffix} --extension-dir").chomp
   end
 
   plist_options :manual => "php-fpm7.4"
