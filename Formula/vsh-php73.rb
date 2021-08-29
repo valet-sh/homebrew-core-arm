@@ -1,15 +1,15 @@
 class VshPhp73 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://www.php.net/distributions/php-7.3.27.tar.xz"
-  revision 81
-  mirror "https://fossies.org/linux/www/php-7.3.27.tar.xz"
-  sha256 "65f616e2d5b6faacedf62830fa047951b0136d5da34ae59e6744cbaf5dca148d"
+  url "https://www.php.net/distributions/php-7.3.29.tar.xz"
+  mirror "https://fossies.org/linux/www/php-7.3.29.tar.xz"
+  sha256 "7db2834511f3d86272dca3daee3f395a5a4afce359b8342aa6edad80e12eb4d0"
   license "PHP-3.01"
+  revision 2
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 catalina: "2711c093bdc93ea2930c6e1a94861797f5e21c337c5825cde4f0e54f4b326b55"
+    sha256 catalina: "c4d9170c10362a07ace228a2710b3655a2016c62f14994f2047243829d772c2c"
   end
 
   depends_on "pkg-config" => :build
@@ -45,6 +45,11 @@ class VshPhp73 < Formula
   patch :DATA
 
   resource "xdebug_module" do
+    url "https://github.com/xdebug/xdebug/archive/3.0.4.tar.gz"
+    sha256 "7e4f28fc65c8b535de43b6d2ec57429476a6de1d53c4d440a9108ae8d28e01f4"
+  end
+
+  resource "xdebug2_module" do
     url "https://github.com/xdebug/xdebug/archive/2.9.8.tar.gz"
     sha256 "28f8de8e6491f51ac9f551a221275360458a01c7690c42b23b9a0d2e6429eff4"
   end
@@ -159,6 +164,15 @@ class VshPhp73 < Formula
     system "./configure", *args
     system "make"
     system "make", "install"
+
+    resource("xdebug2_module").stage {
+      system "#{bin}/phpize#{bin_suffix}"
+      system "./configure", "--with-php-config=#{bin}/php-config#{bin_suffix}"
+      system "make", "clean"
+      system "make", "all"
+
+      mv "modules/xdebug.so", "#{php_ext_path}/xdebug2.so"
+    }
 
     resource("xdebug_module").stage {
       system "#{bin}/phpize#{bin_suffix}"
@@ -292,6 +306,10 @@ class VshPhp73 < Formula
   def php_ext_dir
     extension_dir = Utils.popen_read("#{bin}/php-config#{bin_suffix} --extension-dir").chomp
     File.basename(extension_dir)
+  end
+
+  def php_ext_path
+    Utils.popen_read("#{bin}/php-config#{bin_suffix} --extension-dir").chomp
   end
 
   plist_options :manual => "php-fpm7.3"
