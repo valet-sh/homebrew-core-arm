@@ -17,6 +17,7 @@ class VshMariadb104 < Formula
   depends_on "groonga"
   depends_on "openssl@1.1"
   depends_on "pcre2"
+  depends_on "lz4"
 
   uses_from_macos "bzip2"
   uses_from_macos "ncurses"
