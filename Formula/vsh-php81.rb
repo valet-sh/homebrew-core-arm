@@ -4,7 +4,7 @@ class VshPhp81 < Formula
   url "https://downloads.php.net/~ramsey/php-8.1.0RC6.tar.xz"
   sha256 "e7273a019aec824fd98e8f8ab071e7a2a37e681cc788a63c3092765dca479268"
   license "PHP-3.01"
-  revision 1
+  revision 2
 
 
 
