@@ -4,13 +4,13 @@ class VshPhp81 < Formula
   url "https://downloads.php.net/~ramsey/php-8.1.0RC6.tar.xz"
   sha256 "e7273a019aec824fd98e8f8ab071e7a2a37e681cc788a63c3092765dca479268"
   license "PHP-3.01"
-  revision 1
+  revision 2
 
 
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 catalina: "9ed30f252d250a1ba7c15d74b75c4b46ef8a8a99f52f285ab62e5c383a41d9a8"
+    sha256 catalina: "c795729dc0bc7bda016e7e4d2aab52f384e68e3531071857d645606f34528ae8"
   end
 
   depends_on "bison" => :build
