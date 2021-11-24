@@ -3,12 +3,12 @@ class VshElasticsearch7 < Formula
   homepage "https://www.elastic.co/products/elasticsearch"
   url "https://github.com/elastic/elasticsearch/archive/v7.10.2.tar.gz"
   sha256 "bdb7811882a0d9436ac202a947061b565aa71983c72e1c191e7373119a1cdd1c"
-  revision 11
+  revision 12
   license "Apache-2.0"
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 catalina: "c82fe4b4d5246e016bc450fd4a08bdbafd1e322b9ce9082f69a26e54db10eec9"
+    sha256 catalina: "6dfc651bb5942a9e094da0695844c02ff8e27d2215cdc4179c53d1f6be673f6c"
   end
 
   depends_on "gradle@6" => :build
@@ -53,6 +53,8 @@ class VshElasticsearch7 < Formula
 
     (libexec/"bin/elasticsearch-plugin-update").write <<~EOS
         #!/bin/bash
+
+        export DUMMY="#{Formula["openjdk@11"].opt_libexec}/openjdk.jdk/Contents/Home"
 
         export JAVA_HOME="#{Formula["openjdk@11"].opt_libexec}/openjdk.jdk/Contents/Home"
 
