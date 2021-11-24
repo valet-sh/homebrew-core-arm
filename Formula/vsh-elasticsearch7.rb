@@ -3,7 +3,7 @@ class VshElasticsearch7 < Formula
   homepage "https://www.elastic.co/products/elasticsearch"
   url "https://github.com/elastic/elasticsearch/archive/v7.10.2.tar.gz"
   sha256 "bdb7811882a0d9436ac202a947061b565aa71983c72e1c191e7373119a1cdd1c"
-  revision 11
+  revision 12
   license "Apache-2.0"
 
   bottle do
@@ -53,6 +53,8 @@ class VshElasticsearch7 < Formula
 
     (libexec/"bin/elasticsearch-plugin-update").write <<~EOS
         #!/bin/bash
+
+        export DUMMY="#{Formula["openjdk@11"].opt_libexec}/openjdk.jdk/Contents/Home"
 
         export JAVA_HOME="#{Formula["openjdk@11"].opt_libexec}/openjdk.jdk/Contents/Home"
 
