@@ -3,12 +3,12 @@ class VshElasticsearch7 < Formula
   homepage "https://www.elastic.co/products/elasticsearch"
   url "https://github.com/elastic/elasticsearch/archive/v7.10.2.tar.gz"
   sha256 "bdb7811882a0d9436ac202a947061b565aa71983c72e1c191e7373119a1cdd1c"
-  revision 14
+  revision 15
   license "Apache-2.0"
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 cellar: :any_skip_relocation, catalina: "4210eef9f1a47310c4dae5bea80de99c0f7413807652c194e18d7f92cb3dd7f3"
+    sha256 cellar: :any_skip_relocation, catalina: "649dad58033d3d689af360daeaf4d9216f5b2646b66af2276d54efa20d6e6fb5"
   end
 
   depends_on "gradle@6" => :build
@@ -77,7 +77,7 @@ class VshElasticsearch7 < Formula
               "CDPATH=\"\"",
               "INTERNAL_JAVA_PATH=\"/openjdk.jdk/Contents/Home\"\nJAVA_HOME=\"#{Formula['openjdk@11'].opt_libexec}${INTERNAL_JAVA_PATH}\"\nCDPATH=\"\""
 
-    bin.env_script_all_files(libexec/"bin", JAVA_HOME: Formula["openjdk@11"].opt_prefix)
+    #bin.env_script_all_files(libexec/"bin", JAVA_HOME: Formula["openjdk@11"].opt_prefix)
   end
 
   def post_install
