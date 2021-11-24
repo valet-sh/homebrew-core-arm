@@ -3,12 +3,12 @@ class VshElasticsearch7 < Formula
   homepage "https://www.elastic.co/products/elasticsearch"
   url "https://github.com/elastic/elasticsearch/archive/v7.10.2.tar.gz"
   sha256 "bdb7811882a0d9436ac202a947061b565aa71983c72e1c191e7373119a1cdd1c"
-  revision 13
+  revision 14
   license "Apache-2.0"
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 cellar: :any_skip_relocation, catalina: "68d91bae41a0f9f75ecec474d7f87da1a6cee036dafc60e9f78695e33751c16a"
+    sha256 cellar: :any_skip_relocation, catalina: "4210eef9f1a47310c4dae5bea80de99c0f7413807652c194e18d7f92cb3dd7f3"
   end
 
   depends_on "gradle@6" => :build
@@ -54,9 +54,9 @@ class VshElasticsearch7 < Formula
     (libexec/"bin/elasticsearch-plugin-update").write <<~EOS
         #!/bin/bash
 
-        export DUMMY="#{Formula["openjdk@11"].opt_libexec}/openjdk.jdk/Contents/Home"
-
-        export JAVA_HOME="#{Formula["openjdk@11"].opt_libexec}/openjdk.jdk/Contents/Home"
+        INTERNAL_JAVA_BASE="#{Formula["openjdk@11"].opt_libexec}"
+        INTERNAL_JAVA_PATH="/openjdk.jdk/Contents/Home"
+        export JAVA_HOME="${INTERNAL_JAVA_BASE}${INTERNAL_JAVA_PATH}"
 
         base_dir=$(dirname $0)
         PLUGIN_BIN=${base_dir}/elasticsearch-plugin
@@ -75,7 +75,7 @@ class VshElasticsearch7 < Formula
 
     inreplace libexec/"bin/elasticsearch-env",
               "CDPATH=\"\"",
-              "JAVA_HOME=\"#{Formula['openjdk@11'].opt_libexec}/openjdk.jdk/Contents/Home\"\nCDPATH=\"\""
+              "INTERNAL_JAVA_PATH=\"/openjdk.jdk/Contents/Home\"\nJAVA_HOME=\"#{Formula['openjdk@11'].opt_libexec}${INTERNAL_JAVA_PATH}\"\nCDPATH=\"\""
 
     bin.env_script_all_files(libexec/"bin", JAVA_HOME: Formula["openjdk@11"].opt_prefix)
   end
