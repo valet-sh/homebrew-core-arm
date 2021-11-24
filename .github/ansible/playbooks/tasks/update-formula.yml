@@ -9,8 +9,7 @@
   include_tasks: tasks/extract-buildinfo.yml
 
 - name: Replace botte information in formula file
-  lineinfile:
+  replace:
     path: "{{ formula_path }}/{{ formula_name }}.rb"
-    state: present
-    regexp: "sha256 {{ bottle_os }}: (.+)"
-    line: "    sha256 {{ bottle_os }}: \"{{ bottle_sha256 }}\""
+    regexp: "{{ bottle_os }}: (.+)"
+    replace: "{{ bottle_os }}: \"{{ bottle_sha256 }}\""
