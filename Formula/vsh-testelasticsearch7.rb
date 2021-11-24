@@ -1,21 +1,21 @@
-class VshElasticsearch7 < Formula
+class VshTestelasticsearch7 < Formula
   desc "Distributed search & analytics engine"
   homepage "https://www.elastic.co/products/elasticsearch"
   url "https://github.com/elastic/elasticsearch/archive/v7.10.2.tar.gz"
   sha256 "bdb7811882a0d9436ac202a947061b565aa71983c72e1c191e7373119a1cdd1c"
-  revision 17
+  revision 1
   license "Apache-2.0"
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 catalina: "9022ef2dee8c94b860906ac8df5334770cbcf7f1f3a76595cc8a18a1dddd40a2"
+    sha256 catalina: "ae046facdf134553a8c0a3e8e4432c6d2c2fa20aa0bcac1fd3a8541070ea653e"
   end
 
   depends_on "gradle@6" => :build
   depends_on "openjdk@11"
 
   def cluster_name
-    "elasticsearch7"
+    "testelasticsearch7"
   end
 
   def install
@@ -34,7 +34,7 @@ class VshElasticsearch7 < Formula
         # 1. Give the cluster a unique name
         s.gsub!(/#\s*cluster\.name: .*/, "cluster.name: #{cluster_name}")
         s.gsub!(/#\s*network\.host: .*/, "network.host: 127.0.0.1")
-        s.gsub!(/#\s*http\.port: .*/, "http.port: 9207")
+        s.gsub!(/#\s*http\.port: .*/, "http.port: 9208")
 
         s.sub!(%r{#\s*path\.data: /path/to.+$}, "path.data: #{var}/lib/#{name}/")
         s.sub!(%r{#\s*path\.logs: /path/to.+$}, "path.logs: #{var}/log/#{name}/")
@@ -43,7 +43,7 @@ class VshElasticsearch7 < Formula
       inreplace "#{libexec}/config/jvm.options", %r{logs/gc.log}, "#{var}/log/#{name}/gc.log"
 
       config_file = "#{libexec}/config/elasticsearch.yml"
-      open(config_file, "a") { |f| f.puts "transport.host: 127.0.0.1\ntransport.port: 9307\n" }
+      open(config_file, "a") { |f| f.puts "transport.host: 127.0.0.1\ntransport.port: 9308\n" }
     end
 
 
@@ -101,7 +101,7 @@ class VshElasticsearch7 < Formula
     EOS
   end
 
-  plist_options :manual => "vsh-elasticsearch7"
+  plist_options :manual => "vsh-testelasticsearch7"
 
   def plist
     <<~EOS
