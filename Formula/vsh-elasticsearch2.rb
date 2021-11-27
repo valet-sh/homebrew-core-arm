@@ -59,8 +59,8 @@ class VshElasticsearch2 < Formula
     (libexec/"config").rmtree
 
     inreplace libexec/"bin/elasticsearch",
-          "CDPATH=\"\"",
-          "JAVA_HOME=\"/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home\"\nCDPATH=\"\""
+              "CDPATH=\"\"",
+              "JAVA_HOME=\"#{Formula['openjdk@8'].opt_libexec}/openjdk.jdk/Contents/Home\"\nCDPATH=\"\""
   end
 
   def post_install

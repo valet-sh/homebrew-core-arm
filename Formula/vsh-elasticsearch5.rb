@@ -52,7 +52,7 @@ class VshElasticsearch5 < Formula
     (libexec/"bin/elasticsearch-plugin-update").write <<~EOS
         #!/bin/bash
 
-        export JAVA_HOME="$(/usr/libexec/java_home -v 1.8)"
+        export JAVA_HOME="#{Formula["openjdk@8"].opt_libexec}/openjdk.jdk/Contents/Home"
 
         base_dir=$(dirname $0)
         PLUGIN_BIN=${base_dir}/elasticsearch-plugin
@@ -67,7 +67,7 @@ class VshElasticsearch5 < Formula
 
     inreplace libexec/"bin/elasticsearch",
               "CDPATH=\"\"",
-              "JAVA_HOME=\"/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home\"\nCDPATH=\"\""
+              "JAVA_HOME=\"#{Formula['openjdk@8'].opt_libexec}/openjdk.jdk/Contents/Home\"\nCDPATH=\"\""
   end
 
   def post_install

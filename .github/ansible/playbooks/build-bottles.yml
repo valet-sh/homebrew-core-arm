@@ -36,23 +36,15 @@
     - name: Build bottles for modified formulas
       shell: |
         brew install --build-bottle --formula {{ formula_path }}/{{ item }}
-        brew bottle {{ formula_path }}/{{ item }} --json --force-core-tap --only-json-tab --no-rebuild
-      when: item != "vsh-elasticsearch7.rb" and item != "vsh-testelasticsearch7.rb"
-      loop: "{{ git_modified_formulas }}"
-
-    - name: Build bottles for modified formulas
-      shell: |
-        brew install --build-bottle --formula {{ formula_path }}/{{ item }}
-        brew bottle {{ formula_path }}/{{ item }} --json --force-core-tap --skip-relocation --no-rebuild
-      when: item == "vsh-elasticsearch7.rb"
-      loop: "{{ git_modified_formulas }}"
-
-    - name: Build bottles for modified formulas
-      shell: |
-        brew install --build-bottle --formula {{ formula_path }}/{{ item }}
         brew bottle {{ formula_path }}/{{ item }} --json --force-core-tap --no-rebuild
-      when: item == "vsh-testelasticsearch7.rb"
       loop: "{{ git_modified_formulas }}"
+
+#    - name: Build bottles for modified formulas
+#      shell: |
+#        brew install --build-bottle --formula {{ formula_path }}/{{ item }}
+#        brew bottle {{ formula_path }}/{{ item }} --json --force-core-tap --skip-relocation --no-rebuild
+#      when: item == "vsh-elasticsearch7.rb"
+#      loop: "{{ git_modified_formulas }}"
 
     - name: Creates build folder
       file:
