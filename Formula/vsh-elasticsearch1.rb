@@ -4,7 +4,7 @@ class VshElasticsearch1 < Formula
   url "https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.7.6.tar.gz"
   sha256 "78affc30353730ec245dad1f17de242a4ad12cf808eaa87dd878e1ca10ed77df"
   license "Apache-2.0"
-  revision 20
+  revision 21
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
@@ -52,6 +52,10 @@ class VshElasticsearch1 < Formula
     # Move config files into etc
     (etc/"#{name}").install Dir[libexec/"config/*"]
     (libexec/"config").rmtree
+
+    inreplace libexec/"bin/plugin",
+              "CDPATH=\"\"",
+              "JAVA_HOME=\"#{Formula['openjdk@8'].opt_libexec}/openjdk.jdk/Contents/Home\"\nCDPATH=\"\""
 
     inreplace libexec/"bin/elasticsearch",
               "CDPATH=\"\"",
