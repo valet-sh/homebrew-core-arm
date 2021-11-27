@@ -3,12 +3,12 @@ class VshElasticsearch6 < Formula
   homepage "https://www.elastic.co/products/elasticsearch"
   url "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-oss-6.8.12.tar.gz"
   sha256 "feb6c43fe66055360754597350c088025b40566cee16175b005e55660d9e62fd"
-  revision 13
+  revision 14
   license "Apache-2.0"
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 catalina: "87e0d1ff749e7aa2920e817af23dff86be906628d0b96d982e21799a2c650dcb"
+    sha256 catalina: "35c1cd8b3bf656d68d615f8771564518fe8f56e934c702b0eda45a813973d889"
   end
 
   depends_on "openjdk@8"
@@ -49,7 +49,7 @@ class VshElasticsearch6 < Formula
     (libexec/"bin/elasticsearch-plugin-update").write <<~EOS
         #!/bin/bash
 
-        export JAVA_HOME="$(/usr/libexec/java_home -v 1.8)"
+        export JAVA_HOME="#{Formula["openjdk@8"].opt_libexec}/openjdk.jdk/Contents/Home"
 
         base_dir=$(dirname $0)
         PLUGIN_BIN=${base_dir}/elasticsearch-plugin
@@ -64,7 +64,7 @@ class VshElasticsearch6 < Formula
 
     inreplace libexec/"bin/elasticsearch-env",
               "CDPATH=\"\"",
-              "JAVA_HOME=\"/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home\"\nCDPATH=\"\""
+              "JAVA_HOME=\"#{Formula['openjdk@8'].opt_libexec}/openjdk.jdk/Contents/Home\"\nCDPATH=\"\""
 
     bin.env_script_all_files(libexec/"bin", Language::Java.java_home_env("1.8"))
   end
