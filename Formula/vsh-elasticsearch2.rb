@@ -4,11 +4,11 @@ class VshElasticsearch2 < Formula
   url "https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/tar/elasticsearch/2.4.6/elasticsearch-2.4.6.tar.gz"
   sha256 "5f7e4bb792917bb7ffc2a5f612dfec87416d54563f795d6a70637befef4cfc6f"
   license "Apache-2.0"
-  revision 14
+  revision 15
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 catalina: "54bd7bf299396ac6c8e1f623015dc61eb05d26a57d721997242b61252dbfe8b3"
+    sha256 catalina: "be6d27f3a1820bd22f1d7adbae7fd5e23be58e625e0b338f9ef9ce3e6e623a1c"
   end
 
   depends_on "openjdk@8"
@@ -57,6 +57,10 @@ class VshElasticsearch2 < Formula
     # Move config files into etc
     (etc/"#{name}").install Dir[libexec/"config/*"]
     (libexec/"config").rmtree
+
+    inreplace libexec/"bin/plugin",
+              "CDPATH=\"\"",
+              "JAVA_HOME=\"#{Formula['openjdk@8'].opt_libexec}/openjdk.jdk/Contents/Home\"\nCDPATH=\"\""
 
     inreplace libexec/"bin/elasticsearch",
               "CDPATH=\"\"",
