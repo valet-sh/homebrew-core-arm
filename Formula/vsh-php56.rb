@@ -4,11 +4,11 @@ class VshPhp56 < Formula
   url "https://php.net/get/php-5.6.40.tar.xz/from/this/mirror"
   sha256 "1369a51eee3995d7fbd1c5342e5cc917760e276d561595b6052b21ace2656d1c"
   license "PHP-3.01"
-  revision 172
+  revision 173
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 catalina: "be5a2751c5aacb87dc49b63bc97fa6fae01c26e4442ddb5944da2bc0c07bd196"
+    sha256 catalina: "168005cfd4e4dbfbf4c8afe59882230e4781230064cecd561273fb5bf58671f6"
   end
 
   depends_on "pkg-config" => :build
