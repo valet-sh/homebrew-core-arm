@@ -2,13 +2,13 @@ class VshPhp72 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   url "https://www.php.net/distributions/php-7.2.34.tar.xz"
-  revision 230
+  revision 231
   mirror "https://fossies.org/linux/www/php-7.2.34.tar.xz"
   sha256 "409e11bc6a2c18707dfc44bc61c820ddfd81e17481470f3405ee7822d8379903"
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 catalina: "d624f6c01d6e342cc94431585d4a3770b9c2e938e4b0cee0f9892f01cc589680"
+    sha256 catalina: "8288bf0cff65480f173d708b0dbe3ad435997c6ad89dc9948aaeba18f5e9f848"
   end
 
   depends_on "pkg-config" => :build
@@ -23,7 +23,7 @@ class VshPhp72 < Formula
   depends_on "gettext"
   depends_on "glib"
   depends_on "gmp"
-  depends_on "icu4c"
+  depends_on "vsh-icu4c"
   depends_on "jpeg"
   depends_on "libpng"
   depends_on "libpq"
@@ -130,7 +130,7 @@ class VshPhp72 < Formula
       --with-gettext=#{Formula["gettext"].opt_prefix}
       --with-gmp=#{Formula["gmp"].opt_prefix}
       --with-iconv#{headers_path}
-      --with-icu-dir=#{Formula["icu4c"].opt_prefix}
+      --with-icu-dir=#{Formula["vsh-icu4c"].opt_prefix}
       --with-jpeg-dir=#{Formula["jpeg"].opt_prefix}
       --with-kerberos#{headers_path}
       --with-layout=GNU

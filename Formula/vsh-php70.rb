@@ -2,12 +2,12 @@ class VshPhp70 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   url "https://www.php.net/distributions/php-7.0.33.tar.xz"
-  revision 182
+  revision 183
   sha256 "ab8c5be6e32b1f8d032909dedaaaa4bbb1a209e519abb01a52ce3914f9a13d96"
   
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 catalina: "a1719dca5e2ddb0cf355c4424b43057a5dd4f83d963eee9fe6d9cd9126d2e27e"
+    sha256 catalina: "05ebbe636ca9adc0a1bc3339d7fbb0c783b0824149d0b33eb1b3c524f8bc709c"
   end
 
   depends_on "pkg-config" => :build
@@ -21,7 +21,7 @@ class VshPhp70 < Formula
   depends_on "gettext"
   depends_on "glib"
   depends_on "gmp"
-  depends_on "icu4c"
+  depends_on "vsh-icu4c"
   depends_on "jpeg"
   depends_on "libpng"
   depends_on "libpq"
@@ -134,7 +134,7 @@ class VshPhp70 < Formula
       --with-gettext=#{Formula["gettext"].opt_prefix}
       --with-gmp=#{Formula["gmp"].opt_prefix}
       --with-iconv#{headers_path}
-      --with-icu-dir=#{Formula["icu4c"].opt_prefix}
+      --with-icu-dir=#{Formula["vsh-icu4c"].opt_prefix}
       --with-jpeg-dir=#{Formula["jpeg"].opt_prefix}
       --with-kerberos#{headers_path}
       --with-layout=GNU

@@ -33,6 +33,11 @@
       when: ansible_distribution_version is version('11.0.0', '>=')
       become: true
 
+    - name: Ensure valet-sh tap is tapped
+      homebrew_tap:
+        tap: 'valet-sh/core'
+        state: present
+
     - name: Build bottles for modified formulas
       shell: |
         brew install --build-bottle --formula {{ formula_path }}/{{ item }}
