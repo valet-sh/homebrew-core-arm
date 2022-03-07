@@ -9,7 +9,7 @@ class VshIcu4c < Formula
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 catalina: "aa0a13cbaff9cbda6735f8b990fc090dae42dd0ce83165a17cc7a85a60a82488"
+    sha256 catalina: "216cc8539f13369f9dc52d491a051ca19c9fa27ca5a28d044fddbcfb7665b4fe"
   end
 
   keg_only :provided_by_macos, "macOS provides libicucore.dylib (but nothing else)"
