@@ -1,15 +1,15 @@
 class VshPhp81 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://www.php.net/distributions/php-8.1.0.tar.xz"
-  mirror "https://fossies.org/linux/www/php-8.1.0.tar.xz"
-  sha256 "a1317eff0723a2b3d3122bbfe107a1158570ea2822dc35a5fb360086db0f6bbc"
+  url "https://www.php.net/distributions/php-8.1.3.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.1.3.tar.xz"
+  sha256 "5d65a11071b47669c17452fb336c290b67c101efb745c1dbe7525b5caf546ec6"
   license "PHP-3.01"
-  revision 28
+  revision 1
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 catalina: "7e7e09131882baec3bf06240a17fd92732abbc8fac64be2cda938167e3f51a04"
+    sha256 catalina: "ac93ff98509ea1caf48306a02c8b86e1cdb6e414e3b24169ab234231a8bd13ab"
   end
 
   depends_on "bison" => :build

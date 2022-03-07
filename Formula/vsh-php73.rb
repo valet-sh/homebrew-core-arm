@@ -1,15 +1,15 @@
 class VshPhp73 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://www.php.net/distributions/php-7.3.29.tar.xz"
-  mirror "https://fossies.org/linux/www/php-7.3.29.tar.xz"
-  sha256 "7db2834511f3d86272dca3daee3f395a5a4afce359b8342aa6edad80e12eb4d0"
+  url "https://www.php.net/distributions/php-7.3.33.tar.xz"
+  mirror "https://fossies.org/linux/www/php-7.3.33.tar.xz"
+  sha256 "166eaccde933381da9516a2b70ad0f447d7cec4b603d07b9a916032b215b90cc"
   license "PHP-3.01"
-  revision 66
+  revision 1
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 catalina: "8f0761c4fed8caa4f9d392a9d63cde153dfa597df724262aae5fc29a1839d4a0"
+    sha256 catalina: "8f945b10a442d9c6575e8a1a3f0072b937c706d51dc172b9825a7fd2fef8c7d0"
   end
 
   depends_on "pkg-config" => :build
@@ -24,7 +24,7 @@ class VshPhp73 < Formula
   depends_on "gettext"
   depends_on "glib"
   depends_on "gmp"
-  depends_on "icu4c"
+  depends_on "vsh-icu4c"
   depends_on "jpeg"
   depends_on "libpng"
   depends_on "libpq"
@@ -127,7 +127,7 @@ class VshPhp73 < Formula
       --with-gettext=#{Formula["gettext"].opt_prefix}
       --with-gmp=#{Formula["gmp"].opt_prefix}
       --with-iconv#{headers_path}
-      --with-icu-dir=#{Formula["icu4c"].opt_prefix}
+      --with-icu-dir=#{Formula["vsh-icu4c"].opt_prefix}
       --with-jpeg-dir=#{Formula["jpeg"].opt_prefix}
       --with-kerberos#{headers_path}
       --with-layout=GNU
