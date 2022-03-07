@@ -1,11 +1,11 @@
 class VshPhp74 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://www.php.net/distributions/php-7.4.24.tar.xz"
-  mirror "https://fossies.org/linux/www/php-7.4.24.tar.xz"
-  sha256 "ff7658ee2f6d8af05b48c21146af5f502e121def4e76e862df5ec9fa06e98734"
+  url "https://www.php.net/distributions/php-7.4.28.tar.xz"
+  mirror "https://fossies.org/linux/www/php-7.4.28.tar.xz"
+  sha256 "9cc3b6f6217b60582f78566b3814532c4b71d517876c25013ae51811e65d8fce"
   license "PHP-3.01"
-  revision 51
+  revision 1
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
