@@ -34,7 +34,7 @@ class VshOpensearch1 < Formula
         # 1. Give the cluster a unique name
         s.gsub!(/#\s*cluster\.name: .*/, "cluster.name: #{cluster_name}")
         s.gsub!(/#\s*network\.host: .*/, "network.host: 127.0.0.1")
-        s.gsub!(/#\s*http\.port: .*/, "http.port: 9211")
+        s.gsub!(/#\s*http\.port: .*/, "http.port: 9221")
 
         s.sub!(%r{#\s*path\.data: /path/to.+$}, "path.data: #{var}/lib/#{name}/")
         s.sub!(%r{#\s*path\.logs: /path/to.+$}, "path.logs: #{var}/log/#{name}/")
@@ -43,7 +43,7 @@ class VshOpensearch1 < Formula
       inreplace "#{libexec}/config/jvm.options", %r{logs/gc.log}, "#{var}/log/#{name}/gc.log"
 
       config_file = "#{libexec}/config/opensearch.yml"
-      open(config_file, "a") { |f| f.puts "transport.host: 127.0.0.1\ntransport.port: 9311\n" }
+      open(config_file, "a") { |f| f.puts "transport.host: 127.0.0.1\ntransport.port: 9321\n" }
     end
 
       # add placeholder to avoid removal of empty directory
