@@ -12,22 +12,21 @@ class VshElasticsearch8 < Formula
   end
 
   depends_on "gradle" => :build
-  depends_on "openjdk@17"
 
   def cluster_name
     "elasticsearch8"
   end
 
   def install
-    system "gradle", ":distribution:archives:oss-no-jdk-darwin-tar:assemble", "-Dbuild.snapshot=false", "-Dlicense.key=./x-pack/plugin/core/snapshot.key"
+    system "gradle", ":distribution:archives:darwin-tar:assemble", "-Dbuild.snapshot=false", "-Dlicense.key=./x-pack/plugin/core/snapshot.key"
 
     mkdir "tar" do
       # Extract the package to the tar directory
       system "tar", "--strip-components=1", "-xf",
-        Dir["../distribution/archives/oss-no-jdk-darwin-tar/build/distributions/elasticsearch-oss-*.tar.gz"].first
+        Dir["../distribution/archives/darwin-tar/build/distributions/elasticsearch-*.tar.gz"].first
 
       # Install into package directory
-      libexec.install "bin", "config", "lib", "modules"
+      libexec.install "bin", "config", "lib", "modules", "jdk.app"
 
       # Set up Elasticsearch for local development:
       inreplace "#{libexec}/config/elasticsearch.yml" do |s|
@@ -35,6 +34,7 @@ class VshElasticsearch8 < Formula
         s.gsub!(/#\s*cluster\.name: .*/, "cluster.name: #{cluster_name}")
         s.gsub!(/#\s*network\.host: .*/, "network.host: 127.0.0.1")
         s.gsub!(/#\s*http\.port: .*/, "http.port: 9208")
+        s.gsub!(/#\s*xpack\.security\.enabled: .*/, "xpack.security.enabled: false")
 
         s.sub!(%r{#\s*path\.data: /path/to.+$}, "path.data: #{var}/lib/#{name}/")
         s.sub!(%r{#\s*path\.logs: /path/to.+$}, "path.logs: #{var}/log/#{name}/")
@@ -54,8 +54,6 @@ class VshElasticsearch8 < Formula
     (libexec/"bin/elasticsearch-plugin-update").write <<~EOS
         #!/bin/bash
 
-        export JAVA_HOME="#{Formula["openjdk@17"].opt_libexec}/openjdk.jdk/Contents/Home"
-
         base_dir=$(dirname $0)
         PLUGIN_BIN=${base_dir}/elasticsearch-plugin
 
@@ -70,12 +68,6 @@ class VshElasticsearch8 < Formula
     inreplace libexec/"bin/elasticsearch-env",
               "if [ -z \"$ES_PATH_CONF\" ]; then ES_PATH_CONF=\"$ES_HOME\"/config; fi",
               "if [ -z \"$ES_PATH_CONF\" ]; then ES_PATH_CONF=\"#{etc}/#{name}\"; fi"
-
-    inreplace libexec/"bin/elasticsearch-env",
-              "CDPATH=\"\"",
-              "JAVA_HOME=\"#{Formula['openjdk@17'].opt_libexec}/openjdk.jdk/Contents/Home\"\nCDPATH=\"\""
-
-    bin.env_script_all_files(libexec/"bin", JAVA_HOME: Formula["openjdk@17"].opt_prefix)
   end
 
   def post_install
