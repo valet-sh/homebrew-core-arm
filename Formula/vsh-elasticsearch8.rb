@@ -34,7 +34,6 @@ class VshElasticsearch8 < Formula
         s.gsub!(/#\s*cluster\.name: .*/, "cluster.name: #{cluster_name}")
         s.gsub!(/#\s*network\.host: .*/, "network.host: 127.0.0.1")
         s.gsub!(/#\s*http\.port: .*/, "http.port: 9208")
-        s.gsub!(/#\s*xpack\.security\.enabled: .*/, "xpack.security.enabled: false")
 
         s.sub!(%r{#\s*path\.data: /path/to.+$}, "path.data: #{var}/lib/#{name}/")
         s.sub!(%r{#\s*path\.logs: /path/to.+$}, "path.logs: #{var}/log/#{name}/")
@@ -43,7 +42,7 @@ class VshElasticsearch8 < Formula
       inreplace "#{libexec}/config/jvm.options", %r{logs/gc.log}, "#{var}/log/#{name}/gc.log"
 
       config_file = "#{libexec}/config/elasticsearch.yml"
-      open(config_file, "a") { |f| f.puts "transport.host: 127.0.0.1\ntransport.port: 9308\n" }
+      open(config_file, "a") { |f| f.puts "transport.host: 127.0.0.1\ntransport.port: 9308\nxpack.security.enabled: false\n"}
     end
 
 
