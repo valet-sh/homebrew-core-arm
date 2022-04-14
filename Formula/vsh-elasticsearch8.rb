@@ -3,15 +3,16 @@ class VshElasticsearch8 < Formula
   homepage "https://www.elastic.co/products/elasticsearch"
   url "https://github.com/elastic/elasticsearch/archive/v8.1.2.tar.gz"
   sha256 "9e6a4af0c1d5c8887f5f5216f8066d6e96eadf5cc919296f2040858bfc4bd920"
-  revision 1
+  revision 2
   license "Apache-2.0"
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 catalina: "444d1e935d8e0a398728a4b1ad0678bbd5b435482e4b81c39eb8c89af3f41443"
+    sha256 catalina: "1430b00c380fee761f4e2b964281cdce2e56348cc95002616b1a23bf9fc46d20"
   end
 
   depends_on "gradle" => :build
+  depends_on "openjdk@17"
 
   def cluster_name
     "elasticsearch8"
@@ -26,7 +27,7 @@ class VshElasticsearch8 < Formula
         Dir["../distribution/archives/darwin-tar/build/distributions/elasticsearch-*.tar.gz"].first
 
       # Install into package directory
-      libexec.install "bin", "config", "lib", "modules", "jdk.app"
+      libexec.install "bin", "config", "lib", "modules"
 
       # Set up Elasticsearch for local development:
       inreplace "#{libexec}/config/elasticsearch.yml" do |s|
@@ -67,6 +68,12 @@ class VshElasticsearch8 < Formula
     inreplace libexec/"bin/elasticsearch-env",
               "if [ -z \"$ES_PATH_CONF\" ]; then ES_PATH_CONF=\"$ES_HOME\"/config; fi",
               "if [ -z \"$ES_PATH_CONF\" ]; then ES_PATH_CONF=\"#{etc}/#{name}\"; fi"
+
+    inreplace libexec/"bin/elasticsearch-env",
+              "CDPATH=\"\"",
+              "ES_JAVA_HOME=\"#{Formula['openjdk@17'].opt_libexec}/openjdk.jdk/Contents/Home\"\nCDPATH=\"\""
+
+    bin.env_script_all_files(libexec/"bin", JAVA_HOME: Formula["openjdk@17"].opt_prefix)
   end
 
   def post_install
