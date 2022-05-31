@@ -3,12 +3,12 @@ class VshElasticsearch6 < Formula
   homepage "https://www.elastic.co/products/elasticsearch"
   url "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-oss-6.8.12.tar.gz"
   sha256 "feb6c43fe66055360754597350c088025b40566cee16175b005e55660d9e62fd"
-  revision 18
+  revision 19
   license "Apache-2.0"
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 catalina: "6ee510f6e13b462d4689b42a29db718dd548881fce872ebd7896184e4e893878"
+    sha256 catalina: "df944521efaf87f150ca9d51f1dfad1f5cdbf4971a181866a750780a50a49e10"
   end
 
   depends_on "openjdk@8"
