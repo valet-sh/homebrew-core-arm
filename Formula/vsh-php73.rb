@@ -5,11 +5,11 @@ class VshPhp73 < Formula
   mirror "https://fossies.org/linux/www/php-7.3.33.tar.xz"
   sha256 "166eaccde933381da9516a2b70ad0f447d7cec4b603d07b9a916032b215b90cc"
   license "PHP-3.01"
-  revision 36
+  revision 37
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 catalina: "8a1ae1dd2ca8df9ec2c1148197dc18b33926d9a4a9024fd15ef71d97dba98633"
+    sha256 catalina: "1bccf7211cfdb98f5ef0680e1a6a3cc7494a5c86a5a4b17c1015487e94715b76"
   end
 
   depends_on "pkg-config" => :build
