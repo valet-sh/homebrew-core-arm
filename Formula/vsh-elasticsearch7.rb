@@ -8,7 +8,7 @@ class VshElasticsearch7 < Formula
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 catalina: "f6bb553dcfec7136ea31e0525f3c4c3c711372f9d59d34a5650112a2462e58e8"
+    sha256 catalina: "673ca84dbcd65830827a79a5d78c81cb53b427d95f98ee31a6ee172de61d0969"
   end
 
   depends_on "gradle@6" => :build
