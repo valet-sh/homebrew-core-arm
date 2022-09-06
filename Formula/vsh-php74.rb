@@ -5,11 +5,11 @@ class VshPhp74 < Formula
   mirror "https://fossies.org/linux/www/php-7.4.28.tar.xz"
   sha256 "9cc3b6f6217b60582f78566b3814532c4b71d517876c25013ae51811e65d8fce"
   license "PHP-3.01"
-  revision 53
+  revision 54
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 catalina: "8111b77409e1ddf994700b4daaafac430b9b246a28615d02ab213a0640ddc428"
+    sha256 catalina: "537aceb4945c63cc203e1614f9c88b9c9b0d3e944d96dd63515e22ef1836ff7a"
   end
 
   depends_on "pkg-config" => :build
