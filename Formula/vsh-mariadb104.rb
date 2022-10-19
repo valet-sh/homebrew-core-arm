@@ -170,7 +170,7 @@ class VshMariadb104 < Formula
         # Don't initialize database, it clashes when testing other MySQL-like implementations.
     return if ENV["HOMEBREW_GITHUB_ACTIONS"]
 
-    unless File.exist? "#{datadir}/mysql/mysql/user.frm"
+    unless File.exist? "#{datadir}/mysql/user.frm"
       ENV["TMPDIR"] = nil
       system libexec/"bin/mysql_install_db", "--verbose", "--auth-root-authentication-method=normal", "--user=#{ENV["USER"]}",
         "--basedir=#{libexec}", "--datadir=#{datadir}", "--tmpdir=/tmp"
