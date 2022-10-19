@@ -4,11 +4,11 @@ class VshMariadb104 < Formula
   url "https://downloads.mariadb.com/MariaDB/mariadb-10.4.22/source/mariadb-10.4.22.tar.gz"
   sha256 "44bdc36eeb02888296e961718bae808f3faab268ed49160a785248db60500c00"
   license "GPL-2.0-only"
-  revision 1
+  revision 2
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 catalina: "e3d8483eb4ee38391719922b5ce404b10a841333ba72e16457dfc94cf0e394ee"
+    sha256 catalina: "040c449c78575756589257eea913842a41a0db81aa088511e2318c114b2e433f"
   end
 
   depends_on "bison" => :build
@@ -170,7 +170,7 @@ class VshMariadb104 < Formula
         # Don't initialize database, it clashes when testing other MySQL-like implementations.
     return if ENV["HOMEBREW_GITHUB_ACTIONS"]
 
-    unless File.exist? "#{datadir}/mysql/mysql/user.frm"
+    unless File.exist? "#{datadir}/mysql/user.frm"
       ENV["TMPDIR"] = nil
       system libexec/"bin/mysql_install_db", "--verbose", "--auth-root-authentication-method=normal", "--user=#{ENV["USER"]}",
         "--basedir=#{libexec}", "--datadir=#{datadir}", "--tmpdir=/tmp"
