@@ -5,11 +5,11 @@ class VshPhp80 < Formula
   mirror "https://fossies.org/linux/www/php-8.0.16.tar.xz"
   sha256 "f27a2f25259e8c51e42dfd74e24a546ee521438ad7d9f6c6e794aa91f38bab0a"
   license "PHP-3.01"
-  revision 76
+  revision 77
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 catalina: "e7b6f66d41c5c935515e414c54cd67e415ef01b3c22a32a2ed9b7428f137cf52"
+    sha256 catalina: "9012672f1eca156783788125ad1305b5326cf7856953ef824fff03c13cd9fbf5"
   end
 
   depends_on "bison" => :build
