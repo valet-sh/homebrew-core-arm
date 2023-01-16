@@ -5,11 +5,11 @@ class VshPhp73 < Formula
   mirror "https://fossies.org/linux/www/php-7.3.33.tar.xz"
   sha256 "166eaccde933381da9516a2b70ad0f447d7cec4b603d07b9a916032b215b90cc"
   license "PHP-3.01"
-  revision 78
+  revision 79
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 big_sur: "4f33382729cc1afba6b4d8585edf724c7f5553a0321738525e392f74e5b62bfb"
+    sha256 big_sur: "078001529bcee5923ff1bf5975408c98f032f10afb1f7096d578ec206122fafe"
   end
 
   depends_on "pkg-config" => :build
@@ -25,6 +25,7 @@ class VshPhp73 < Formula
   depends_on "glib"
   depends_on "gmp"
   depends_on "vsh-icu4c"
+  depends_on "krb5"
   depends_on "jpeg"
   depends_on "libpng"
   depends_on "libpq"
