@@ -1,11 +1,11 @@
 class VshPhp74 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://www.php.net/distributions/php-7.4.28.tar.xz"
-  mirror "https://fossies.org/linux/www/php-7.4.28.tar.xz"
-  sha256 "9cc3b6f6217b60582f78566b3814532c4b71d517876c25013ae51811e65d8fce"
+  url "https://www.php.net/distributions/php-7.4.33.tar.xz"
+  mirror "https://fossies.org/linux/www/php-7.4.33.tar.xz"
+  sha256 "924846abf93bc613815c55dd3f5809377813ac62a9ec4eb3778675b82a27b927"
   license "PHP-3.01"
-  revision 80
+  revision 1
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
@@ -42,11 +42,10 @@ class VshPhp74 < Formula
   depends_on "webp"
   depends_on "imagemagick"
 
-
   uses_from_macos "xz" => :build
   uses_from_macos "bzip2"
-  uses_from_macos "krb5"
   uses_from_macos "libedit"
+  uses_from_macos "libffi", since: :catalina
   uses_from_macos "libxml2"
   uses_from_macos "libxslt"
   uses_from_macos "zlib"
