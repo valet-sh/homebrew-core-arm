@@ -1,15 +1,15 @@
 class VshPhp82 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://www.php.net/distributions/php-8.2.0.tar.xz"
-  mirror "https://fossies.org/linux/www/php-8.2.0.tar.xz"
-  sha256 "6ea4c2dfb532950fd712aa2a08c1412a6a81cd1334dd0b0bf88a8e44c2b3a943"
+  url "https://www.php.net/distributions/php-8.2.1.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.2.1.tar.xz"
+  sha256 "650d3bd7a056cabf07f6a0f6f1dd8ba45cd369574bbeaa36de7d1ece212c17af"
   license "PHP-3.01"
-  revision 6
+  revision 1
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 catalina: "86b8123842e099ef06945b5df2c250065837c937c7cd5bb54f6aa84ee5fa6f1e"
+    sha256 big_sur: "681e022c2c95c0a11cc35917e1c0864e443ad5100568b850011322f6fe785564"
   end
 
   depends_on "httpd" => [:build, :test]
