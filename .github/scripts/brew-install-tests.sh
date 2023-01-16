@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -env
+set -e
 
 brew tap valet-sh/core
 
