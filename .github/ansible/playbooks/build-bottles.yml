@@ -29,7 +29,7 @@
       become: true
 
     - name: "ensure xcode 12.2 is installed on macos 11.0"
-      shell: "xcode-select -s /Applications/Xcode_12.2.app"
+      shell: "xcode-select -s /Applications/Xcode_12.5.1.app"
       when: ansible_distribution_version is version('11.0.0', '>=')
       become: true
 
