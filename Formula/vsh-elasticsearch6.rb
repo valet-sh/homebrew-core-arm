@@ -1,14 +1,14 @@
 class VshElasticsearch6 < Formula
   desc "Distributed search & analytics engine"
   homepage "https://www.elastic.co/products/elasticsearch"
-  url "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-oss-6.8.12.tar.gz"
-  sha256 "feb6c43fe66055360754597350c088025b40566cee16175b005e55660d9e62fd"
-  revision 21
+  url "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-oss-6.8.22.tar.gz"
+  sha256 "836a50df324a98837dcadbc7d55782cc9525f15cc6a8aa0c657e199667ebb996"
+  revision 1
   license "Apache-2.0"
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 catalina: "dd0ff4819d4e183f2d624c815c2b12d397b01816df1e6a60155bd8afef75ed01"
+    sha256 big_sur: "f695b68bf8c26b76498b1d16539ab277415e7b84663a184adfba3470eb0d150b"
   end
 
   depends_on "openjdk@8"

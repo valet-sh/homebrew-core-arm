@@ -3,15 +3,15 @@ class VshElasticsearch8 < Formula
   homepage "https://www.elastic.co/products/elasticsearch"
   url "https://github.com/elastic/elasticsearch/archive/v8.1.2.tar.gz"
   sha256 "9e6a4af0c1d5c8887f5f5216f8066d6e96eadf5cc919296f2040858bfc4bd920"
-  revision 5
+  revision 7
   license "Apache-2.0"
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 catalina: "a5f21028368b7c8fa7ce542777c4d9204917abc2af9b6b2577cde96737c4462d"
+    sha256 big_sur: "ceab7a10465aba102d82411ffa2ec95c6c7b9515bdc0ccf56aa890e1e9e2ae54"
   end
 
-  depends_on "gradle" => :build
+  depends_on "gradle@6" => :build
   depends_on "openjdk@17"
 
   def cluster_name
@@ -19,7 +19,8 @@ class VshElasticsearch8 < Formula
   end
 
   def install
-    system "gradle", ":distribution:archives:darwin-tar:assemble", "-Dbuild.snapshot=false", "-Dlicense.key=./x-pack/plugin/core/snapshot.key"
+    ENV["ES_PATH_CONF"] = #{Formula["openjdk@17"]
+    system "./gradlew", ":distribution:archives:darwin-tar:assemble", "-Dbuild.snapshot=false", "-Dlicense.key=./x-pack/plugin/core/snapshot.key"
 
     mkdir "tar" do
       # Extract the package to the tar directory
