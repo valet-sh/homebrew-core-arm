@@ -2,9 +2,13 @@
 
 set -e
 
+brew doctor || true
+brew update || true
+brew upgrade $(brew outdated --formula -q) || true
+
 brew tap valet-sh/core
 
-brew update
+brew update || true
 
 brew install vsh-php56
 brew install vsh-php70
