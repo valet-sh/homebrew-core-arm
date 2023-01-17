@@ -1,14 +1,14 @@
 class VshOpensearch1 < Formula
   desc "Open source distributed and RESTful search engine"
   homepage "https://github.com/opensearch-project/OpenSearch"
-  url "https://github.com/opensearch-project/OpenSearch/archive/1.3.0.tar.gz"
-  sha256 "9ab025597532348ea7404eb43cce629f668eff17f23e9fb736a0089049c9b295"
+  url "https://github.com/opensearch-project/OpenSearch/archive/1.3.7.tar.gz"
+  sha256 "49e5eeba40979ab5e85536f19bca98172b229baa282813c1816aa6583710f03d"
   license "Apache-2.0"
-  revision 5
+  revision 1
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 catalina: "2cd38525b90cc9a173f751a309547384a68a3118fd7758f820e3d5b0fcf156b7"
+    sha256 big_sur: "2cd38525b90cc9a173f751a309547384a68a3118fd7758f820e3d5b0fcf156b7"
   end
 
   depends_on "gradle@6" => :build
