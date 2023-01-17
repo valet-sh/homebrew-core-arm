@@ -5,14 +5,13 @@ class VshPhp82 < Formula
   mirror "https://fossies.org/linux/www/php-8.2.1.tar.xz"
   sha256 "650d3bd7a056cabf07f6a0f6f1dd8ba45cd369574bbeaa36de7d1ece212c17af"
   license "PHP-3.01"
-  revision 1
+  revision 2
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 big_sur: "681e022c2c95c0a11cc35917e1c0864e443ad5100568b850011322f6fe785564"
+    sha256 big_sur: "43f7a38e4ff62b72ee4e7cf4c1fd6571d39d0b5971481bd7da6bea3863f7f75f"
   end
 
-  depends_on "httpd" => [:build, :test]
   depends_on "pkg-config" => :build
   depends_on "apr"
   depends_on "apr-util"
@@ -63,15 +62,6 @@ class VshPhp82 < Formula
 
     # buildconf required due to system library linking bug patch
     system "./buildconf", "--force"
-
-    inreplace "configure" do |s|
-      s.gsub! "APACHE_THREADED_MPM=`$APXS_HTTPD -V 2>/dev/null | grep 'threaded:.*yes'`",
-              "APACHE_THREADED_MPM="
-      s.gsub! "APXS_LIBEXECDIR='$(INSTALL_ROOT)'`$APXS -q LIBEXECDIR`",
-              "APXS_LIBEXECDIR='$(INSTALL_ROOT)#{lib}/httpd/modules'"
-      s.gsub! "-z `$APXS -q SYSCONFDIR`",
-              "-z ''"
-    end
 
     config_path = etc/"#{name}"
     # Prevent system pear config from inhibiting pear install
@@ -133,7 +123,6 @@ class VshPhp82 < Formula
       --enable-sysvmsg
       --enable-sysvsem
       --enable-sysvshm
-      --with-apxs2=#{Formula["httpd"].opt_bin}/apxs
       --with-bz2#{headers_path}
       --with-curl
       --with-external-gd
