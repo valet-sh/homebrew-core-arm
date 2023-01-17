@@ -2,15 +2,25 @@ class VshMysql57 < Formula
   # .
   desc "Open source relational database management system"
   homepage "https://dev.mysql.com/doc/refman/5.7/en/"
-  url "https://cdn.mysql.com/Downloads/MySQL-5.7/mysql-5.7.31-macos10.14-x86_64.tar.gz"
-  revision 2
-  version "5.7.31"
-  sha256 "0d949c4dda2d9bd3e2fd5d5068c14cda48c995bbe0c3da2f5334ff449126f6be"
+  url "https://cdn.mysql.com/Downloads/MySQL-5.7/mysql-boost-5.7.41.tar.gz"
+  sha256 "d5735e172fbd235d22d2c7eec084c51e7a1648d9e28c78b54e0c8b8d46751cb9"
+  license "GPL-2.0-only"
+  revision 1
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 catalina: "fc73aebd84007d32a729a43154dbc22ef5f425f1d145107e5d7185ce4c8e8d82"
+    sha256 big_sur: "5f44bd8c67a7bf12112c998b746a8a687b25b15848da6947b21159d82695b87b"
   end
+
+  depends_on "cmake" => :build
+  depends_on "libevent"
+  depends_on "lz4"
+  depends_on "openssl@1.1"
+  depends_on "protobuf"
+
+  uses_from_macos "curl"
+  uses_from_macos "cyrus-sasl"
+  uses_from_macos "libedit"
 
   def datadir
     var/"#{name}"
@@ -20,9 +30,51 @@ class VshMysql57 < Formula
     libexec/"config"
   end
 
+  def etcdir
+    etc/name
+  end
+
+  # Fixes loading of VERSION file, backported from mysql/mysql-server@51675dd
+  patch :DATA
+
   def install
 
-    libexec.install "bin", "docs", "include", "lib", "man", "share"
+    # Fixes loading of VERSION file; used in conjunction with patch
+    File.rename "VERSION", "MYSQL_VERSION"
+
+    # -DINSTALL_* are relative to `CMAKE_INSTALL_PREFIX` (`prefix`)
+    args = %W[
+      -DCMAKE_INSTALL_PREFIX=#{libexec}
+      -DCOMPILATION_COMMENT=valet-sh
+      -DDEFAULT_CHARSET=utf8
+      -DDEFAULT_COLLATION=utf8_general_ci
+      -DINSTALL_DOCDIR=share/doc/#{name}
+      -DINSTALL_INCLUDEDIR=include/mysql
+      -DINSTALL_INFODIR=share/info
+      -DINSTALL_MANDIR=share/man
+      -DINSTALL_MYSQLSHAREDIR=share/mysql
+      -DINSTALL_PLUGINDIR=lib/plugin
+      -DMYSQL_DATADIR=#{datadir}
+      -DSYSCONFDIR=#{etcdir}
+      -DWITH_BOOST=boost
+      -DWITH_EDITLINE=system
+      -DWITH_SSL=yes
+      -DWITH_NUMA=OFF
+      -DWITH_UNIT_TESTS=OFF
+      -DWITH_EMBEDDED_SERVER=ON
+      -DENABLED_LOCAL_INFILE=1
+      -DWITH_INNODB_MEMCACHED=ON
+    ]
+
+    system "cmake", ".", *std_cmake_args, *args
+    system "make"
+    system "make", "install"
+
+    (libexec/"mysql-test").cd do
+      system "./mysql-test-run.pl", "status", "--vardir=#{Dir.mktmpdir}"
+    end
+
+    #libexec.install "bin", "docs", "include", "lib", "man", "share"
 
     (bin/"mysql5.7").write <<~EOS
       #!/bin/bash
@@ -36,6 +88,13 @@ class VshMysql57 < Formula
       #!/bin/bash
       #{libexec}/bin/mysqladmin --defaults-file=#{etc}/#{name}/my.cnf "$@"
     EOS
+
+    # Remove the tests directory
+    rm_rf prefix/"mysql-test"
+
+    # Don't create databases inside of the prefix!
+    # See: https://github.com/Homebrew/homebrew/issues/4975
+    rm_rf prefix/"data"
 
     tmpconfdir.mkpath
     (tmpconfdir/"my.cnf").write <<~EOS
@@ -107,7 +166,7 @@ class VshMysql57 < Formula
       MySQL is configured to only allow connections from localhost by default
 
       To connect run:
-          mysql -uroot
+          mysql5.7 -uroot
     EOS
     s
   end
@@ -159,3 +218,27 @@ class VshMysql57 < Formula
     Process.wait(pid)
   end
 end
+
+__END__
+diff --git a/cmake/mysql_version.cmake b/cmake/mysql_version.cmake
+index 43d731e..3031258 100644
+--- a/cmake/mysql_version.cmake
++++ b/cmake/mysql_version.cmake
+@@ -31,7 +31,7 @@ SET(DOT_FRM_VERSION "6")
+
+ # Generate "something" to trigger cmake rerun when VERSION changes
+ CONFIGURE_FILE(
+-  ${CMAKE_SOURCE_DIR}/VERSION
++  ${CMAKE_SOURCE_DIR}/MYSQL_VERSION
+   ${CMAKE_BINARY_DIR}/VERSION.dep
+ )
+
+@@ -39,7 +39,7 @@ CONFIGURE_FILE(
+
+ MACRO(MYSQL_GET_CONFIG_VALUE keyword var)
+  IF(NOT ${var})
+-   FILE (STRINGS ${CMAKE_SOURCE_DIR}/VERSION str REGEX "^[ ]*${keyword}=")
++   FILE (STRINGS ${CMAKE_SOURCE_DIR}/MYSQL_VERSION str REGEX "^[ ]*${keyword}=")
+    IF(str)
+      STRING(REPLACE "${keyword}=" "" str ${str})
+      STRING(REGEX REPLACE  "[ ].*" ""  str "${str}")
