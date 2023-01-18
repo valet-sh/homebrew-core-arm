@@ -19,6 +19,7 @@ class VshMariadb104 < Formula
   depends_on "pcre2"
   depends_on "lz4"
   depends_on "lzo"
+  depends_on "snappy"
 
   uses_from_macos "bzip2"
   uses_from_macos "ncurses"
