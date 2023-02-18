@@ -3,11 +3,11 @@ class VshPhp71 < Formula
   homepage "https://www.php.net/"
   url "https://www.php.net/distributions/php-7.1.33.tar.xz"
   sha256 "bd7c0a9bd5433289ee01fd440af3715309faf583f75832b64fe169c100d52968"
-  revision 262
+  revision 263
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 big_sur: "b50790166c2ddaaecdf42034e9f587bd4bce17429f9e8cd8b0fb46f9264aa947"
+    sha256 big_sur: "ca583f4cdaba2b1960f4ac45009b553774b696108d1939b07cc30c9446111a48"
   end
 
   depends_on "pkg-config" => :build
