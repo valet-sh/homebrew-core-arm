@@ -11,7 +11,7 @@ class VshOpensearch2 < Formula
     sha256 big_sur: "b5cc5c3350c311d787e2ef567d2bfb53faeae7c72a6cd7a901291b4c06f3e464"
   end
 
-  depends_on "gradle" => :build
+  depends_on "gradle@7" => :build
   depends_on "openjdk@17"
 
   def cluster_name
