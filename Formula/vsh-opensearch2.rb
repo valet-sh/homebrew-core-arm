@@ -1,24 +1,22 @@
 class VshOpensearch2 < Formula
   desc "Open source distributed and RESTful search engine"
   homepage "https://github.com/opensearch-project/OpenSearch"
-  url "https://github.com/opensearch-project/OpenSearch/archive/2.4.1.tar.gz"
-  sha256 "df87d5aac8b44aa08788394723d8d458b6bc3b0808aa5891bd9797959921c632"
+  url "https://github.com/opensearch-project/OpenSearch/archive/2.5.0.tar.gz"
+  sha256 "a79fa55320126e0292b6d1b7a5225c8f5cae2c30b5d2784611eb0b71710f9bb7"
   license "Apache-2.0"
   revision 1
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 big_sur: "b5cc5c3350c311d787e2ef567d2bfb53faeae7c72a6cd7a901291b4c06f3e464"
+    sha256 big_sur: "428f4cefe47566aad605df8a4b063af4c6f9e048a6f00faa589c77c06434b44b"
   end
 
-  depends_on "gradle" => :build
+  depends_on "gradle@7" => :build
   depends_on "openjdk@17"
 
   def cluster_name
     "opensearch2"
   end
-
- patch :DATA
 
   def install
     system "gradle", ":distribution:archives:no-jdk-darwin-tar:assemble", "-Dbuild.snapshot=false"
@@ -153,64 +151,3 @@ class VshOpensearch2 < Formula
     system "#{bin}/opensearch-plugin", "list"
   end
 end
-
-__END__
---- a/buildSrc/src/main/java/org/opensearch/gradle/info/GlobalBuildInfoPlugin.java
-+++ b/buildSrc/src/main/java/org/opensearch/gradle/info/GlobalBuildInfoPlugin.java
-@@ -45,6 +45,7 @@ import org.gradle.api.provider.ProviderFactory;
- import org.gradle.internal.jvm.Jvm;
- import org.gradle.internal.jvm.inspection.JvmInstallationMetadata;
- import org.gradle.internal.jvm.inspection.JvmMetadataDetector;
-+import org.gradle.jvm.toolchain.internal.InstallationLocation;
- import org.gradle.util.GradleVersion;
-
- import javax.inject.Inject;
-@@ -52,6 +53,8 @@ import java.io.File;
- import java.io.FileInputStream;
- import java.io.IOException;
- import java.io.UncheckedIOException;
-+import java.lang.invoke.MethodHandles;
-+import java.lang.invoke.MethodType;
- import java.nio.charset.StandardCharsets;
- import java.nio.file.Files;
- import java.nio.file.Path;
-@@ -196,7 +199,29 @@ public class GlobalBuildInfoPlugin implements Plugin<Project> {
-     }
-
-     private JvmInstallationMetadata getJavaInstallation(File javaHome) {
--        return jvmMetadataDetector.getMetadata(javaHome);
-+        final InstallationLocation location = new InstallationLocation(javaHome, "Java home");
-+
-+        try {
-+            try {
-+                // The getMetadata(File) is used by Gradle pre-7.6
-+                return (JvmInstallationMetadata) MethodHandles.publicLookup()
-+                    .findVirtual(JvmMetadataDetector.class, "getMetadata", MethodType.methodType(JvmInstallationMetadata.class, File.class))
-+                    .bindTo(jvmMetadataDetector)
-+                    .invokeExact(location.getLocation());
-+            } catch (NoSuchMethodException | IllegalAccessException ex) {
-+                // The getMetadata(InstallationLocation) is used by Gradle post-7.6
-+                return (JvmInstallationMetadata) MethodHandles.publicLookup()
-+                    .findVirtual(
-+                        JvmMetadataDetector.class,
-+                        "getMetadata",
-+                        MethodType.methodType(JvmInstallationMetadata.class, InstallationLocation.class)
-+                    )
-+                    .bindTo(jvmMetadataDetector)
-+                    .invokeExact(location);
-+            }
-+        } catch (Throwable ex) {
-+            throw new IllegalStateException("Unable to find suitable JvmMetadataDetector::getMetadata", ex);
-+        }
-     }
-
-     private List<JavaHome> getAvailableJavaVersions(JavaVersion minimumCompilerVersion) {
-@@ -206,7 +231,7 @@ public class GlobalBuildInfoPlugin implements Plugin<Project> {
-             String javaHomeEnvVarName = getJavaHomeEnvVarName(Integer.toString(version));
-             if (System.getenv(javaHomeEnvVarName) != null) {
-                 File javaHomeDirectory = new File(findJavaHome(Integer.toString(version)));
--                JvmInstallationMetadata javaInstallation = jvmMetadataDetector.getMetadata(javaHomeDirectory);
-+                JvmInstallationMetadata javaInstallation = getJavaInstallation(javaHomeDirectory);
-                 JavaHome javaHome = JavaHome.of(version, providers.provider(() -> {
-                     int actualVersion = Integer.parseInt(javaInstallation.getLanguageVersion().getMajorVersion());
-                     if (actualVersion != version) {
