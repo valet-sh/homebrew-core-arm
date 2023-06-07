@@ -18,7 +18,7 @@ class VshMysql80 < Formula
   depends_on "libevent"
   depends_on "lz4"
   depends_on "openssl@1.1"
-  depends_on "protobuf"
+  depends_on "protobuf@21"
   depends_on "zstd"
 
   uses_from_macos "curl"
