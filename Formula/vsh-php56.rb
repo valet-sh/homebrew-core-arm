@@ -4,7 +4,7 @@ class VshPhp56 < Formula
   url "https://php.net/get/php-5.6.40.tar.xz/from/this/mirror"
   sha256 "1369a51eee3995d7fbd1c5342e5cc917760e276d561595b6052b21ace2656d1c"
   license "PHP-3.01"
-  revision 292
+  revision 293
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
@@ -67,6 +67,9 @@ class VshPhp56 < Formula
   def install
     # Ensure that libxml2 will be detected correctly in older MacOS
     ENV["SDKROOT"] = MacOS.sdk_path if MacOS.version == :el_capitan || MacOS.version == :sierra
+
+    current_pkg_config_path = ENV["PKG_CONFIG_PATH"]
+    ENV["PKG_CONFIG_PATH"] = "/usr/local/opt/openssl@1.1/lib/pkgconfig:#{current_pkg_config_path}"
 
     # Work around configure issues with Xcode 12
     # See https://bugs.php.net/bug.php?id=80171
