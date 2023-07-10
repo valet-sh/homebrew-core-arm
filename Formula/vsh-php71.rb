@@ -3,11 +3,11 @@ class VshPhp71 < Formula
   homepage "https://www.php.net/"
   url "https://www.php.net/distributions/php-7.1.33.tar.xz"
   sha256 "bd7c0a9bd5433289ee01fd440af3715309faf583f75832b64fe169c100d52968"
-  revision 291
+  revision 292
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 big_sur: "afad22629d4b1c990a0516d94d505f1432d0e56ca6664d8990b58cb37c01023a"
+    sha256 big_sur: "ec488579bc86b2fa724087f48e4f21c7f62871fe80c6e1e72c78d7283ab81fc1"
   end
 
   depends_on "pkg-config" => :build
@@ -56,6 +56,9 @@ class VshPhp71 < Formula
   def install
     # Ensure that libxml2 will be detected correctly in older MacOS
     ENV["SDKROOT"] = MacOS.sdk_path if MacOS.version == :el_capitan || MacOS.version == :sierra
+
+    current_pkg_config_path = ENV["PKG_CONFIG_PATH"]
+    ENV["PKG_CONFIG_PATH"] = "/usr/local/opt/openssl@1.1/lib/pkgconfig:#{current_pkg_config_path}"
 
     # Work around configure issues with Xcode 12
     # See https://bugs.php.net/bug.php?id=80171
