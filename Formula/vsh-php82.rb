@@ -1,15 +1,15 @@
 class VshPhp82 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://www.php.net/distributions/php-8.2.1.tar.xz"
-  mirror "https://fossies.org/linux/www/php-8.2.1.tar.xz"
-  sha256 "650d3bd7a056cabf07f6a0f6f1dd8ba45cd369574bbeaa36de7d1ece212c17af"
+  url "https://www.php.net/distributions/php-8.2.8.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.2.8.tar.xz"
+  sha256 "cfe1055fbcd486de7d3312da6146949aae577365808790af6018205567609801"
   license "PHP-3.01"
-  revision 36
+  revision 1
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 big_sur: "d3690e279fc91c02afab1b38b1ab92fdafe94f74c3870a19d5ace0721b1b50a2"
+    sha256 big_sur: "f2ab5730ae1f8f1dd0633aaad07d0571dc8b7babd2cc7f518ea48ee933dfdab5"
   end
 
   depends_on "pkg-config" => :build
@@ -49,8 +49,8 @@ class VshPhp82 < Formula
   patch :DATA
 
   resource "xdebug_module" do
-    url "https://github.com/xdebug/xdebug/archive/refs/tags/3.2.0.tar.gz"
-    sha256 "a5979f2060b92375523662f451bfebd76b718116921c60bcdf8e87be0c58dd72"
+    url "https://github.com/xdebug/xdebug/archive/refs/tags/3.2.1.tar.gz"
+    sha256 "bfdaac38997be3fd8391118a6924196eca8adafb77f59085dd0afb494d54968d"
   end
 
   resource "imagick_module" do
@@ -59,6 +59,9 @@ class VshPhp82 < Formula
   end
 
   def install
+
+    current_pkg_config_path = ENV["PKG_CONFIG_PATH"]
+    ENV["PKG_CONFIG_PATH"] = "/usr/local/opt/openssl@1.1/lib/pkgconfig:#{current_pkg_config_path}"
 
     # buildconf required due to system library linking bug patch
     system "./buildconf", "--force"
