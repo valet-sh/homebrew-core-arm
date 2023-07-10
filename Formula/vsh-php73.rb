@@ -5,11 +5,11 @@ class VshPhp73 < Formula
   mirror "https://fossies.org/linux/www/php-7.3.33.tar.xz"
   sha256 "166eaccde933381da9516a2b70ad0f447d7cec4b603d07b9a916032b215b90cc"
   license "PHP-3.01"
-  revision 119
+  revision 120
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 big_sur: "3a2218fe636c9ca592ece5dbaf28b94eaeefa37a1311e855176e72490e65c87f"
+    sha256 big_sur: "ef6006582c273658ed570829eb203c5586a38ddd9d85c9b8b5e15c7d7afec7a4"
   end
 
   depends_on "pkg-config" => :build
@@ -63,6 +63,9 @@ class VshPhp73 < Formula
   def install
     # Ensure that libxml2 will be detected correctly in older MacOS
     ENV["SDKROOT"] = MacOS.sdk_path if MacOS.version == :el_capitan || MacOS.version == :sierra
+
+    current_pkg_config_path = ENV["PKG_CONFIG_PATH"]
+    ENV["PKG_CONFIG_PATH"] = "/usr/local/opt/openssl@1.1/lib/pkgconfig:#{current_pkg_config_path}"
 
     # buildconf required due to system library linking bug patch
     system "./buildconf", "--force"
