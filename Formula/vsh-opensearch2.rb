@@ -8,7 +8,7 @@ class VshOpensearch2 < Formula
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 big_sur: "bc2eb5d4877d5865c9c7ed83be0243e16630ad1cada7b62fbb403e5cede23db5"
+    sha256 big_sur: "c219ddadda1bdd93a4f02afdbc323f0ae137d5ca11dae2deb96c7c94b3555e81"
   end
 
   depends_on "gradle@7" => :build
