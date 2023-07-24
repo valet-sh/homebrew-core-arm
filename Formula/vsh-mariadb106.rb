@@ -191,31 +191,10 @@ class VshMariadb106 < Formula
     s
   end
 
-  plist_options :manual => "vsh-mariadb106"
-
-  def plist
-    <<~EOS
-      <?xml version="1.0" encoding="UTF-8"?>
-      <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-      <plist version="1.0">
-      <dict>
-        <key>KeepAlive</key>
-        <true/>
-        <key>Label</key>
-        <string>#{plist_name}</string>
-        <key>ProgramArguments</key>
-        <array>
-          <string>#{libexec}/bin/mysqld_safe</string>
-          <string>--defaults-file=#{etc}/#{name}/my.cnf</string>
-          <string>--datadir=#{datadir}</string>
-        </array>
-        <key>RunAtLoad</key>
-        <true/>
-        <key>WorkingDirectory</key>
-        <string>#{datadir}</string>
-      </dict>
-      </plist>
-    EOS
+  service do 
+    run [libexec/"bin/mysqld_safe", "--defaults-file=#{etc}/vsh-mariadb106/my.cnf", "--datadir=#{var}/vsh-mariadb106"]
+    keep_alive true
+    working_dir var/"vsh-mariadb106"
   end
 
   test do
