@@ -316,31 +316,14 @@ class VshPhp73 < Formula
     Utils.popen_read("#{bin}/php-config#{bin_suffix} --extension-dir").chomp
   end
 
-  plist_options :manual => "php-fpm7.3"
-
-  def plist; <<~EOS
-    <?xml version="1.0" encoding="UTF-8"?>
-    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-    <plist version="1.0">
-      <dict>
-        <key>KeepAlive</key>
-        <true/>
-        <key>Label</key>
-        <string>#{plist_name}</string>
-        <key>ProgramArguments</key>
-        <array>
-          <string>#{opt_sbin}/php-fpm#{bin_suffix}</string>
-          <string>--nodaemonize</string>
-        </array>
-        <key>RunAtLoad</key>
-        <true/>
-        <key>WorkingDirectory</key>
-        <string>#{var}</string>
-        <key>StandardErrorPath</key>
-        <string>#{var}/log/#{name}.log</string>
-      </dict>
-    </plist>
-  EOS
+  service do 
+    php_version = @formula.version.to_s.split(".")[0..1].join(".")
+    bin_suffix = php_version
+  
+    run ["#{opt_sbin}/php-fpm#{bin_suffix}", "--nodaemonize"]
+    keep_alive true
+    working_dir var
+    error_log_path var/"log/vsh-php73.log"
   end
 
   test do
