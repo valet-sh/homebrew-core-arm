@@ -103,36 +103,12 @@ class VshOpensearch1 < Formula
     EOS
   end
 
-  plist_options :manual => "vsh-opensearch1"
-
-  def plist
-    <<~EOS
-      <?xml version="1.0" encoding="UTF-8"?>
-      <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-      <plist version="1.0">
-        <dict>
-          <key>KeepAlive</key>
-          <false/>
-          <key>Label</key>
-          <string>#{plist_name}</string>
-          <key>ProgramArguments</key>
-          <array>
-            <string>#{opt_libexec}/bin/opensearch</string>
-          </array>
-          <key>EnvironmentVariables</key>
-          <dict>
-          </dict>
-          <key>RunAtLoad</key>
-          <true/>
-          <key>WorkingDirectory</key>
-          <string>#{var}</string>
-          <key>StandardErrorPath</key>
-          <string>#{var}/log/#{name}/opensearch.log</string>
-          <key>StandardOutPath</key>
-          <string>#{var}/log/#{name}/opensearch.log</string>
-        </dict>
-      </plist>
-    EOS
+  service do 
+    run opt_libexec/"bin/opensearch"
+    keep_alive false
+    working_dir var
+    log_path var/"log/opensearch.log"
+    error_log_path var/"log/opensearch.log"
   end
 
   test do
