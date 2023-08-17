@@ -8,7 +8,7 @@ class VshMariadb104 < Formula
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 big_sur: "b046d98081b96f011b905d4984a1f24ba6bf7babb912238224053a03c2527d2c"
+    sha256 big_sur: "2391620e9cdf51656b4d35e8d7c9dd25175e7886231c98576cace8f9bbc789db"
   end
 
   depends_on "bison" => :build
