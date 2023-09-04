@@ -4,11 +4,11 @@ class VshOpensearch2 < Formula
   url "https://github.com/opensearch-project/OpenSearch/archive/2.5.0.tar.gz"
   sha256 "a79fa55320126e0292b6d1b7a5225c8f5cae2c30b5d2784611eb0b71710f9bb7"
   license "Apache-2.0"
-  revision 7
+  revision 8
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 big_sur: "0404b47395f0ae578b8fb520836c6ea8b346a6d83bd007fab44ed587e7ea6973"
+    sha256 big_sur: "81808869f2b750afea20dd80a249ba98ab24ecf28a68662cf51af3f27638dbe4"
   end
 
   depends_on "gradle@7" => :build
