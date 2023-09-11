@@ -3,13 +3,13 @@ class VshMysql80 < Formula
   desc "Open source relational database management system"
   homepage "https://dev.mysql.com/doc/refman/8.0/en/"
   url "https://src.fedoraproject.org/lookaside/pkgs/community-mysql/mysql-boost-8.0.25.tar.gz/sha512/af653ccff66a9d87221b46ad4f7bcc629700549f758998b9a7fb22e4573b9495a28624e031f016f9ad8fe0dfcf481b82f1ffe224aa48c2d45531570026b26081/mysql-boost-8.0.25.tar.gz"
-  revision 16
+  revision 17
   sha256 "93c5f57cbd69573a8d9798725edec52e92830f70c398a1afaaea2227db331728"
   license "GPL-2.0"
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 big_sur: "8197b0c0df804b04a803551f662ca6e13576ae0c4b9efe2d72c9beac7eca3124"
+    sha256 big_sur: "cc8255b5866d7f604076216c2aececdb0be319a4a97b70e740026b1e2a9abe18"
   end
 
   depends_on "cmake" => :build
