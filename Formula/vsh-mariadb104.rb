@@ -4,11 +4,11 @@ class VshMariadb104 < Formula
   url "https://downloads.mariadb.com/MariaDB/mariadb-10.4.22/source/mariadb-10.4.22.tar.gz"
   sha256 "44bdc36eeb02888296e961718bae808f3faab268ed49160a785248db60500c00"
   license "GPL-2.0-only"
-  revision 22
+  revision 23
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 big_sur: "b418d04de23388dfd167ece1d53c8207cef5b6ec13e49143be0f54a743eb2c33"
+    sha256 big_sur: "a5c411db0776ba47fbe3bd5dd5083f8dddda334e9a635d7586cd03118289ab19"
   end
 
   depends_on "bison" => :build
