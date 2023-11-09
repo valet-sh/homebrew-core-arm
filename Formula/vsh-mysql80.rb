@@ -2,9 +2,9 @@ class VshMysql80 < Formula
   # .
   desc "Open source relational database management system"
   homepage "https://dev.mysql.com/doc/refman/8.0/en/"
-  url "https://cdn.mysql.com/archives/mysql-8.0/mysql-boost-8.0.26.tar.gz"
+  url "https://cdn.mysql.com/Downloads/MySQL-8.0/mysql-boost-8.0.34.tar.gz"
+  sha256 "0b881a19bcef732cd4dbbfc8dfeb84eff61f5dfe0d9788d015d699733e0adf1f"
   revision 1
-  sha256 "209442c1001c37bcbc001845e1dc623d654cefb555b47b528742a53bf21c0b4d"
   license "GPL-2.0"
 
   bottle do
@@ -20,11 +20,11 @@ class VshMysql80 < Formula
   depends_on "openssl@1.1"
   depends_on "protobuf@21"
   depends_on "zstd"
+  depends_on "zlib" # Zlib 1.2.12+
 
   uses_from_macos "curl"
   uses_from_macos "cyrus-sasl"
   uses_from_macos "libedit"
-  uses_from_macos "zlib"
 
 
   conflicts_with "mariadb", "percona-server",
