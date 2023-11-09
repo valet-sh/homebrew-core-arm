@@ -10,7 +10,7 @@ jobs:
 
   build-bottles:
     if: "${{ (!contains(github.event.commits[0].message, '[skip ci]')) && (github.event.label.name == 'build') }}"
-    runs-on: macos-11
+    runs-on: macos-13
     steps:
       
       - uses: actions/setup-python@v1
