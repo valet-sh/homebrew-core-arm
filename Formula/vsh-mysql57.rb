@@ -2,14 +2,14 @@ class VshMysql57 < Formula
   # .
   desc "Open source relational database management system"
   homepage "https://dev.mysql.com/doc/refman/5.7/en/"
-  url "https://cdn.mysql.com/Downloads/MySQL-5.7/mysql-boost-5.7.41.tar.gz"
-  sha256 "d5735e172fbd235d22d2c7eec084c51e7a1648d9e28c78b54e0c8b8d46751cb9"
+  url "https://cdn.mysql.com/Downloads/MySQL-5.7/mysql-boost-5.7.44.tar.gz"
+  sha256 "b8fe262c4679cb7bbc379a3f1addc723844db168628ce2acf78d33906849e491"
   license "GPL-2.0-only"
-  revision 16
+  revision 1
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 big_sur: "ef591f93bc750d8651305b2d4a5a85484ed0743233dc1733e1d8802a93090263"
+    sha256 ventura: "58485d30d2c7dee05b0ea3906f42a00eeda25b67ec39e8a2c1691a1b03aea78d"
   end
 
   depends_on "cmake" => :build
