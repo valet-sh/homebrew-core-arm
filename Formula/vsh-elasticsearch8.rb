@@ -1,8 +1,8 @@
 class VshElasticsearch8 < Formula
   desc "Distributed search & analytics engine"
   homepage "https://www.elastic.co/products/elasticsearch"
-  url "https://github.com/elastic/elasticsearch/archive/v8.11.0.tar.gz"
-  sha256 "b830b9e8e14654a29a840f94fe1fcf493837fcf1a449562e20e0ff90c3c820de"
+  url "https://github.com/elastic/elasticsearch/archive/v8.6.2.tar.gz"
+  sha256 "3ef8ce37e938077472a609f7fd4d80e43486ebdac6685220dd04ba94188dd2ff"
   revision 1
   license "Apache-2.0"
 
@@ -11,7 +11,7 @@ class VshElasticsearch8 < Formula
     sha256 ventura: "7b3cb163c9906f5d00377336d8000529765ede4e7dccfebadaa204a059768750"
   end
 
-  depends_on "gradle" => :build
+  depends_on "gradle@7" => :build
   depends_on "openjdk@17"
 
   def cluster_name
