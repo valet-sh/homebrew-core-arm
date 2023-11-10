@@ -5,11 +5,11 @@ class VshIcu4c < Formula
   version "69.1"
   sha256 "4cba7b7acd1d3c42c44bb0c14be6637098c7faf2b330ce876bc5f3b915d09745"
   license "ICU"
-  revision 2
+  revision 3
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 big_sur: "667eeef2d1b2abf100ce3a45a5d5e5e3663f481f43ef3fd70a710da28a83743c"
+    sha256 ventura: "667eeef2d1b2abf100ce3a45a5d5e5e3663f481f43ef3fd70a710da28a83743c"
   end
 
   keg_only :provided_by_macos, "macOS provides libicucore.dylib (but nothing else)"
