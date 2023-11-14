@@ -4,7 +4,7 @@ class VshPhp56 < Formula
   url "https://php.net/get/php-5.6.40.tar.xz/from/this/mirror"
   sha256 "1369a51eee3995d7fbd1c5342e5cc917760e276d561595b6052b21ace2656d1c"
   license "PHP-3.01"
-  revision 338
+  revision 339
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
@@ -30,7 +30,7 @@ class VshPhp56 < Formula
   depends_on "libyaml"
   depends_on "libtool"
   depends_on "libzip"
-  depends_on "mcrypt"
+  depends_on "vsh-mcrypt"
   depends_on "openldap"
   depends_on "openssl@1.1"
   depends_on "pcre"
@@ -154,7 +154,7 @@ class VshPhp56 < Formula
       --with-libedit#{headers_path}
       --with-libxml-dir#{headers_path}
       --with-libzip
-      --with-mcrypt=#{Formula["mcrypt"].opt_prefix}
+      --with-mcrypt=#{Formula["vsh-mcrypt"].opt_prefix}
       --with-mhash#{headers_path}
       --with-mysql-sock=/tmp/mysql.sock
       --with-mysqli=mysqlnd
