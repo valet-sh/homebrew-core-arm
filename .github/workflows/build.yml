@@ -8,6 +8,31 @@ on:
 
 jobs:
 
+  test-build-bottles:
+    if: "${{ (!contains(github.event.commits[0].message, '[skip ci]')) && (github.event.label.name == 'test') }}"
+    runs-on: macos-13
+    steps:
+
+      - uses: actions/setup-python@v1
+        with:
+          python-version: '3.10'
+
+      - uses: actions/checkout@v1
+
+      - name: Install dependencies
+        working-directory: .github/ansible
+        run: |
+          brew doctor || true
+          brew update || true
+          brew upgrade $(brew outdated --formula -q) || true
+          python -m pip install --upgrade pip
+          pip install -Iq -r requirements.txt
+
+      - name: Build bottles
+        working-directory: .github/ansible
+        run: ansible-playbook -vvv playbooks/build-bottles.yml
+
+
   build-bottles:
     if: "${{ (!contains(github.event.commits[0].message, '[skip ci]')) && (github.event.label.name == 'build') }}"
     runs-on: macos-13

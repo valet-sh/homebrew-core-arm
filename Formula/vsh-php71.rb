@@ -3,11 +3,11 @@ class VshPhp71 < Formula
   homepage "https://www.php.net/"
   url "https://www.php.net/distributions/php-7.1.33.tar.xz"
   sha256 "bd7c0a9bd5433289ee01fd440af3715309faf583f75832b64fe169c100d52968"
-  revision 337
+  revision 339
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 ventura: "1c655040957720bb7afd77687e711ba766dc9fc03512a7378e756786760c066c"
+    sha256 ventura: "f54c06fde0ac32b2fefa566c0a04933235151a82ff0a162743afa093aa94299a"
   end
 
   depends_on "pkg-config" => :build
@@ -29,7 +29,7 @@ class VshPhp71 < Formula
   depends_on "libyaml"
   depends_on "pcre"
   depends_on "libtool"
-  depends_on "mcrypt"
+  depends_on "vsh-mcrypt"
   depends_on "libzip"
   depends_on "openldap"
   depends_on "openssl@1.1"
@@ -142,7 +142,7 @@ class VshPhp71 < Formula
       --with-libxml-dir#{headers_path}
       --with-libedit#{headers_path}
       --with-libzip
-      --with-mcrypt=#{Formula["mcrypt"].opt_prefix}
+      --with-mcrypt=#{Formula["vsh-mcrypt"].opt_prefix}
       --with-mhash#{headers_path}
       --with-mysql-sock=/tmp/mysql.sock
       --with-mysqli=mysqlnd
