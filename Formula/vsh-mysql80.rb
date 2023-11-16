@@ -59,6 +59,7 @@ class VshMysql80 < Formula
       -DWITH_ICU=system
       -DWITH_LIBEVENT=system
       -DWITH_LZ4=system
+      -DWITH_FIDO=bundled
       -DWITH_PROTOBUF=system
       -DWITH_SSL=/usr/local/opt/openssl@1.1
       -DWITH_ZLIB=system
