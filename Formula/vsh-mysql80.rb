@@ -12,6 +12,7 @@ class VshMysql80 < Formula
     sha256 ventura: "209442c1001c37bcbc001845e1dc623d654cefb555b47b528742a53bf21c0b4d"
   end
 
+  depends_on "bison" => :build
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
   depends_on "icu4c"
