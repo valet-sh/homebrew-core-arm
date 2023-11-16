@@ -27,7 +27,7 @@ class VshMysql80 < Formula
   uses_from_macos "libedit"
 
 
-  conflicts_with "mariadb", "percona-server",
+  conflicts_with "mysql", "mariadb", "percona-server",
     because: "mysql, mariadb, and percona install the same binaries"
 
   def datadir
