@@ -1,4 +1,4 @@
-class VshPhp82 < Formula
+class VshPhp83 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   url "https://www.php.net/distributions/php-8.3.0.tar.gz"
