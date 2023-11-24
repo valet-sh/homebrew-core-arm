@@ -49,8 +49,8 @@ class VshPhp83 < Formula
   patch :DATA
 
   resource "xdebug_module" do
-    url "https://github.com/xdebug/xdebug/archive/refs/tags/3.2.1.tar.gz"
-    sha256 "bfdaac38997be3fd8391118a6924196eca8adafb77f59085dd0afb494d54968d"
+    url "https://github.com/xdebug/xdebug/archive/refs/tags/3.3.0alpha3.tar.gz"
+    sha256 "b6ed70867900d5fa76843f778a27c0ffbda1c1911a154cbbdf8b1b1884f791bc"
   end
 
   resource "imagick_module" do
