@@ -2,16 +2,17 @@ class VshMysql80 < Formula
   # .
   desc "Open source relational database management system"
   homepage "https://dev.mysql.com/doc/refman/8.0/en/"
-  url "https://src.fedoraproject.org/lookaside/pkgs/community-mysql/mysql-boost-8.0.25.tar.gz/sha512/af653ccff66a9d87221b46ad4f7bcc629700549f758998b9a7fb22e4573b9495a28624e031f016f9ad8fe0dfcf481b82f1ffe224aa48c2d45531570026b26081/mysql-boost-8.0.25.tar.gz"
-  revision 22
-  sha256 "93c5f57cbd69573a8d9798725edec52e92830f70c398a1afaaea2227db331728"
+  url "https://cdn.mysql.com/Downloads/MySQL-8.0/mysql-boost-8.0.34.tar.gz"
+  sha256 "0b881a19bcef732cd4dbbfc8dfeb84eff61f5dfe0d9788d015d699733e0adf1f"
+  revision 1
   license "GPL-2.0"
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 big_sur: "7d3e56b3229a2769590c147efa2a0e58f43565dfcdcf5fa16e519898eb16b98d"
+    sha256 ventura: "684b51fd7a3e839a23e3b47182bcb6ac66d4774fc693f08d47b502eb0b86c330"
   end
 
+  depends_on "bison" => :build
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
   depends_on "icu4c"
@@ -20,14 +21,14 @@ class VshMysql80 < Formula
   depends_on "openssl@1.1"
   depends_on "protobuf@21"
   depends_on "zstd"
+  depends_on "zlib" # Zlib 1.2.12+
 
   uses_from_macos "curl"
   uses_from_macos "cyrus-sasl"
   uses_from_macos "libedit"
-  uses_from_macos "zlib"
 
 
-  conflicts_with "mariadb", "percona-server",
+  conflicts_with "mysql", "mariadb", "percona-server",
     because: "mysql, mariadb, and percona install the same binaries"
 
   def datadir
@@ -58,6 +59,7 @@ class VshMysql80 < Formula
       -DWITH_ICU=system
       -DWITH_LIBEVENT=system
       -DWITH_LZ4=system
+      -DWITH_FIDO=bundled
       -DWITH_PROTOBUF=system
       -DWITH_SSL=/usr/local/opt/openssl@1.1
       -DWITH_ZLIB=system
