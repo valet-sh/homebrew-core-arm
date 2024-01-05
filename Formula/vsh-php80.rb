@@ -1,15 +1,15 @@
 class VshPhp80 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://www.php.net/distributions/php-8.0.27.tar.xz"
-  mirror "https://fossies.org/linux/www/php-8.0.27.tar.xz"
-  sha256 "f942cbfe2f7bacbb8039fb79bbec41c76ea779ac5c8157f21e1e0c1b28a5fc3a"
+  url "https://www.php.net/distributions/php-8.0.30.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.0.30.tar.xz"
+  sha256 "216ab305737a5d392107112d618a755dc5df42058226f1670e9db90e77d777d9"
   license "PHP-3.01"
-  revision 103
+  revision 1
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 ventura: "11110e4cd6c5a2fe564809dcfd78eb212f2cf6ca17c5f296479bef4129f2038d"
+    sha256 ventura: "70f80b7bf4a5ae678b241f5e51ee10b95cde6ca9c5a5dfd401bb1b20062c91d7"
   end
 
   depends_on "bison" => :build
@@ -57,8 +57,8 @@ class VshPhp80 < Formula
   patch :DATA
 
   resource "xdebug_module" do
-    url "https://github.com/xdebug/xdebug/archive/3.0.4.tar.gz"
-    sha256 "7e4f28fc65c8b535de43b6d2ec57429476a6de1d53c4d440a9108ae8d28e01f4"
+    url "https://github.com/xdebug/xdebug/archive/3.3.1.tar.gz"
+    sha256 "76d0467154d7f2714a07f88c7c17658e24dd58fb919a9aa08ab4bc23dccce76d"
   end
 
   resource "imagick_module" do
