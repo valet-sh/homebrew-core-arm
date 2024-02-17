@@ -5,11 +5,11 @@ class VshMysql57 < Formula
   url "https://cdn.mysql.com/Downloads/MySQL-5.7/mysql-boost-5.7.44.tar.gz"
   sha256 "b8fe262c4679cb7bbc379a3f1addc723844db168628ce2acf78d33906849e491"
   license "GPL-2.0-only"
-  revision 5
+  revision 6
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
-    sha256 ventura: "09b2f05515b48e6e8ed75ec65528bba1eedd0cec7a08b19f2b955543cde057bf"
+    sha256 ventura: "473d2a0130729ce8aa80cc824eb34a6c72bde1c9e36791078b5803678021ac4b"
   end
 
   depends_on "cmake" => :build
