@@ -12,7 +12,7 @@ jobs:
     runs-on: macos-13
     steps:
     - uses: actions/checkout@v1
-    - name: Install dependencies
+    - name: Install php services
       run: |
         brew update || true
         brew upgrade $(brew outdated --formula -q) || true
@@ -31,7 +31,7 @@ jobs:
     runs-on: macos-13
     steps:
     - uses: actions/checkout@v1
-    - name: Install dependencies
+    - name: Install elasticsearch services
       run: |
         brew update || true
         brew upgrade $(brew outdated --formula -q) || true
@@ -46,7 +46,7 @@ jobs:
     runs-on: macos-13
     steps:
     - uses: actions/checkout@v1
-    - name: Install dependencies
+    - name: Install opensearch services
       run: |
         brew update || true
         brew upgrade $(brew outdated --formula -q) || true
@@ -57,7 +57,7 @@ jobs:
     runs-on: macos-13
     steps:
     - uses: actions/checkout@v1
-    - name: Install dependencies
+    - name: Install mysql services
       run: |
         brew update || true
         brew upgrade $(brew outdated --formula -q) || true
@@ -68,7 +68,7 @@ jobs:
     runs-on: macos-13
     steps:
     - uses: actions/checkout@v1
-    - name: Install dependencies
+    - name: Install mariadb services
       run: |
         brew update || true
         brew upgrade $(brew outdated --formula -q) || true
