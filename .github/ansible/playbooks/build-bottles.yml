@@ -40,10 +40,13 @@
         tap: 'valet-sh/core'
         state: present
 
-    - name: Build bottles for modified formulas
-      shell: |
-        brew install --build-bottle --formula {{ formula_path }}/{{ item }}
-        brew bottle {{ formula_path }}/{{ item }} --json --force-core-tap --no-rebuild
+    - name: Apply workaround for bottle build
+      ansible.builtin.lineinfile:
+        path: /usr/local/Homebrew/Library/Homebrew/env_config.rb
+        insertafter: '    def forbid_packages_from_paths?'
+        line:       return false
+
+    - include_tasks: sub-build-bottles.yml
       loop: "{{ git_modified_formulas }}"
 
 #    - name: Build bottles for modified formulas
