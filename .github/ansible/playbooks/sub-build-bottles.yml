@@ -1,7 +1,7 @@
 ---
 
-- name: run 'arch --x86_64 /usr/local/bin/brew uninstall cmake'
-  shell: "arch --x86_64 /usr/local/bin/brew uninstall cmake"
+#- name: run 'arch --x86_64 /usr/local/bin/brew uninstall cmake'
+#  shell: "arch --x86_64 /usr/local/bin/brew uninstall cmake"
 
 - name: "run 'arch --x86_64 /usr/local/bin/brew install --build-bottle --formula {{ formula_path }}/{{ item }}'"
   shell: "arch --x86_64 /usr/local/bin/brew install --build-bottle --formula {{ formula_path }}/{{ item }}"
