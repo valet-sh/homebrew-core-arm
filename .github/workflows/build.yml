@@ -26,7 +26,9 @@ jobs:
           arch --x86_64 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
           arch --x86_64 /usr/local/bin/brew doctor || true
           arch --x86_64 /usr/local/bin/brew update || true
-          arch --x86_64 /usr/local/bin/brew upgrade $(brew outdated --formula -q) || true
+          arch --x86_64 /usr/local/bin/brew tap --force homebrew/core
+          arch --x86_64 /usr/local/bin/brew update || true
+          arch --x86_64 /usr/local/bin/brew upgrade $(brew outdated --formula -q) || true          
           python -m pip install --upgrade pip
           pip install -Iq -r requirements.txt
 
