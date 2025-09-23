@@ -35,3 +35,108 @@ jobs:
       - name: Build bottles
         working-directory: .github/ansible
         run: ansible-playbook -vvv playbooks/build-bottles.yml
+
+
+  build-bottles:
+    if: "${{ (!contains(github.event.commits[0].message, '[skip ci]')) && (github.event.label.name == 'build') }}"
+    runs-on: macos-15
+    steps:
+      
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.*'
+
+      - uses: actions/checkout@v1
+
+      - name: Install dependencies
+        working-directory: .github/ansible
+        run: |
+          /usr/sbin/softwareupdate --install-rosetta --agree-to-license
+          arch --x86_64 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+          arch --x86_64 /usr/local/bin/brew doctor || true
+          arch --x86_64 /usr/local/bin/brew update || true
+          arch --x86_64 /usr/local/bin/brew tap --force homebrew/core
+          arch --x86_64 /usr/local/bin/brew update || true
+          arch --x86_64 /usr/local/bin/brew upgrade $(brew outdated --formula -q) || true          
+          python -m pip install --upgrade pip
+          pip install -Iq -r requirements.txt
+
+      - name: Build bottles
+        working-directory: .github/ansible
+        run: ansible-playbook -vvv playbooks/build-bottles.yml
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build
+          path: build
+ 
+  upload-bottles:
+    if: "!contains(github.event.commits[0].message, '[skip ci]') && contains( github.event.pull_request.labels.*.name, 'build')"
+    needs: [build-bottles]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.*'
+
+      - uses: actions/checkout@v1
+
+      - name: Install dependencies
+        working-directory: .github/ansible
+        run: |
+          python -m pip install --upgrade pip
+          pip install -Iq -r requirements.txt
+
+      - uses: actions/download-artifact@v4.1.7
+        with:
+          name: build
+          path: build
+
+      - name: Upload Bottles
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        working-directory: .github/ansible
+        run: ansible-playbook playbooks/upload-bottles.yml
+
+
+  update-formulas:
+    if: "!contains(github.event.commits[0].message, '[skip ci]') && contains( github.event.pull_request.labels.*.name, 'build')"
+    needs: [upload-bottles]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.*'
+
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: Install dependencies
+        working-directory: .github/ansible
+        run: |
+          python -m pip install --upgrade pip
+          pip install -Iq -r requirements.txt
+
+      - uses: actions/download-artifact@v4.1.7
+        with:
+          name: build
+          path: build
+
+      - name: Update Formulas
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        working-directory: .github/ansible
+        run: ansible-playbook playbooks/update-formulas.yml
+         
+  automerge:
+    if: "!contains(github.event.commits[0].message, '[skip ci]') && contains( github.event.pull_request.labels.*.name, 'build')"
+    needs: [update-formulas]
+    runs-on: ubuntu-latest
+    steps:
+      - id: automerge
+        name: automerge
+        uses: "pascalgn/automerge-action@v0.16.2"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          MERGE_DELETE_BRANCH: true

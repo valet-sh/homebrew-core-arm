@@ -1,0 +1,37 @@
+name: dependencies
+
+on:
+  schedule:
+    - cron: "30 */6 * * *"
+
+jobs:
+
+  check-dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.*'
+
+      - uses: actions/checkout@v1
+
+      - name: Install dependencies
+        working-directory: .github/ansible
+        run: |
+          python -m pip install --upgrade pip
+          pip install -Iq -r requirements.txt
+
+      - name: Check dependencies
+        working-directory: .github/ansible
+        run: ansible-playbook playbooks/check-dependencies.yml
+        
+      - uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          base: master
+          branch-suffix: timestamp
+          commit-message: Trigger bottle rebuild
+          committer: valet.sh dependency bot <noreply@valet.sh>
+          labels: |
+            build
+            automerge
