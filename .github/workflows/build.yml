@@ -36,7 +36,6 @@ jobs:
           path: build
  
   upload-bottles:
-    if: "!contains(github.event.commits[0].message, '[skip ci]') && contains( github.event.pull_request.labels.*.name, 'build')"
     needs: [build-bottles]
     runs-on: ubuntu-latest
     steps:
@@ -65,7 +64,6 @@ jobs:
 
 
   update-formulas:
-    if: "!contains(github.event.commits[0].message, '[skip ci]') && contains( github.event.pull_request.labels.*.name, 'build')"
     needs: [upload-bottles]
     runs-on: ubuntu-latest
     steps:
@@ -95,7 +93,6 @@ jobs:
         run: ansible-playbook playbooks/update-formulas.yml
          
   automerge:
-    if: "!contains(github.event.commits[0].message, '[skip ci]') && contains( github.event.pull_request.labels.*.name, 'build')"
     needs: [update-formulas]
     runs-on: ubuntu-latest
     steps:
