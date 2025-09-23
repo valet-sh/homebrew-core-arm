@@ -8,7 +8,7 @@ class VshPhp71 < Formula
   revision 548
 
   bottle do
-    root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
+    root_url "https://github.com/valet-sh/homebrew-core-arm/releases/download/bottles"
     sha256 arm64_sequoia: "0de55ace8a8d848fb02c951d12e0216f6313118587f6c3c6b63ee856cc2751f1"
   end
 

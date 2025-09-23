@@ -6,7 +6,7 @@ class VshMcrypt < Formula
   revision 3
 
   bottle do
-    root_url "https://github.com/valet-sh/homebrew-core/releases/download/bottles"
+    root_url "https://github.com/valet-sh/homebrew-core-arm/releases/download/bottles"
     sha256 arm64_sequoia: "c5858014a9c50a5c560f5f666cee9bf67c9eb5a864b7f78dfb2c977eab89c279"
   end
 
