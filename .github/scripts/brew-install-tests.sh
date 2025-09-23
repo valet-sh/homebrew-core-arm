@@ -6,7 +6,7 @@ brew doctor || true
 brew update || true
 brew upgrade $(brew outdated --formula -q) || true
 
-brew tap valet-sh/core
+brew tap valet-sh/core-arm
 
 brew update || true
 
