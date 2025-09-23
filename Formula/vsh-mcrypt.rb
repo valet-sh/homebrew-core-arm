@@ -13,7 +13,7 @@ class VshMcrypt < Formula
   # Added automake as a build dependency to update config files in libmcrypt.
   # Please remove in future if there is a patch upstream which recognises aarch64 macos.
   depends_on "automake" => :build
-  depends_on "mhash"
+  depends_on "libtool"
 
   uses_from_macos "zlib"
 
@@ -35,6 +35,9 @@ class VshMcrypt < Formula
       %w[config.guess config.sub].each do |fn|
         cp "#{Formula["automake"].opt_prefix}/share/automake-#{Formula["automake"].version.major_minor}/#{fn}", fn
       end
+
+      # Avoid flat_namespace usage on macOS
+      inreplace "./configure", "${wl}-flat_namespace ${wl}-undefined ${wl}suppress", "" if OS.mac?
 
       system "./configure", "--prefix=#{prefix}",
                             "--mandir=#{man}"
