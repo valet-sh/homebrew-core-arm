@@ -5,7 +5,7 @@ class VshPhp71 < Formula
   version "7.1.33"
   sha256 "3e7a3342f58ca8698635631993a91541d88e7ddf3335e15194d23dafd5bae409"
   license "PHP-3.01"
-  revision 548
+  revision 1
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core-arm/releases/download/bottles"
@@ -61,8 +61,8 @@ class VshPhp71 < Formula
   end
 
   resource "imagick_module" do
-    url "https://github.com/Imagick/imagick/archive/3.4.4.tar.gz"
-    sha256 "8204d228ecbe5f744d625c90364808616127471581227415bca18857af981369"
+    url "https://github.com/Imagick/imagick/archive/refs/tags/3.8.0.tar.gz"
+    sha256 "a964e54a441392577f195d91da56e0b3cf30c32e6d60d0531a355b37bb1e1a59"
   end
 
   def install
@@ -198,8 +198,11 @@ class VshPhp71 < Formula
     }
 
     resource("imagick_module").stage {
+      args = %W[
+        --with-imagick=#{Formula["imagemagick"].opt_prefix}
+      ]
       system "#{bin}/phpize#{bin_suffix}"
-      system "./configure", "--with-php-config=#{bin}/php-config#{bin_suffix}"
+      system "./configure", "--with-php-config=#{bin}/php-config#{bin_suffix}", *args
       system "make", "clean"
       system "make", "all"
       system "make", "install"
