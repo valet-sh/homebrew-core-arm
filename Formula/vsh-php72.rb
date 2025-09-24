@@ -1,9 +1,9 @@
 class VshPhp72 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://github.com/shivammathur/php-src-backports/archive/aee204b665de64862d7832726ffba80faf253746.tar.gz"
+  url "https://github.com/shivammathur/php-src-backports/archive/269a597ce7d22198bca3745157a45783d86da7ac.tar.gz"
   version "7.2.34"
-  sha256 "12bb8a43bf63952c05b2c4186f4534cccdb78a4f62f769789c776fdd6f506ef6"
+  sha256 "01e8a6bf83a7b5e77ec6b02d5933e12a39911a4f34bfa572d99ac0020c9513b0"
   license "PHP-3.01"
   revision 1
 
@@ -27,7 +27,7 @@ class VshPhp72 < Formula
   depends_on "gd"
   depends_on "glib"
   depends_on "gmp"
-  depends_on "icu4c@75"
+  depends_on "icu4c@77"
   depends_on "krb5"
   depends_on "jpeg"
   depends_on "libpng"
@@ -62,8 +62,8 @@ class VshPhp72 < Formula
   end
 
   resource "imagick_module" do
-    url "https://github.com/Imagick/imagick/archive/3.4.4.tar.gz"
-    sha256 "8204d228ecbe5f744d625c90364808616127471581227415bca18857af981369"
+    url "https://pecl.php.net/get/imagick-3.8.0.tgz"
+    sha256 "bda67461c854f20d6105782b769c524fc37388b75d4481d951644d2167ffeec6"
   end
 
   def install
