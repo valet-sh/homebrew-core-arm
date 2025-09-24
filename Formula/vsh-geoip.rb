@@ -12,7 +12,7 @@ class VshGeoip < Formula
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core-arm/releases/download/bottles"
-    sha256 arm64_sequoia: "9a0ea838258296227ed1c742048360a2bf0199afed19922a8358623a6b592786"
+    sha256 arm64_sequoia: "4cce6b57f254b8f145982591007091cf8eea6337baa95a65256d42a61172f96e"
   end
 
   resource "database" do
