@@ -14,6 +14,7 @@ class VshMcrypt < Formula
   # Please remove in future if there is a patch upstream which recognises aarch64 macos.
   depends_on "automake" => :build
   depends_on "libtool"
+  depends_on "mhash"
 
   uses_from_macos "zlib"
 
@@ -27,8 +28,9 @@ class VshMcrypt < Formula
   patch :DATA
 
   def install
-    # Fix compile with newer Clang
-    ENV.append_to_cflags "-Wno-implicit-function-declaration" if DevelopmentTools.clang_build_version >= 1200
+    # Work around configure issues with Xcode 12
+    ENV.append "CFLAGS", "-Wno-implicit-function-declaration"
+    ENV.append "CFLAGS", "-Wno-implicit-int"
 
     resource("libmcrypt").stage do
       # Workaround for ancient config files not recognising aarch64 macos.
