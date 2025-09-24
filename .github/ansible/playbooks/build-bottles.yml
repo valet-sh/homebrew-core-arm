@@ -37,7 +37,7 @@
 
     - name: Ensure valet-sh tap is tapped
       homebrew_tap:
-        tap: 'valet-sh/core'
+        tap: 'valet-sh/core-arm'
         state: present
 
     - name: Apply workaround for bottle build
