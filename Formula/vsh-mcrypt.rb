@@ -7,7 +7,7 @@ class VshMcrypt < Formula
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core-arm/releases/download/bottles"
-    sha256 arm64_sequoia: "c5858014a9c50a5c560f5f666cee9bf67c9eb5a864b7f78dfb2c977eab89c279"
+    sha256 arm64_sequoia: "e6d7d95fc33e7e07b117e1c09f6476719a667bb9723f04036a144b39192d3632"
   end
 
   # Added automake as a build dependency to update config files in libmcrypt.
