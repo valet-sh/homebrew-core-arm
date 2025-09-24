@@ -13,7 +13,7 @@ class VshPhp74 < Formula
   end
 
   depends_on "bison" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconfig" => :build
   depends_on "re2c" => :build
   depends_on "apr"
   depends_on "apr-util"
@@ -54,9 +54,14 @@ class VshPhp74 < Formula
   uses_from_macos "libxslt"
   uses_from_macos "zlib"
 
+  depends_on "gcc"
+
   # PHP build system incorrectly links system libraries
   # see https://github.com/php/php-src/pull/3472
   patch :DATA
+
+  fails_with :clang do
+    cause "Performs worse due to lack of general global register variables"
 
   resource "xdebug_module" do
     url "https://github.com/xdebug/xdebug/archive/3.0.4.tar.gz"
@@ -74,10 +79,22 @@ class VshPhp74 < Formula
   end
 
   def install
+    # GCC -Os performs worse than -O1 and significantly worse than -O2/-O3.
+    # We lack a DSL to enable -O2 so just use -O3 which is similar.
+    ENV.O3 if OS.mac?
+
     # Work around for building with Xcode 15.3
     if DevelopmentTools.clang_build_version >= 1500
       ENV.append "CFLAGS", "-Wno-incompatible-function-pointer-types"
       ENV.append "LDFLAGS", "-lresolv"
+    end
+
+    if OS.mac? && ENV.compiler.to_s.start_with?("gcc")
+      ENV.append "CFLAGS", "-Wno-incompatible-pointer-types"
+      ENV.append "CPPFLAGS", "-DL_ctermid=1024"
+      inreplace "ext/gd/gd.c", "func_p)()", "func_p)(...)"
+      inreplace "ext/gd/gd_ctx.c", "func_p)()", "func_p)(...)"
+      inreplace "ext/standard/scanf.c", "zend_long (*fn)()", "zend_long (*fn)(...)"
     end
 
     # Work around to support `icu4c` 75, which needs C++17.
@@ -85,6 +102,9 @@ class VshPhp74 < Formula
 
     # buildconf required due to system library linking bug patch
     system "./buildconf", "--force"
+
+    # cURL needs the value to be long,
+    inreplace "ext/curl/interface.c", /CURLOPT_VERBOSE,\s+0/, "CURLOPT_VERBOSE, 0L"
 
     config_path = etc/"#{name}"
     # Prevent system pear config from inhibiting pear install
@@ -211,8 +231,11 @@ class VshPhp74 < Formula
     }
 
     resource("imagick_module").stage {
+      args = %W[
+        --with-imagick=#{Formula["imagemagick"].opt_prefix}
+      ]
       system "#{bin}/phpize#{bin_suffix}"
-      system "./configure", "--with-php-config=#{bin}/php-config#{bin_suffix}"
+      system "./configure", "--with-php-config=#{bin}/php-config#{bin_suffix}", *args
       system "make", "clean"
       system "make", "all"
       system "make", "install"
