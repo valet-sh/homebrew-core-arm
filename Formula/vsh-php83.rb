@@ -10,7 +10,7 @@ class VshPhp83 < Formula
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core-arm/releases/download/bottles"
-    sha256 arm64_sequoia: "24dd2c84f8f94c0265899ff848f41a957ccc8ef5c1307e2254f58d0e3d2dc67b"
+    sha256 arm64_sequoia: "840f6a4bac35bb213e0b5a061616a5369aa27522fb5970f4dae0a5853637647f"
   end
 
   depends_on "pkg-config" => :build
