@@ -250,6 +250,8 @@ class VshPhp73 < Formula
       touch var/"log/php-fpm#{bin_suffix}.log"
     end
 
+    puts Dir.glob("#{bin}")
+
     mv "#{bin}/pecl", "#{bin}/pecl#{bin_suffix}"
     mv "#{bin}/pear", "#{bin}/pear#{bin_suffix}"
     mv "#{bin}/peardev", "#{bin}/peardev#{bin_suffix}"
