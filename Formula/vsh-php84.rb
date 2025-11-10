@@ -9,7 +9,7 @@ class VshPhp84 < Formula
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core-arm/releases/download/bottles"
-    sha256 arm64_sequoia: "83fe003e021685b2e84d02afdf53893dfdc4b1a5a716da1b8ceda3307306081f"
+    sha256 arm64_sequoia: "7be5bf3eae1b5b101289233fce2151da467eaccf66b99b3a234ea94be8d66d55"
   end
 
   depends_on "pkg-config" => :build
@@ -212,9 +212,9 @@ class VshPhp84 < Formula
       touch var/"log/php-fpm#{bin_suffix}.log"
     end
 
-    mv "#{bin}/pecl", "#{bin}/pecl#{bin_suffix}"
-    mv "#{bin}/pear", "#{bin}/pear#{bin_suffix}"
-    mv "#{bin}/peardev", "#{bin}/peardev#{bin_suffix}"
+    #mv "#{bin}/pecl", "#{bin}/pecl#{bin_suffix}"
+    #mv "#{bin}/pear", "#{bin}/pear#{bin_suffix}"
+    #mv "#{bin}/peardev", "#{bin}/peardev#{bin_suffix}"
 
   end
 

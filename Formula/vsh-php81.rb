@@ -9,7 +9,7 @@ class VshPhp81 < Formula
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core-arm/releases/download/bottles"
-    sha256 arm64_sequoia: "aa6e2178b563bd112ca783992d14c4ce3ecdb98ea5bff845a009e119c41d0f91"
+    sha256 arm64_sequoia: "9004b1216525a7599645ec5a8200d99504ff994a199177c52b1a2c9fec35c6e3"
   end
 
   depends_on "bison" => :build
@@ -27,7 +27,7 @@ class VshPhp81 < Formula
   depends_on "gettext"
   depends_on "glib"
   depends_on "gmp"
-  depends_on "icu4c@75"
+  depends_on "icu4c@77"
   depends_on "krb5"
   depends_on "jpeg"
   depends_on "libpng"
@@ -208,8 +208,11 @@ class VshPhp81 < Formula
     }
 
     resource("imagick_module").stage {
+      args = %W[
+        --with-imagick=#{Formula["imagemagick"].opt_prefix}
+      ]
       system "#{bin}/phpize#{bin_suffix}"
-      system "./configure", "--with-php-config=#{bin}/php-config#{bin_suffix}"
+      system "./configure", "--with-php-config=#{bin}/php-config#{bin_suffix}", *args
       system "make", "clean"
       system "make", "all"
       system "make", "install"
@@ -244,9 +247,9 @@ class VshPhp81 < Formula
       touch var/"log/php-fpm#{bin_suffix}.log"
     end
 
-    mv "#{bin}/pecl", "#{bin}/pecl#{bin_suffix}"
-    mv "#{bin}/pear", "#{bin}/pear#{bin_suffix}"
-    mv "#{bin}/peardev", "#{bin}/peardev#{bin_suffix}"
+    #mv "#{bin}/pecl", "#{bin}/pecl#{bin_suffix}"
+    #mv "#{bin}/pear", "#{bin}/pear#{bin_suffix}"
+    #mv "#{bin}/peardev", "#{bin}/peardev#{bin_suffix}"
 
   end
 

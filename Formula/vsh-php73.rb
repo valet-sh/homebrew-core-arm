@@ -1,19 +1,19 @@
 class VshPhp73 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://github.com/shivammathur/php-src-backports/archive/e1ccf67c96d54e0f1db4ac5fc6b8c2134e48f199.tar.gz"
+  url "https://github.com/shivammathur/php-src-backports/archive/2c97539020cfaadf6998f23fd301cb5158464fbc.tar.gz"
   version "7.3.33"
-  sha256 "4924cb54e5ecd0c84a6fe723f5eb05141cad9cd210abee42a1dab564867c9cc8"
+  sha256 "c9bc90d6c3d7b2d3a9e17581d36382f4db3e20e3e43225db5437c52e2f2de7bf"
   license "PHP-3.01"
-  revision 1
+  revision 2
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core-arm/releases/download/bottles"
-    sha256 arm64_sequoia: "56be5e7cadfeb7abe6774076cc4b0eda5effe7f1571050adf403c1f4637692f7"
+    sha256 sonoma_arm64: "d9b8fec9e12a76598c4a1e0bc24fcb9e6e0761596130016f7cd06feaf3ef6b94"
   end
 
   depends_on "bison" => :build
-  depends_on "pkgconfig" => :build
+  depends_on "pkgconf" => :build
   depends_on "re2c" => :build
   depends_on "apr"
   depends_on "apr-util"
@@ -250,9 +250,9 @@ class VshPhp73 < Formula
       touch var/"log/php-fpm#{bin_suffix}.log"
     end
 
-    mv "#{bin}/pecl", "#{bin}/pecl#{bin_suffix}"
-    mv "#{bin}/pear", "#{bin}/pear#{bin_suffix}"
-    mv "#{bin}/peardev", "#{bin}/peardev#{bin_suffix}"
+    #mv "#{bin}/pecl", "#{bin}/pecl#{bin_suffix}"
+    #mv "#{bin}/pear", "#{bin}/pear#{bin_suffix}"
+    #mv "#{bin}/peardev", "#{bin}/peardev#{bin_suffix}"
 
     mv "#{bin}/phar.phar", "#{bin}/phar#{bin_suffix}.phar"
     rm_f "#{bin}/phar"
@@ -345,10 +345,10 @@ class VshPhp73 < Formula
     Utils.popen_read("#{bin}/php-config#{bin_suffix} --extension-dir").chomp
   end
 
-  service do 
+  service do
     php_version = @formula.version.to_s.split(".")[0..1].join(".")
     bin_suffix = php_version
-  
+
     run ["#{opt_sbin}/php-fpm#{bin_suffix}", "--nodaemonize"]
     keep_alive true
     working_dir var
