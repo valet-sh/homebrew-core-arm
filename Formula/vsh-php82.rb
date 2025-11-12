@@ -5,11 +5,11 @@ class VshPhp82 < Formula
   mirror "https://fossies.org/linux/www/php-8.2.25.tar.xz"
   sha256 "330b54876ea1d05ade12ee9726167332058bccd58dffa1d4e12117f6b4f616b9"
   license "PHP-3.01"
-  revision 1
+  revision 2
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core-arm/releases/download/bottles"
-    sha256 arm64_sequoia: "ba0ff425325c896f67256f7802cfc8eee153cd3b007bc4928cbd6a9ccc0fe630"
+    sha256 arm64_sequoia: "767651b89824d2420c8234bd2e08cdb9dc296f2e6a9f0027619b6c90badf2865"
   end
 
   depends_on "bison" => :build
@@ -239,35 +239,7 @@ class VshPhp82 < Formula
         ln_s var/"#{name}/#{php_ext_dir}", lib/"#{name}/#{php_ext_dir}"
     end
 
-    pear_prefix = pkgshare/"pear"
 
-    puts "#{pear_prefix}"
-
-    pear_files = %W[
-      #{pear_prefix}/.depdblock
-      #{pear_prefix}/.filemap
-      #{pear_prefix}/.depdb
-      #{pear_prefix}/.lock
-    ]
-
-    %W[
-      #{pear_prefix}/.channels
-      #{pear_prefix}/.channels/.alias
-    ].each do |f|
-      chmod 0755, f
-      pear_files.concat(Dir["#{f}/*"])
-    end
-
-    chmod 0644, pear_files
-
-    {
-      "php_ini"  => etc/"#{name}/php.ini"
-    }.each do |key, value|
-      value.mkpath if /(?<!bin|man)_dir$/.match?(key)
-      system bin/"pear#{bin_suffix}", "config-set", key, value, "system"
-    end
-
-    system bin/"pear#{bin_suffix}", "update-channels"
 
     %w[
       opcache

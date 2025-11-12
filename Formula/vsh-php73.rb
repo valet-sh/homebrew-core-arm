@@ -5,7 +5,7 @@ class VshPhp73 < Formula
   version "7.3.33"
   sha256 "c9bc90d6c3d7b2d3a9e17581d36382f4db3e20e3e43225db5437c52e2f2de7bf"
   license "PHP-3.01"
-  revision 2
+  revision 3
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core-arm/releases/download/bottles"
@@ -281,35 +281,7 @@ class VshPhp73 < Formula
         ln_s var/"#{name}/#{php_ext_dir}", lib/"#{name}/#{php_ext_dir}"
     end
 
-    pear_prefix = pkgshare/"pear"
 
-    puts "#{pear_prefix}"
-
-    pear_files = %W[
-      #{pear_prefix}/.depdblock
-      #{pear_prefix}/.filemap
-      #{pear_prefix}/.depdb
-      #{pear_prefix}/.lock
-    ]
-
-    %W[
-      #{pear_prefix}/.channels
-      #{pear_prefix}/.channels/.alias
-    ].each do |f|
-      chmod 0755, f
-      pear_files.concat(Dir["#{f}/*"])
-    end
-
-    chmod 0644, pear_files
-
-    {
-      "php_ini"  => etc/"#{name}/php.ini"
-    }.each do |key, value|
-      value.mkpath if /(?<!bin|man)_dir$/.match?(key)
-      system bin/"pear#{bin_suffix}", "config-set", key, value, "system"
-    end
-
-    system bin/"pear#{bin_suffix}", "update-channels"
 
     %w[
       opcache
