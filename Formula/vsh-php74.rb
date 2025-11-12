@@ -316,6 +316,7 @@ class VshPhp74 < Formula
         ln_s var/"#{name}/#{php_ext_dir}", lib/"#{name}/#{php_ext_dir}"
     end
 
+    =begin
     pear_prefix = pkgshare/"pear"
 
     puts "#{pear_prefix}"
@@ -345,6 +346,7 @@ class VshPhp74 < Formula
     end
 
     system bin/"pear#{bin_suffix}", "update-channels"
+    =end
 
     %w[
       intl
