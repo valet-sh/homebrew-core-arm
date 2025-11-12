@@ -5,11 +5,11 @@ class VshPhp84 < Formula
   mirror "https://fossies.org/linux/www/php-8.4.5.tar.xz"
   sha256 "0d3270bbce4d9ec617befce52458b763fd461d475f1fe2ed878bb8573faed327"
   license "PHP-3.01"
-  revision 2
+  revision 3
 
   bottle do
     root_url "https://github.com/valet-sh/homebrew-core-arm/releases/download/bottles"
-    sha256 arm64_sequoia: "7f6f947fa5dc053f9f2aaf4309021a3153e75382d7b28667924a514bf8770de4"
+    sha256 arm64_sequoia: "dba3a14d1fba5ac23227e734e582f02ce2385fb9c9059d415984253ccf2c4c16"
   end
 
   depends_on "pkg-config" => :build
